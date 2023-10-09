@@ -286,9 +286,9 @@ export default function Login() {
               />
             </svg>
           </div>
-          <div className="h-full w-full max-w-3xl">
+          <div className="h-full w-full max-w-lg">
             <div className="shadow-lg rounded-md h-fit w-full p-10 min-[1100px]:p-16">
-              <h2 className="border-t-[2px] w-fit border-green-700 font-bold mb-8">
+              <h2 className="border-t-[2px] w-fit text-black border-green-700 font-bold mb-8">
                 Login
               </h2>
               <form className="pb-[80px]">
