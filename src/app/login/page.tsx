@@ -3,11 +3,11 @@ export default function Login() {
   return (
     <>
       <main className="h-screen w-full bg-white flex justify-center items-center px-36">
-        <div className="flex justify-center items-center min-[1100px]:gap-8 gap-5 w-full">
-          <div className="h-full w-full hidden md:block max-w-[800px]">
+        <div className="flex justify-center items-center min-[1100px]:gap-8 gap-8 w-full">
+          <div className="h-full w-full hidden md:block max-w-[600px]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="max-w-[800px]"
+              className=""
               viewBox="0 0 500 500"
               fill="none"
             >
