@@ -4,7 +4,7 @@ export default function Login() {
     <>
       <main className="h-screen w-full bg-white flex justify-center items-center px-36">
         <div className="flex justify-center items-center min-[1100px]:gap-8 gap-5 w-full">
-          <div className="h-full w-full hidden md:block">
+          <div className="h-full w-full hidden md:block max-w-[800px]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="max-w-[800px]"
@@ -286,12 +286,12 @@ export default function Login() {
               />
             </svg>
           </div>
-          <div className="h-full w-full">
+          <div className="h-full w-full max-w-3xl">
             <div className="shadow-lg rounded-md h-fit w-full p-10 min-[1100px]:p-16">
               <h2 className="border-t-[2px] w-fit border-green-700 font-bold mb-8">
                 Login
               </h2>
-              <form>
+              <form className="pb-[80px]">
                 <div className="mb-2">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
                     Email
