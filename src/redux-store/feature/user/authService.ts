@@ -5,7 +5,7 @@ import { User, UserType } from "../../../models";
 import {signinUserData, userData} from "@/src/types/types"
 
 const signup = async (user: userData)=>{
-  const newUser = {...user, userType: UserType.ADMIN, isActive: true, address: "{\"hello\":20}"}
+  const newUser = {...user, userType: UserType.ADMIN, isActive: true, address: "{\"town\":\"Douala\"}"}
     try{
         console.log("signing up")
          const test1 = await Auth.signUp({
@@ -13,10 +13,7 @@ const signup = async (user: userData)=>{
             password: user.password,
             attributes:{
               email: user.email,
-              family_name: user.firstName,
-              given_name: user.lastName,
-              gender: UserType.ADMIN,
-              address: "{\"hello\":20}"
+              address: "address"
             },
         }).then((data: any)=>{
           console.log(data)
@@ -25,20 +22,7 @@ const signup = async (user: userData)=>{
         )
         console.log(createUserResult)
         })  
-        // console.log(test1)
-        // const test = await DataStore.save(
-        //     new User({
-        //         firstName: user.firstName,
-        //         email:user.email,
-        //         lastName: test1.userSub,
-        //         profileImageUrf:"test",
-        //         // createdAt: AWS,
-        //         // updatedAt: Date.now.toString(),
-        //         userStatus: UserStatus.ACTIVE
-        //     })
-        // )
-        // console.log(test)
-        //     ))
+        
     }catch(error){
         console.log(error)
         throw error

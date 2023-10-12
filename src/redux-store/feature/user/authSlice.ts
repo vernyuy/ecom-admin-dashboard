@@ -27,7 +27,8 @@ const initialState: any = {
     user: Map,
     isLoggedIn: false,
     errorMsg: '',
-    isLoading: false
+    isLoading: false,
+    isSuccess: false
 
 }
 
@@ -67,9 +68,10 @@ export const authSlice: any = createSlice({
     })
     .addCase(signup.fulfilled, (state, action)=>{
         state.user = action.payload;
-        state.isLoggedIn = true;
+        state.isSuccess = true;
         state.errorMsg = '';
-        state.isLoading = false
+        state.isLoading = false;
+        state.isLoggedIn = false;
     })
     .addCase(signup.rejected, (state, action)=>{
         state.user = null,

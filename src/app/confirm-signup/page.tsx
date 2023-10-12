@@ -11,18 +11,13 @@ Amplify.configure({ ...awsExports, ssr: true });
 
 
 export default function Register() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [code, setCode] = useState('')
   const dispatch = useDispatch<AppDispatch>();
  const signinUser = (userLogin: userData)=>{
       dispatch(signup(userLogin))
     }
   
-  const {user, errorMsg, isLoading, isSuccess}: any = useSelector((state: RootState)=> state.auth)
-
-  useEffect(()=>{
-
-  }, [isLoading, isSuccess, errorMsg])
+  const {user, errorMsg, isLoading}: any = useSelector((state: RootState)=> state.auth)
   
   return (
     <>
@@ -321,48 +316,15 @@ export default function Register() {
                   </h5>
                 <div className="mb-2">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Email
+                    Code
                   </label>
                   <input
                     type="email"
                     id="email"
-                    value={email}
-                    onChange={e=>setEmail(e.target.value)}
+                    value={code}
+                    onChange={e=>setCode(e.target.value)}
                     className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
-                    placeholder="example@gmail.com"
-                  />
-                  <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
-                    Error
-                  </h5>
-                </div>
-                <div className="mb-2">
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    // value={password}
-                    // onChange={e=>setUsername(e.target.value)}
-                    className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
-                    placeholder="example@gmail.com"
-                  />
-                  <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
-                    Error
-                  </h5>
-                </div>
-
-                <div className="mb-2">
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={e=>setPassword(e.target.value)}
-                    className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
-                    placeholder="example@gmail.com"
+                    placeholder="- - - - - -"
                   />
                   <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
                     Error
@@ -370,11 +332,11 @@ export default function Register() {
                 </div>
                 
                 <div className="mb-6 flex justify-end font-semibold text-[14px]">
-                  Forgot password
+                  Resend Code
                 </div>
                 <button
                   type="submit"
-                  onClick = {(e)=>{e.preventDefault(); signinUser({email, password, firstName:'', lastName:'', phoneNumber:''})}}
+                  onClick = {(e)=>{e.preventDefault();}}
                   className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
                 >
                   {isLoading? 'Loading': "Login"}
