@@ -5,7 +5,6 @@ import type { Metadata } from "next";
 // import { Inter } from "next/font/google";
 import { Amplify, withSSRContext } from "aws-amplify";
 import awsExports from "../aws-exports";
-import { Provider } from "react-redux";
 import { Providers } from "../redux-store/providers";
 import { store } from "../redux-store/store";
 
