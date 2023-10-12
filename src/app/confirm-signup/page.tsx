@@ -1,7 +1,7 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import {useDispatch, useSelector} from "react-redux";
-import { signup } from "@/src/redux-store/feature/user/authSlice";
+import { reset, signup } from "@/src/redux-store/feature/user/authSlice";
 import { signinUserData, userData } from "@/src/types/types";
 import React, {useState, useEffect} from "react";
 import awsExports from "@/src/aws-exports";
@@ -13,12 +13,15 @@ Amplify.configure({ ...awsExports, ssr: true });
 export default function Register() {
   const [code, setCode] = useState('')
   const dispatch = useDispatch<AppDispatch>();
+  
  const signinUser = (userLogin: userData)=>{
       dispatch(signup(userLogin))
     }
   
-  const {user, errorMsg, isLoading}: any = useSelector((state: RootState)=> state.auth)
-  
+  const {user, errorMsg, isLoading, isSuccess}: any = useSelector((state: RootState)=> state.auth)
+  useEffect(()=>{
+    dispatch(reset())
+  }, [dispatch, isLoading, isSuccess, errorMsg])
   return (
     <>
       <main className="h-screen w-full bg-white flex justify-center items-center px-36">

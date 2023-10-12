@@ -2,13 +2,12 @@
 import { Auth } from "aws-amplify";
 import { DataStore } from 'aws-amplify';
 import { User, UserType } from "../../../models";
-import {signinUserData, userData} from "@/src/types/types"
+import {confirmUserData, signinUserData, userData} from "@/src/types/types"
 
 const signup = async (user: userData)=>{
   const newUser = {...user, userType: UserType.ADMIN, isActive: true, address: "{\"town\":\"Douala\"}"}
     try{
-        console.log("signing up")
-         const test1 = await Auth.signUp({
+         await Auth.signUp({
           username: user.email,
             password: user.password,
             attributes:{
@@ -39,9 +38,10 @@ const signin = async (user: signinUserData)=>{
       }
 }
 
-const confirmUser = async (user: any) => {
+const confirmUser = async (user: confirmUserData) => {
+  console.log(`Confirm user :  ${user.email}`)
     try {
-      const res = await Auth.confirmSignUp(user.username, user.code);
+      const res = await Auth.confirmSignUp(user.email, user.code);
       console.log(res);
       return res;
     } catch (error) {
@@ -68,7 +68,8 @@ const confirmUser = async (user: any) => {
   }
 const authService = {
     signin,
-    signup
+    signup,
+    confirmUser
 }
 
 export default authService

@@ -7,6 +7,7 @@ export type CreateReviewsRatingInput = {
   review: string,
   stars?: number | null,
   userId?: string | null,
+  _version?: number | null,
 };
 
 export type ModelReviewsRatingConditionInput = {
@@ -16,6 +17,7 @@ export type ModelReviewsRatingConditionInput = {
   and?: Array< ModelReviewsRatingConditionInput | null > | null,
   or?: Array< ModelReviewsRatingConditionInput | null > | null,
   not?: ModelReviewsRatingConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelStringInput = {
@@ -86,6 +88,13 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type ReviewsRating = {
   __typename: "ReviewsRating",
   id: string,
@@ -94,6 +103,9 @@ export type ReviewsRating = {
   userId?: string | null,
   createdAt: string,
   updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
 };
 
 export type UpdateReviewsRatingInput = {
@@ -101,10 +113,12 @@ export type UpdateReviewsRatingInput = {
   review?: string | null,
   stars?: number | null,
   userId?: string | null,
+  _version?: number | null,
 };
 
 export type DeleteReviewsRatingInput = {
   id: string,
+  _version?: number | null,
 };
 
 export type CreatePaymentInput = {
@@ -112,6 +126,7 @@ export type CreatePaymentInput = {
   paymentStatus: boolean,
   orderId: string,
   userID: string,
+  _version?: number | null,
 };
 
 export type ModelPaymentConditionInput = {
@@ -121,13 +136,7 @@ export type ModelPaymentConditionInput = {
   and?: Array< ModelPaymentConditionInput | null > | null,
   or?: Array< ModelPaymentConditionInput | null > | null,
   not?: ModelPaymentConditionInput | null,
-};
-
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type Payment = {
@@ -138,6 +147,9 @@ export type Payment = {
   userID: string,
   createdAt: string,
   updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
 };
 
 export type UpdatePaymentInput = {
@@ -145,10 +157,12 @@ export type UpdatePaymentInput = {
   paymentStatus?: boolean | null,
   orderId?: string | null,
   userID?: string | null,
+  _version?: number | null,
 };
 
 export type DeletePaymentInput = {
   id: string,
+  _version?: number | null,
 };
 
 export type CreateOrderInput = {
@@ -157,6 +171,7 @@ export type CreateOrderInput = {
   orderDetails?: string | null,
   orderStatus: boolean,
   userID: string,
+  _version?: number | null,
   orderPaymentId?: string | null,
   orderCartId?: string | null,
 };
@@ -169,6 +184,7 @@ export type ModelOrderConditionInput = {
   and?: Array< ModelOrderConditionInput | null > | null,
   or?: Array< ModelOrderConditionInput | null > | null,
   not?: ModelOrderConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
   orderPaymentId?: ModelIDInput | null,
   orderCartId?: ModelIDInput | null,
 };
@@ -184,6 +200,9 @@ export type Order = {
   userID: string,
   createdAt: string,
   updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
   orderPaymentId?: string | null,
   orderCartId?: string | null,
 };
@@ -200,6 +219,9 @@ export type Cart = {
   cartStatus: boolean,
   createdAt: string,
   updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
   cartOrderId?: string | null,
   cartUserId?: string | null,
 };
@@ -219,6 +241,9 @@ export type User = {
   ReviewsRating?: ReviewsRating | null,
   createdAt: string,
   updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
   userCartId?: string | null,
   userReviewsRatingId?: string | null,
 };
@@ -233,12 +258,14 @@ export type ModelOrderConnection = {
   __typename: "ModelOrderConnection",
   items:  Array<Order | null >,
   nextToken?: string | null,
+  startedAt?: number | null,
 };
 
 export type ModelPaymentConnection = {
   __typename: "ModelPaymentConnection",
   items:  Array<Payment | null >,
   nextToken?: string | null,
+  startedAt?: number | null,
 };
 
 export type UpdateOrderInput = {
@@ -247,12 +274,14 @@ export type UpdateOrderInput = {
   orderDetails?: string | null,
   orderStatus?: boolean | null,
   userID?: string | null,
+  _version?: number | null,
   orderPaymentId?: string | null,
   orderCartId?: string | null,
 };
 
 export type DeleteOrderInput = {
   id: string,
+  _version?: number | null,
 };
 
 export type CreateCartInput = {
@@ -262,6 +291,7 @@ export type CreateCartInput = {
   productPrice: number,
   cartTotal: number,
   cartStatus: boolean,
+  _version?: number | null,
   cartOrderId?: string | null,
   cartUserId?: string | null,
 };
@@ -275,6 +305,7 @@ export type ModelCartConditionInput = {
   and?: Array< ModelCartConditionInput | null > | null,
   or?: Array< ModelCartConditionInput | null > | null,
   not?: ModelCartConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
   cartOrderId?: ModelIDInput | null,
   cartUserId?: ModelIDInput | null,
 };
@@ -286,12 +317,14 @@ export type UpdateCartInput = {
   productPrice?: number | null,
   cartTotal?: number | null,
   cartStatus?: boolean | null,
+  _version?: number | null,
   cartOrderId?: string | null,
   cartUserId?: string | null,
 };
 
 export type DeleteCartInput = {
   id: string,
+  _version?: number | null,
 };
 
 export type CreateProductInput = {
@@ -307,6 +340,7 @@ export type CreateProductInput = {
   colors?: Array< string | null > | null,
   hasSizes: boolean,
   hasColors: boolean,
+  _version?: number | null,
 };
 
 export type ModelProductConditionInput = {
@@ -324,6 +358,7 @@ export type ModelProductConditionInput = {
   and?: Array< ModelProductConditionInput | null > | null,
   or?: Array< ModelProductConditionInput | null > | null,
   not?: ModelProductConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type Product = {
@@ -342,6 +377,9 @@ export type Product = {
   hasColors: boolean,
   createdAt: string,
   updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
 };
 
 export type UpdateProductInput = {
@@ -357,10 +395,12 @@ export type UpdateProductInput = {
   colors?: Array< string | null > | null,
   hasSizes?: boolean | null,
   hasColors?: boolean | null,
+  _version?: number | null,
 };
 
 export type DeleteProductInput = {
   id: string,
+  _version?: number | null,
 };
 
 export type CreateCategoryInput = {
@@ -370,6 +410,7 @@ export type CreateCategoryInput = {
   isParent: boolean,
   parentCategoryId?: string | null,
   categoryImageUrl?: string | null,
+  _version?: number | null,
 };
 
 export type ModelCategoryConditionInput = {
@@ -381,6 +422,7 @@ export type ModelCategoryConditionInput = {
   and?: Array< ModelCategoryConditionInput | null > | null,
   or?: Array< ModelCategoryConditionInput | null > | null,
   not?: ModelCategoryConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type Category = {
@@ -394,12 +436,16 @@ export type Category = {
   Products?: ModelProductConnection | null,
   createdAt: string,
   updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
 };
 
 export type ModelProductConnection = {
   __typename: "ModelProductConnection",
   items:  Array<Product | null >,
   nextToken?: string | null,
+  startedAt?: number | null,
 };
 
 export type UpdateCategoryInput = {
@@ -409,10 +455,12 @@ export type UpdateCategoryInput = {
   isParent?: boolean | null,
   parentCategoryId?: string | null,
   categoryImageUrl?: string | null,
+  _version?: number | null,
 };
 
 export type DeleteCategoryInput = {
   id: string,
+  _version?: number | null,
 };
 
 export type CreateUserInput = {
@@ -423,6 +471,7 @@ export type CreateUserInput = {
   address: string,
   isActive: boolean,
   userType?: UserType | null,
+  _version?: number | null,
   userCartId?: string | null,
   userReviewsRatingId?: string | null,
 };
@@ -437,6 +486,7 @@ export type ModelUserConditionInput = {
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
   userCartId?: ModelIDInput | null,
   userReviewsRatingId?: ModelIDInput | null,
 };
@@ -454,12 +504,14 @@ export type UpdateUserInput = {
   address?: string | null,
   isActive?: boolean | null,
   userType?: UserType | null,
+  _version?: number | null,
   userCartId?: string | null,
   userReviewsRatingId?: string | null,
 };
 
 export type DeleteUserInput = {
   id: string,
+  _version?: number | null,
 };
 
 export type CreateStoreInput = {
@@ -471,6 +523,7 @@ export type CreateStoreInput = {
   description?: string | null,
   ownerEmail?: string | null,
   ownerAddress?: string | null,
+  _version?: number | null,
 };
 
 export type ModelStoreConditionInput = {
@@ -484,6 +537,7 @@ export type ModelStoreConditionInput = {
   and?: Array< ModelStoreConditionInput | null > | null,
   or?: Array< ModelStoreConditionInput | null > | null,
   not?: ModelStoreConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type Store = {
@@ -498,6 +552,9 @@ export type Store = {
   ownerAddress?: string | null,
   createdAt: string,
   updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
 };
 
 export type UpdateStoreInput = {
@@ -509,10 +566,12 @@ export type UpdateStoreInput = {
   description?: string | null,
   ownerEmail?: string | null,
   ownerAddress?: string | null,
+  _version?: number | null,
 };
 
 export type DeleteStoreInput = {
   id: string,
+  _version?: number | null,
 };
 
 export type ModelReviewsRatingFilterInput = {
@@ -523,12 +582,14 @@ export type ModelReviewsRatingFilterInput = {
   and?: Array< ModelReviewsRatingFilterInput | null > | null,
   or?: Array< ModelReviewsRatingFilterInput | null > | null,
   not?: ModelReviewsRatingFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelReviewsRatingConnection = {
   __typename: "ModelReviewsRatingConnection",
   items:  Array<ReviewsRating | null >,
   nextToken?: string | null,
+  startedAt?: number | null,
 };
 
 export type ModelPaymentFilterInput = {
@@ -539,6 +600,7 @@ export type ModelPaymentFilterInput = {
   and?: Array< ModelPaymentFilterInput | null > | null,
   or?: Array< ModelPaymentFilterInput | null > | null,
   not?: ModelPaymentFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export enum ModelSortDirection {
@@ -556,6 +618,7 @@ export type ModelOrderFilterInput = {
   and?: Array< ModelOrderFilterInput | null > | null,
   or?: Array< ModelOrderFilterInput | null > | null,
   not?: ModelOrderFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
   orderPaymentId?: ModelIDInput | null,
   orderCartId?: ModelIDInput | null,
 };
@@ -570,6 +633,7 @@ export type ModelCartFilterInput = {
   and?: Array< ModelCartFilterInput | null > | null,
   or?: Array< ModelCartFilterInput | null > | null,
   not?: ModelCartFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
   cartOrderId?: ModelIDInput | null,
   cartUserId?: ModelIDInput | null,
 };
@@ -578,6 +642,7 @@ export type ModelCartConnection = {
   __typename: "ModelCartConnection",
   items:  Array<Cart | null >,
   nextToken?: string | null,
+  startedAt?: number | null,
 };
 
 export type ModelProductFilterInput = {
@@ -596,6 +661,7 @@ export type ModelProductFilterInput = {
   and?: Array< ModelProductFilterInput | null > | null,
   or?: Array< ModelProductFilterInput | null > | null,
   not?: ModelProductFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelCategoryFilterInput = {
@@ -608,12 +674,14 @@ export type ModelCategoryFilterInput = {
   and?: Array< ModelCategoryFilterInput | null > | null,
   or?: Array< ModelCategoryFilterInput | null > | null,
   not?: ModelCategoryFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelCategoryConnection = {
   __typename: "ModelCategoryConnection",
   items:  Array<Category | null >,
   nextToken?: string | null,
+  startedAt?: number | null,
 };
 
 export type ModelUserFilterInput = {
@@ -627,6 +695,7 @@ export type ModelUserFilterInput = {
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
   userCartId?: ModelIDInput | null,
   userReviewsRatingId?: ModelIDInput | null,
 };
@@ -635,6 +704,7 @@ export type ModelUserConnection = {
   __typename: "ModelUserConnection",
   items:  Array<User | null >,
   nextToken?: string | null,
+  startedAt?: number | null,
 };
 
 export type ModelStoreFilterInput = {
@@ -649,12 +719,14 @@ export type ModelStoreFilterInput = {
   and?: Array< ModelStoreFilterInput | null > | null,
   or?: Array< ModelStoreFilterInput | null > | null,
   not?: ModelStoreFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelStoreConnection = {
   __typename: "ModelStoreConnection",
   items:  Array<Store | null >,
   nextToken?: string | null,
+  startedAt?: number | null,
 };
 
 export type ModelSubscriptionReviewsRatingFilterInput = {
@@ -664,6 +736,7 @@ export type ModelSubscriptionReviewsRatingFilterInput = {
   userId?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionReviewsRatingFilterInput | null > | null,
   or?: Array< ModelSubscriptionReviewsRatingFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionIDInput = {
@@ -715,6 +788,7 @@ export type ModelSubscriptionPaymentFilterInput = {
   userID?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionPaymentFilterInput | null > | null,
   or?: Array< ModelSubscriptionPaymentFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionBooleanInput = {
@@ -730,6 +804,7 @@ export type ModelSubscriptionOrderFilterInput = {
   userID?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionOrderFilterInput | null > | null,
   or?: Array< ModelSubscriptionOrderFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionCartFilterInput = {
@@ -741,6 +816,7 @@ export type ModelSubscriptionCartFilterInput = {
   cartStatus?: ModelSubscriptionBooleanInput | null,
   and?: Array< ModelSubscriptionCartFilterInput | null > | null,
   or?: Array< ModelSubscriptionCartFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionProductFilterInput = {
@@ -758,6 +834,7 @@ export type ModelSubscriptionProductFilterInput = {
   hasColors?: ModelSubscriptionBooleanInput | null,
   and?: Array< ModelSubscriptionProductFilterInput | null > | null,
   or?: Array< ModelSubscriptionProductFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionCategoryFilterInput = {
@@ -769,6 +846,7 @@ export type ModelSubscriptionCategoryFilterInput = {
   categoryImageUrl?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionCategoryFilterInput | null > | null,
   or?: Array< ModelSubscriptionCategoryFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionUserFilterInput = {
@@ -781,6 +859,7 @@ export type ModelSubscriptionUserFilterInput = {
   userType?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionStoreFilterInput = {
@@ -794,6 +873,7 @@ export type ModelSubscriptionStoreFilterInput = {
   ownerAddress?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionStoreFilterInput | null > | null,
   or?: Array< ModelSubscriptionStoreFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type CreateReviewsRatingMutationVariables = {
@@ -810,6 +890,9 @@ export type CreateReviewsRatingMutation = {
     userId?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -827,6 +910,9 @@ export type UpdateReviewsRatingMutation = {
     userId?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -844,6 +930,9 @@ export type DeleteReviewsRatingMutation = {
     userId?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -861,6 +950,9 @@ export type CreatePaymentMutation = {
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -878,6 +970,9 @@ export type UpdatePaymentMutation = {
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -895,6 +990,9 @@ export type DeletePaymentMutation = {
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -918,6 +1016,9 @@ export type CreateOrderMutation = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
@@ -931,10 +1032,16 @@ export type CreateOrderMutation = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     orderPaymentId?: string | null,
     orderCartId?: string | null,
   } | null,
@@ -960,6 +1067,9 @@ export type UpdateOrderMutation = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
@@ -973,10 +1083,16 @@ export type UpdateOrderMutation = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     orderPaymentId?: string | null,
     orderCartId?: string | null,
   } | null,
@@ -1002,6 +1118,9 @@ export type DeleteOrderMutation = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
@@ -1015,10 +1134,16 @@ export type DeleteOrderMutation = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     orderPaymentId?: string | null,
     orderCartId?: string | null,
   } | null,
@@ -1048,6 +1173,9 @@ export type CreateCartMutation = {
       userType?: UserType | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       userCartId?: string | null,
       userReviewsRatingId?: string | null,
     } | null,
@@ -1060,12 +1188,18 @@ export type CreateCartMutation = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       orderPaymentId?: string | null,
       orderCartId?: string | null,
     } | null,
     cartStatus: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     cartOrderId?: string | null,
     cartUserId?: string | null,
   } | null,
@@ -1095,6 +1229,9 @@ export type UpdateCartMutation = {
       userType?: UserType | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       userCartId?: string | null,
       userReviewsRatingId?: string | null,
     } | null,
@@ -1107,12 +1244,18 @@ export type UpdateCartMutation = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       orderPaymentId?: string | null,
       orderCartId?: string | null,
     } | null,
     cartStatus: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     cartOrderId?: string | null,
     cartUserId?: string | null,
   } | null,
@@ -1142,6 +1285,9 @@ export type DeleteCartMutation = {
       userType?: UserType | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       userCartId?: string | null,
       userReviewsRatingId?: string | null,
     } | null,
@@ -1154,12 +1300,18 @@ export type DeleteCartMutation = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       orderPaymentId?: string | null,
       orderCartId?: string | null,
     } | null,
     cartStatus: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     cartOrderId?: string | null,
     cartUserId?: string | null,
   } | null,
@@ -1187,6 +1339,9 @@ export type CreateProductMutation = {
     hasColors: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -1212,6 +1367,9 @@ export type UpdateProductMutation = {
     hasColors: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -1237,6 +1395,9 @@ export type DeleteProductMutation = {
     hasColors: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -1257,9 +1418,13 @@ export type CreateCategoryMutation = {
     Products?:  {
       __typename: "ModelProductConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -1280,9 +1445,13 @@ export type UpdateCategoryMutation = {
     Products?:  {
       __typename: "ModelProductConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -1303,9 +1472,13 @@ export type DeleteCategoryMutation = {
     Products?:  {
       __typename: "ModelProductConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -1334,16 +1507,21 @@ export type CreateUserMutation = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
     Orders?:  {
       __typename: "ModelOrderConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     Payments?:  {
       __typename: "ModelPaymentConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     ReviewsRating?:  {
       __typename: "ReviewsRating",
@@ -1353,9 +1531,15 @@ export type CreateUserMutation = {
       userId?: string | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     userCartId?: string | null,
     userReviewsRatingId?: string | null,
   } | null,
@@ -1386,16 +1570,21 @@ export type UpdateUserMutation = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
     Orders?:  {
       __typename: "ModelOrderConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     Payments?:  {
       __typename: "ModelPaymentConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     ReviewsRating?:  {
       __typename: "ReviewsRating",
@@ -1405,9 +1594,15 @@ export type UpdateUserMutation = {
       userId?: string | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     userCartId?: string | null,
     userReviewsRatingId?: string | null,
   } | null,
@@ -1438,16 +1633,21 @@ export type DeleteUserMutation = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
     Orders?:  {
       __typename: "ModelOrderConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     Payments?:  {
       __typename: "ModelPaymentConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     ReviewsRating?:  {
       __typename: "ReviewsRating",
@@ -1457,9 +1657,15 @@ export type DeleteUserMutation = {
       userId?: string | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     userCartId?: string | null,
     userReviewsRatingId?: string | null,
   } | null,
@@ -1483,6 +1689,9 @@ export type CreateStoreMutation = {
     ownerAddress?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -1504,6 +1713,9 @@ export type UpdateStoreMutation = {
     ownerAddress?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -1525,6 +1737,9 @@ export type DeleteStoreMutation = {
     ownerAddress?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -1541,6 +1756,9 @@ export type GetReviewsRatingQuery = {
     userId?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -1561,8 +1779,39 @@ export type ListReviewsRatingsQuery = {
       userId?: string | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null >,
     nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncReviewsRatingsQueryVariables = {
+  filter?: ModelReviewsRatingFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncReviewsRatingsQuery = {
+  syncReviewsRatings?:  {
+    __typename: "ModelReviewsRatingConnection",
+    items:  Array< {
+      __typename: "ReviewsRating",
+      id: string,
+      review: string,
+      stars?: number | null,
+      userId?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -1579,6 +1828,9 @@ export type GetPaymentQuery = {
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -1599,8 +1851,39 @@ export type ListPaymentsQuery = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null >,
     nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncPaymentsQueryVariables = {
+  filter?: ModelPaymentFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncPaymentsQuery = {
+  syncPayments?:  {
+    __typename: "ModelPaymentConnection",
+    items:  Array< {
+      __typename: "Payment",
+      id: string,
+      paymentStatus: boolean,
+      orderId: string,
+      userID: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -1623,8 +1906,12 @@ export type PaymentsByUserIDQuery = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null >,
     nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -1647,6 +1934,9 @@ export type GetOrderQuery = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
@@ -1660,10 +1950,16 @@ export type GetOrderQuery = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     orderPaymentId?: string | null,
     orderCartId?: string | null,
   } | null,
@@ -1687,10 +1983,44 @@ export type ListOrdersQuery = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       orderPaymentId?: string | null,
       orderCartId?: string | null,
     } | null >,
     nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncOrdersQueryVariables = {
+  filter?: ModelOrderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncOrdersQuery = {
+  syncOrders?:  {
+    __typename: "ModelOrderConnection",
+    items:  Array< {
+      __typename: "Order",
+      id: string,
+      orderItems: string,
+      orderDetails?: string | null,
+      orderStatus: boolean,
+      userID: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      orderPaymentId?: string | null,
+      orderCartId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -1714,10 +2044,14 @@ export type OrdersByUserIDQuery = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       orderPaymentId?: string | null,
       orderCartId?: string | null,
     } | null >,
     nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -1744,6 +2078,9 @@ export type GetCartQuery = {
       userType?: UserType | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       userCartId?: string | null,
       userReviewsRatingId?: string | null,
     } | null,
@@ -1756,12 +2093,18 @@ export type GetCartQuery = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       orderPaymentId?: string | null,
       orderCartId?: string | null,
     } | null,
     cartStatus: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     cartOrderId?: string | null,
     cartUserId?: string | null,
   } | null,
@@ -1786,10 +2129,45 @@ export type ListCartsQuery = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null >,
     nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncCartsQueryVariables = {
+  filter?: ModelCartFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncCartsQuery = {
+  syncCarts?:  {
+    __typename: "ModelCartConnection",
+    items:  Array< {
+      __typename: "Cart",
+      id: string,
+      productId: string,
+      productQty: number,
+      productPrice: number,
+      cartTotal: number,
+      cartStatus: boolean,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      cartOrderId?: string | null,
+      cartUserId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -1814,6 +2192,9 @@ export type GetProductQuery = {
     hasColors: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -1842,8 +2223,47 @@ export type ListProductsQuery = {
       hasColors: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null >,
     nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncProductsQueryVariables = {
+  filter?: ModelProductFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncProductsQuery = {
+  syncProducts?:  {
+    __typename: "ModelProductConnection",
+    items:  Array< {
+      __typename: "Product",
+      id: string,
+      name: string,
+      description: string,
+      productImageUrls: Array< string >,
+      price: number,
+      quantity: number,
+      inStock: boolean,
+      categoryID: string,
+      sizes?: Array< string | null > | null,
+      colors?: Array< string | null > | null,
+      hasSizes: boolean,
+      hasColors: boolean,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -1874,8 +2294,12 @@ export type ProductsByCategoryIDQuery = {
       hasColors: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null >,
     nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -1895,9 +2319,13 @@ export type GetCategoryQuery = {
     Products?:  {
       __typename: "ModelProductConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -1920,8 +2348,41 @@ export type ListCategoriesQuery = {
       categoryImageUrl?: string | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null >,
     nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncCategoriesQueryVariables = {
+  filter?: ModelCategoryFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncCategoriesQuery = {
+  syncCategories?:  {
+    __typename: "ModelCategoryConnection",
+    items:  Array< {
+      __typename: "Category",
+      id: string,
+      name: string,
+      description: string,
+      isParent: boolean,
+      parentCategoryId?: string | null,
+      categoryImageUrl?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -1949,16 +2410,21 @@ export type GetUserQuery = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
     Orders?:  {
       __typename: "ModelOrderConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     Payments?:  {
       __typename: "ModelPaymentConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     ReviewsRating?:  {
       __typename: "ReviewsRating",
@@ -1968,9 +2434,15 @@ export type GetUserQuery = {
       userId?: string | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     userCartId?: string | null,
     userReviewsRatingId?: string | null,
   } | null,
@@ -1996,10 +2468,46 @@ export type ListUsersQuery = {
       userType?: UserType | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       userCartId?: string | null,
       userReviewsRatingId?: string | null,
     } | null >,
     nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncUsersQueryVariables = {
+  filter?: ModelUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncUsersQuery = {
+  syncUsers?:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      id: string,
+      firstName: string,
+      lastName: string,
+      email: string,
+      address: string,
+      isActive: boolean,
+      userType?: UserType | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      userCartId?: string | null,
+      userReviewsRatingId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -2020,6 +2528,9 @@ export type GetStoreQuery = {
     ownerAddress?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2044,8 +2555,43 @@ export type ListStoresQuery = {
       ownerAddress?: string | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null >,
     nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncStoresQueryVariables = {
+  filter?: ModelStoreFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncStoresQuery = {
+  syncStores?:  {
+    __typename: "ModelStoreConnection",
+    items:  Array< {
+      __typename: "Store",
+      id: string,
+      name: string,
+      logoUrl: string,
+      fontType?: string | null,
+      hero?: Array< string > | null,
+      description?: string | null,
+      ownerEmail?: string | null,
+      ownerAddress?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -2062,6 +2608,9 @@ export type OnCreateReviewsRatingSubscription = {
     userId?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2078,6 +2627,9 @@ export type OnUpdateReviewsRatingSubscription = {
     userId?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2094,6 +2646,9 @@ export type OnDeleteReviewsRatingSubscription = {
     userId?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2110,6 +2665,9 @@ export type OnCreatePaymentSubscription = {
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2126,6 +2684,9 @@ export type OnUpdatePaymentSubscription = {
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2142,6 +2703,9 @@ export type OnDeletePaymentSubscription = {
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2164,6 +2728,9 @@ export type OnCreateOrderSubscription = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
@@ -2177,10 +2744,16 @@ export type OnCreateOrderSubscription = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     orderPaymentId?: string | null,
     orderCartId?: string | null,
   } | null,
@@ -2205,6 +2778,9 @@ export type OnUpdateOrderSubscription = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
@@ -2218,10 +2794,16 @@ export type OnUpdateOrderSubscription = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     orderPaymentId?: string | null,
     orderCartId?: string | null,
   } | null,
@@ -2246,6 +2828,9 @@ export type OnDeleteOrderSubscription = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
@@ -2259,10 +2844,16 @@ export type OnDeleteOrderSubscription = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     userID: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     orderPaymentId?: string | null,
     orderCartId?: string | null,
   } | null,
@@ -2291,6 +2882,9 @@ export type OnCreateCartSubscription = {
       userType?: UserType | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       userCartId?: string | null,
       userReviewsRatingId?: string | null,
     } | null,
@@ -2303,12 +2897,18 @@ export type OnCreateCartSubscription = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       orderPaymentId?: string | null,
       orderCartId?: string | null,
     } | null,
     cartStatus: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     cartOrderId?: string | null,
     cartUserId?: string | null,
   } | null,
@@ -2337,6 +2937,9 @@ export type OnUpdateCartSubscription = {
       userType?: UserType | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       userCartId?: string | null,
       userReviewsRatingId?: string | null,
     } | null,
@@ -2349,12 +2952,18 @@ export type OnUpdateCartSubscription = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       orderPaymentId?: string | null,
       orderCartId?: string | null,
     } | null,
     cartStatus: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     cartOrderId?: string | null,
     cartUserId?: string | null,
   } | null,
@@ -2383,6 +2992,9 @@ export type OnDeleteCartSubscription = {
       userType?: UserType | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       userCartId?: string | null,
       userReviewsRatingId?: string | null,
     } | null,
@@ -2395,12 +3007,18 @@ export type OnDeleteCartSubscription = {
       userID: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       orderPaymentId?: string | null,
       orderCartId?: string | null,
     } | null,
     cartStatus: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     cartOrderId?: string | null,
     cartUserId?: string | null,
   } | null,
@@ -2427,6 +3045,9 @@ export type OnCreateProductSubscription = {
     hasColors: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2451,6 +3072,9 @@ export type OnUpdateProductSubscription = {
     hasColors: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2475,6 +3099,9 @@ export type OnDeleteProductSubscription = {
     hasColors: boolean,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2494,9 +3121,13 @@ export type OnCreateCategorySubscription = {
     Products?:  {
       __typename: "ModelProductConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2516,9 +3147,13 @@ export type OnUpdateCategorySubscription = {
     Products?:  {
       __typename: "ModelProductConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2538,9 +3173,13 @@ export type OnDeleteCategorySubscription = {
     Products?:  {
       __typename: "ModelProductConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2568,16 +3207,21 @@ export type OnCreateUserSubscription = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
     Orders?:  {
       __typename: "ModelOrderConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     Payments?:  {
       __typename: "ModelPaymentConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     ReviewsRating?:  {
       __typename: "ReviewsRating",
@@ -2587,9 +3231,15 @@ export type OnCreateUserSubscription = {
       userId?: string | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     userCartId?: string | null,
     userReviewsRatingId?: string | null,
   } | null,
@@ -2619,16 +3269,21 @@ export type OnUpdateUserSubscription = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
     Orders?:  {
       __typename: "ModelOrderConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     Payments?:  {
       __typename: "ModelPaymentConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     ReviewsRating?:  {
       __typename: "ReviewsRating",
@@ -2638,9 +3293,15 @@ export type OnUpdateUserSubscription = {
       userId?: string | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     userCartId?: string | null,
     userReviewsRatingId?: string | null,
   } | null,
@@ -2670,16 +3331,21 @@ export type OnDeleteUserSubscription = {
       cartStatus: boolean,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       cartOrderId?: string | null,
       cartUserId?: string | null,
     } | null,
     Orders?:  {
       __typename: "ModelOrderConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     Payments?:  {
       __typename: "ModelPaymentConnection",
       nextToken?: string | null,
+      startedAt?: number | null,
     } | null,
     ReviewsRating?:  {
       __typename: "ReviewsRating",
@@ -2689,9 +3355,15 @@ export type OnDeleteUserSubscription = {
       userId?: string | null,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     userCartId?: string | null,
     userReviewsRatingId?: string | null,
   } | null,
@@ -2714,6 +3386,9 @@ export type OnCreateStoreSubscription = {
     ownerAddress?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2734,6 +3409,9 @@ export type OnUpdateStoreSubscription = {
     ownerAddress?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };
 
@@ -2754,5 +3432,8 @@ export type OnDeleteStoreSubscription = {
     ownerAddress?: string | null,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
   } | null,
 };

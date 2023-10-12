@@ -1,9 +1,10 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import {useDispatch, useSelector} from "react-redux";
-import { signup } from "@/src/redux-store/feature/user/authSlice";
+import { reset, signup } from "@/src/redux-store/feature/user/authSlice";
 import { signinUserData, userData } from "@/src/types/types";
 import React, {useState, useEffect} from "react";
+import { useRouter, usePathname, useParams } from "next/navigation";
 import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";
 Amplify.configure({ ...awsExports, ssr: true });
@@ -17,12 +18,16 @@ export default function Register() {
  const signinUser = (userLogin: userData)=>{
       dispatch(signup(userLogin))
     }
-  
   const {user, errorMsg, isLoading, isSuccess}: any = useSelector((state: RootState)=> state.auth)
-
+    const router = useRouter();
+    const params = useParams()
   useEffect(()=>{
-
-  }, [isLoading, isSuccess, errorMsg])
+    if(isSuccess){
+      router.replace(`/register/${email}`)
+      dispatch(reset())
+    }
+    
+  }, [isLoading, isSuccess, errorMsg, dispatch])
   
   return (
     <>
