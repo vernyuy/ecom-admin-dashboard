@@ -6,11 +6,11 @@ const initialState: any = {
   products: [],
   product: Map,
   errorMsg: "",
-  isLoading: false,
+  isLoading: "false",
 };
 
 export const createProduct = createAsyncThunk(
-  "store/product",
+  "auth/product",
   async (product: productData, thunkApi) => {
     try {
       await productService.createProduct(product);
@@ -36,9 +36,9 @@ export const productSlice: any = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(createProduct.pending, (state) => {
-        // state.product = null;
-        // state.isLoading = true;
-        // state.errorMsg = "";
+        state.product = null;
+        state.isLoading = true;
+        state.errorMsg = "";
       })
       .addCase(createProduct.fulfilled, (state, action) => {
         state.product = action.payload;

@@ -1,7 +1,6 @@
 import { DataStore } from "aws-amplify";
 import { Product } from "../../../models";
 import { productData } from "@/src/types/types";
-
 const createProduct = async (product: productData) => {
   try {
     const productResult = DataStore.save(new Product(product));
