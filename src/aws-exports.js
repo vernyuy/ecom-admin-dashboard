@@ -19,7 +19,7 @@ const awsmobile = {
     "aws_user_pools_id": "us-east-2_e3RkY5fMz",
     "aws_user_pools_web_client_id": "2uikasait8067mvs9f73rodtht",
     "oauth": {
-        "domain": "commerced8de5843-d8de5843-staging.auth.us-east-2.amazoncognito.com",
+        "domain": "commerce7b595953-7b595953-staging.auth.us-east-2.amazoncognito.com",
         "scope": [
             "phone",
             "email",
@@ -35,7 +35,9 @@ const awsmobile = {
     "aws_cognito_username_attributes": [
         "EMAIL"
     ],
-    "aws_cognito_social_providers": [],
+    "aws_cognito_social_providers": [
+        "GOOGLE"
+    ],
     "aws_cognito_signup_attributes": [
         "EMAIL"
     ],

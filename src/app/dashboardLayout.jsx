@@ -1,8 +1,9 @@
 import Link from "next/link";
-
+import { Delete } from "@/src/components";
 export default function DashboardLayout({ children }) {
   return (
     <>
+      {/* <Delete /> */}
       <main className="bg-gray-50 h-screen">
         <nav className="fixed z-30 w-full bg-white border-b border-gray-200">
           <div className="px-3 py-3 lg:px-5 lg:pl-3">

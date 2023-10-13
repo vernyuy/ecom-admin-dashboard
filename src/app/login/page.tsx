@@ -1,12 +1,13 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import {useDispatch, useSelector} from "react-redux";
-import { reset, signin } from "@/src/redux-store/feature/user/authSlice";
+import { googleSignIn, reset, signin } from "@/src/redux-store/feature/user/authSlice";
 import { signinUserData } from "@/src/types/types";
 import React, {useState, useEffect} from "react";
 import { useRouter } from "next/navigation";
 import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";
+import { Button } from "@/src/components";
 Amplify.configure({ ...awsExports, ssr: true });
 
 
@@ -16,17 +17,26 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const router = useRouter()
 
-  const {user, errorMsg, isLoading, isSuccess}: any = useSelector((state: RootState)=> state.auth)
+  const {user, errorMsg, isLoading, isSuccess, isError}: any = useSelector((state: RootState)=> state.auth)
+  
   useEffect(()=>{
     if(isSuccess){
       console.log(user)
-      dispatch(reset())
-      // router.replace('/')
+      router.replace('/')
+    dispatch(reset())
     }
-  })
+    if(errorMsg === "User is not confirmed."){
+      router.replace(`/register/${email}`)
+    dispatch(reset())
+    }
+    
+  },[dispatch, isError, isSuccess, errorMsg])
 
   const signinUser = (userLogin: signinUserData)=>{
     dispatch(signin(userLogin))
+  }
+  const googleSignin = ()=>{
+    dispatch(googleSignIn(""))
   }
   return (
     <>
@@ -358,13 +368,13 @@ export default function Login() {
                 <div className="mb-6 flex justify-end font-semibold text-[14px]">
                   Forgot password
                 </div>
-                <button
-                  type="submit"
-                  onClick = {(e)=>{e.preventDefault(); signinUser({email, password})}}
-                  className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
-                >
-                  {isLoading? 'Loading': "Login"}
-                </button>
+
+                {/* <div className="flex flex-wrap justify-between"> */}
+                <Button containerStyles="text-white mb-5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading? 'Loading': "Login"} handleClick={(e)=>{e.preventDefault(); signinUser({email, password})}} btnType="submit" isDisable={isLoading? true: false}/>
+                
+                <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading? 'Loading': "Google"} handleClick={(e)=>{e.preventDefault(); googleSignin()}} btnType="submit"/>
+
+                {/* </div> */}
               </form>
             </div>
           </div>
