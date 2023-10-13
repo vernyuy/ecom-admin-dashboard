@@ -25,3 +25,8 @@ export interface signinUserData {
   email: string;
   password: string;
 }
+
+export interface confirmUserData {
+  email: string;
+  code: string;
+}

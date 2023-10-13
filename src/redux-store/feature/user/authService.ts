@@ -2,21 +2,17 @@
 import { Auth } from "aws-amplify";
 import { DataStore } from 'aws-amplify';
 import { User, UserType } from "../../../models";
-import {signinUserData, userData} from "@/src/types/types"
+import {confirmUserData, signinUserData, userData} from "@/src/types/types"
 
 const signup = async (user: userData)=>{
-  const newUser = {...user, userType: UserType.ADMIN, isActive: true, address: "{\"hello\":20}"}
+  const newUser = {...user, userType: UserType.ADMIN, isActive: true, address: "{\"town\":\"Douala\"}"}
     try{
-        console.log("signing up")
-         const test1 = await Auth.signUp({
+         await Auth.signUp({
           username: user.email,
             password: user.password,
             attributes:{
               email: user.email,
-              family_name: user.firstName,
-              given_name: user.lastName,
-              gender: UserType.ADMIN,
-              address: "{\"hello\":20}"
+              address: "address"
             },
         }).then((data: any)=>{
           console.log(data)
@@ -25,20 +21,7 @@ const signup = async (user: userData)=>{
         )
         console.log(createUserResult)
         })  
-        // console.log(test1)
-        // const test = await DataStore.save(
-        //     new User({
-        //         firstName: user.firstName,
-        //         email:user.email,
-        //         lastName: test1.userSub,
-        //         profileImageUrf:"test",
-        //         // createdAt: AWS,
-        //         // updatedAt: Date.now.toString(),
-        //         userStatus: UserStatus.ACTIVE
-        //     })
-        // )
-        // console.log(test)
-        //     ))
+        
     }catch(error){
         console.log(error)
         throw error
@@ -55,9 +38,10 @@ const signin = async (user: signinUserData)=>{
       }
 }
 
-const confirmUser = async (user: any) => {
+const confirmUser = async (user: confirmUserData) => {
+  console.log(`Confirm user :  ${user.email}`)
     try {
-      const res = await Auth.confirmSignUp(user.username, user.code);
+      const res = await Auth.confirmSignUp(user.email, user.code);
       console.log(res);
       return res;
     } catch (error) {
@@ -84,7 +68,8 @@ const confirmUser = async (user: any) => {
   }
 const authService = {
     signin,
-    signup
+    signup,
+    confirmUser
 }
 
 export default authService

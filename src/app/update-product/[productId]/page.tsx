@@ -8,7 +8,7 @@ import { createProduct } from "@/src/redux-store/feature/products/productSlice";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import DashboardLayout from "../dashboardLayout";
+import DashboardLayout from "../../dashboardLayout";
 import { useState } from "react";
 import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";

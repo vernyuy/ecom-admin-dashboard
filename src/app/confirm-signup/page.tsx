@@ -1,33 +1,27 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import {useDispatch, useSelector} from "react-redux";
-import { reset, signin } from "@/src/redux-store/feature/user/authSlice";
-import { signinUserData } from "@/src/types/types";
+import { reset, signup } from "@/src/redux-store/feature/user/authSlice";
+import { signinUserData, userData } from "@/src/types/types";
 import React, {useState, useEffect} from "react";
-import { useRouter } from "next/navigation";
 import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";
 Amplify.configure({ ...awsExports, ssr: true });
 
 
-export default function Login() {
-  const dispatch = useDispatch<AppDispatch>();
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const router = useRouter()
 
+export default function Register() {
+  const [code, setCode] = useState('')
+  const dispatch = useDispatch<AppDispatch>();
+  
+ const signinUser = (userLogin: userData)=>{
+      dispatch(signup(userLogin))
+    }
+  
   const {user, errorMsg, isLoading, isSuccess}: any = useSelector((state: RootState)=> state.auth)
   useEffect(()=>{
-    if(isSuccess){
-      console.log(user)
-      dispatch(reset())
-      // router.replace('/')
-    }
-  })
-
-  const signinUser = (userLogin: signinUserData)=>{
-    dispatch(signin(userLogin))
-  }
+    dispatch(reset())
+  }, [dispatch, isLoading, isSuccess, errorMsg])
   return (
     <>
       <main className="h-screen w-full bg-white flex justify-center items-center px-36">
@@ -325,42 +319,27 @@ export default function Login() {
                   </h5>
                 <div className="mb-2">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Email
+                    Code
                   </label>
                   <input
                     type="email"
                     id="email"
-                    value={email}
-                    onChange={e=>setEmail(e.target.value)}
+                    value={code}
+                    onChange={e=>setCode(e.target.value)}
                     className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
-                    placeholder="example@gmail.com"
+                    placeholder="- - - - - -"
                   />
                   <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
                     Error
                   </h5>
                 </div>
-                <div className="mb-2">
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={e=>setPassword(e.target.value)}
-                    className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
-                    placeholder="example@gmail.com"
-                  />
-                  <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
-                    Error
-                  </h5>
-                </div>
+                
                 <div className="mb-6 flex justify-end font-semibold text-[14px]">
-                  Forgot password
+                  Resend Code
                 </div>
                 <button
                   type="submit"
-                  onClick = {(e)=>{e.preventDefault(); signinUser({email, password})}}
+                  onClick = {(e)=>{e.preventDefault();}}
                   className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
                 >
                   {isLoading? 'Loading': "Login"}
