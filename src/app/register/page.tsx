@@ -7,6 +7,7 @@ import React, {useState, useEffect} from "react";
 import { useRouter, usePathname, useParams } from "next/navigation";
 import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";
+import { Button } from "@/src/components";
 Amplify.configure({ ...awsExports, ssr: true });
 
 
@@ -20,7 +21,6 @@ export default function Register() {
     }
   const {user, errorMsg, isLoading, isSuccess}: any = useSelector((state: RootState)=> state.auth)
     const router = useRouter();
-    const params = useParams()
   useEffect(()=>{
     if(isSuccess){
       router.replace(`/register/${email}`)
@@ -318,7 +318,7 @@ export default function Register() {
           <div className="h-full w-full max-w-md">
             <div className="shadow-lg rounded-md h-fit w-full p-10 min-[1100px]:p-16">
               <h2 className="border-t-[2px] w-fit text-black border-green-700 font-bold mb-8">
-                Login
+                Register
               </h2>
               <form className="pb-[80px]">
               <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
@@ -377,13 +377,7 @@ export default function Register() {
                 <div className="mb-6 flex justify-end font-semibold text-[14px]">
                   Forgot password
                 </div>
-                <button
-                  type="submit"
-                  onClick = {(e)=>{e.preventDefault(); signinUser({email, password, firstName:'', lastName:'', phoneNumber:''})}}
-                  className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
-                >
-                  {isLoading? 'Loading': "Login"}
-                </button>
+                <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading? 'Loading': "Signup"} handleClick={(e)=>{e.preventDefault(); signinUser({email, password, firstName:'', lastName:'', phoneNumber:''})}} btnType="submit"/>
               </form>
             </div>
           </div>

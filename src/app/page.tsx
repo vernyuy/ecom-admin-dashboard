@@ -1,6 +1,13 @@
 "use client";
 import Link from "next/link";
+import {Button} from '@/src/components/'
+
 export default function Home() {
+
+  const handleClick = () =>{
+    console.log("Hello world, Button Clicked")
+  }
+
   return (
     <>
       <main className="bg-gray-50">
@@ -804,6 +811,7 @@ export default function Home() {
                       </span>
                     </a>
                   </div>
+                  <Button title="Test button" containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center" btnType="submit" handleClick={()=>handleClick()} isDisable={true}/>
                 </div>
               </div>
             </div>

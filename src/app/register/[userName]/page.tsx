@@ -7,6 +7,7 @@ import React, {useState, useEffect} from "react";
 import awsExports from "@/src/aws-exports";
 import { useParams, useRouter } from "next/navigation";
 import { Amplify } from "aws-amplify";
+import { Button } from "@/src/components";
 Amplify.configure({ ...awsExports, ssr: true });
 
 
@@ -15,23 +16,24 @@ export default function Register() {
   const [code, setCode] = useState('')
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter()
- const confirm_user = ()=>{
-    const uState = params.userName as string
-    const uMail = uState.replace('%40', '@')
-      dispatch(confirmUser({email:uMail, code: code}))
-    }
+
   
-    const params = useParams()
+               const params = useParams()
     console.log(params)
   const {user, errorMsg, isLoading, isSuccess}: any = useSelector((state: RootState)=> state.auth)
 
   useEffect(()=>{
     if(isSuccess){
         router.replace('/')
-        dispatch(reset)
     }
-  },[isSuccess, errorMsg])
-  
+    dispatch(reset())
+  }, [isSuccess, isLoading, errorMsg, dispatch])
+
+  const confirm_user = ()=>{
+    const uState = params.userName as string
+    const uMail = uState.replace('%40', '@')
+      dispatch(confirmUser({email:uMail, code: code}))
+    }
   return (
     <>
       <main className="h-screen w-full bg-white flex justify-center items-center px-36">
@@ -347,13 +349,7 @@ export default function Register() {
                 <div className="mb-6 flex justify-end font-semibold text-[14px]">
                   Resend Code
                 </div>
-                <button
-                  type="submit"
-                  onClick = {(e)=>{e.preventDefault(); confirm_user()}}
-                  className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
-                >
-                  {isLoading? 'Loading': "Login"}
-                </button>
+                <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading? 'Loading': "Signup"} handleClick={(e)=>{e.preventDefault(); confirm_user()}} btnType="submit"/>
               </form>
             </div>
           </div>

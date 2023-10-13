@@ -8,7 +8,7 @@ export const signin = createAsyncThunk(
   "auth/signin",
   async (user: signinUserData, thunkApi) => {
     try {
-      await authService.signin(user);
+      return await authService.signin(user);
     } catch (err: any) {
       const message =
         (err.response && err.response.data && err.response.data.message) ||
@@ -24,7 +24,7 @@ export const signup = createAsyncThunk(
   "auth/signup",
   async (user: userData, thunkApi) => {
     try {
-      await authService.signup(user);
+      return await authService.signup(user);
     } catch (err: any) {
       const message =
         (err.response && err.response.data && err.response.data.message) ||
@@ -39,7 +39,7 @@ export const confirmUser = createAsyncThunk(
   "auth/confirmUser",
   async (user: confirmUserData, thunkApi) => {
     try {
-      await authService.confirmUser(user);
+     return await authService.confirmUser(user);
     } catch (err: any) {
       const message =
         (err.response && err.response.data && err.response.data.message) ||
@@ -50,12 +50,29 @@ export const confirmUser = createAsyncThunk(
     }
   },
 );
+
+export const googleSignIn = createAsyncThunk(
+  'auth/googleSignin',
+  async (user:any, thunkApi) => {
+    try {
+      return await authService.googleSignIn();
+    } catch (err: any) {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+      console.log(err);
+      return thunkApi.rejectWithValue(message);
+    }
+  }
+)
 const initialState: any = {
     user: Map,
     isLoggedIn: false,
     errorMsg: '',
     isLoading: false,
-    isSuccess: false
+    isSuccess: false,
+    isError: false
 
 }
 
@@ -68,7 +85,8 @@ export const authSlice: any = createSlice({
       state.isLoggedIn = false,
     state.errorMsg =  '',
     state.isLoading = false,
-    state.isSuccess = false
+    state.isSuccess = false,
+    state.isError = false
     },
   },
   extraReducers: (builder) => {
@@ -84,6 +102,7 @@ export const authSlice: any = createSlice({
         state.isLoggedIn = true;
         state.errorMsg = "";
         state.isLoading = false;
+        state.isSuccess = true
       })
       .addCase(signin.rejected, (state, action) => {
         (state.user = null),
@@ -97,6 +116,7 @@ export const authSlice: any = createSlice({
         state.isLoggedIn = false;
         state.errorMsg = "";
         state.isLoading = true;
+        state.isError = false
       })
       .addCase(signup.fulfilled, (state, action) => {
         state.user = action.payload;
@@ -104,13 +124,62 @@ export const authSlice: any = createSlice({
         state.errorMsg = '';
         state.isLoading = false;
         state.isLoggedIn = false;
+        state.isError = false
     })
+
     .addCase(signup.rejected, (state, action)=>{
         state.user = null,
         state.isLoading = false,
         state.isLoggedIn = false,
-        state.errorMsg = action.payload as string
+        state.errorMsg = action.payload as string,
+        state.isError = true
     })
+
+    .addCase(confirmUser.pending, (state, action) => {
+      state.user = null;
+      state.isLoggedIn = false;
+      state.errorMsg = "";
+      state.isLoading = true;
+      state.isError = false
+    })
+    .addCase(confirmUser.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.isSuccess = true;
+      state.errorMsg = '';
+      state.isLoading = false;
+      state.isLoggedIn = false;
+      state.isError = false
+  })
+  .addCase(confirmUser.rejected, (state, action)=>{
+      state.user = null,
+      state.isLoading = false,
+      state.isLoggedIn = false,
+      state.errorMsg = action.payload as string,
+      state.isError = true
+  })
+
+    .addCase(googleSignIn.pending, (state, action) => {
+      state.user = null;
+      state.isLoggedIn = false;
+      state.errorMsg = "";
+      state.isLoading = true;
+      state.isError = false
+    })
+    .addCase(googleSignIn.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.isSuccess = true;
+      state.errorMsg = '';
+      state.isLoading = false;
+      state.isLoggedIn = false;
+      state.isError = false
+  })
+  .addCase(googleSignIn.rejected, (state, action)=>{
+      state.user = null,
+      state.isLoading = false,
+      state.isLoggedIn = false,
+      state.errorMsg = action.payload as string,
+      state.isError = true
+  })
   }
 });
 

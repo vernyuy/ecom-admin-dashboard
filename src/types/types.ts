@@ -1,3 +1,5 @@
+import { MouseEventHandler } from "react";
+
 export interface productData {
   name: string;
   description: string;
@@ -29,4 +31,14 @@ export interface signinUserData {
 export interface confirmUserData {
   email: string;
   code: string;
+}
+
+export interface buttonProps {
+  title: string;
+  containerStyles?: string;
+  handleClick?: MouseEventHandler<HTMLButtonElement>;
+  btnType?: "button" | "submit";
+  textStyles?: string;
+  rightIcon?: String;
+  isDisable?: boolean;
 }

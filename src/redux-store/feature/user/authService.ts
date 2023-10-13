@@ -3,9 +3,10 @@ import { Auth } from "aws-amplify";
 import { DataStore } from 'aws-amplify';
 import { User, UserType } from "../../../models";
 import {confirmUserData, signinUserData, userData} from "@/src/types/types"
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 
 const signup = async (user: userData)=>{
-  const newUser = {...user, userType: UserType.ADMIN, isActive: true, address: "{\"town\":\"Douala\"}"}
+  
     try{
          await Auth.signUp({
           username: user.email,
@@ -15,7 +16,8 @@ const signup = async (user: userData)=>{
               address: "address"
             },
         }).then((data: any)=>{
-          console.log(data)
+          console.log(data.userSub)
+          const newUser = {...user, userType: UserType.ADMIN, isActive: true, id:data.userSub, address: "{\"town\":\"Douala\"}"}
           const createUserResult = DataStore.save(
             new User(newUser)
         )
@@ -29,9 +31,11 @@ const signup = async (user: userData)=>{
 }
 
 const signin = async (user: signinUserData)=>{
-  console.log("Hello")
     try {
+      
+  console.log("Hello")
       const data = await Auth.signIn(user.email, user.password)
+      console.log(data)
           return data
       } catch (error) {
         throw error
@@ -66,10 +70,21 @@ const confirmUser = async (user: confirmUserData) => {
       console.log('error signing out: ', error);
     }
   }
+
+  const googleSignIn = async ()=>{
+    try {
+      await Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google }).then((data)=>{
+        // console.log(data)
+        return data
+      })
+    }catch(err){
+      console.log(err)
+    }
+  }
 const authService = {
     signin,
     signup,
-    confirmUser
+    confirmUser,googleSignIn
 }
 
 export default authService
