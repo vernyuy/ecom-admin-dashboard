@@ -35,6 +35,7 @@ export default function UserCreateForm(props) {
     lastName: "",
     email: "",
     address: "",
+    sub: "",
     isActive: false,
     userType: "",
   };
@@ -42,6 +43,7 @@ export default function UserCreateForm(props) {
   const [lastName, setLastName] = React.useState(initialValues.lastName);
   const [email, setEmail] = React.useState(initialValues.email);
   const [address, setAddress] = React.useState(initialValues.address);
+  const [sub, setSub] = React.useState(initialValues.sub);
   const [isActive, setIsActive] = React.useState(initialValues.isActive);
   const [userType, setUserType] = React.useState(initialValues.userType);
   const [errors, setErrors] = React.useState({});
@@ -50,6 +52,7 @@ export default function UserCreateForm(props) {
     setLastName(initialValues.lastName);
     setEmail(initialValues.email);
     setAddress(initialValues.address);
+    setSub(initialValues.sub);
     setIsActive(initialValues.isActive);
     setUserType(initialValues.userType);
     setErrors({});
@@ -59,6 +62,7 @@ export default function UserCreateForm(props) {
     lastName: [{ type: "Required" }],
     email: [{ type: "Required" }, { type: "Email" }],
     address: [{ type: "Required" }, { type: "JSON" }],
+    sub: [{ type: "Required" }],
     isActive: [{ type: "Required" }],
     userType: [],
   };
@@ -92,6 +96,7 @@ export default function UserCreateForm(props) {
           lastName,
           email,
           address,
+          sub,
           isActive,
           userType,
         };
@@ -152,6 +157,7 @@ export default function UserCreateForm(props) {
               lastName,
               email,
               address,
+              sub,
               isActive,
               userType,
             };
@@ -181,6 +187,7 @@ export default function UserCreateForm(props) {
               lastName: value,
               email,
               address,
+              sub,
               isActive,
               userType,
             };
@@ -210,6 +217,7 @@ export default function UserCreateForm(props) {
               lastName,
               email: value,
               address,
+              sub,
               isActive,
               userType,
             };
@@ -238,6 +246,7 @@ export default function UserCreateForm(props) {
               lastName,
               email,
               address: value,
+              sub,
               isActive,
               userType,
             };
@@ -254,6 +263,36 @@ export default function UserCreateForm(props) {
         hasError={errors.address?.hasError}
         {...getOverrideProps(overrides, "address")}
       ></TextAreaField>
+      <TextField
+        label="Sub"
+        isRequired={true}
+        isReadOnly={false}
+        value={sub}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              firstName,
+              lastName,
+              email,
+              address,
+              sub: value,
+              isActive,
+              userType,
+            };
+            const result = onChange(modelFields);
+            value = result?.sub ?? value;
+          }
+          if (errors.sub?.hasError) {
+            runValidationTasks("sub", value);
+          }
+          setSub(value);
+        }}
+        onBlur={() => runValidationTasks("sub", sub)}
+        errorMessage={errors.sub?.errorMessage}
+        hasError={errors.sub?.hasError}
+        {...getOverrideProps(overrides, "sub")}
+      ></TextField>
       <SwitchField
         label="Is active"
         defaultChecked={false}
@@ -267,6 +306,7 @@ export default function UserCreateForm(props) {
               lastName,
               email,
               address,
+              sub,
               isActive: value,
               userType,
             };
@@ -296,6 +336,7 @@ export default function UserCreateForm(props) {
               lastName,
               email,
               address,
+              sub,
               isActive,
               userType: value,
             };

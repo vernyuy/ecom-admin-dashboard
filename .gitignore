@@ -12,7 +12,7 @@
 /.next/
 /out/
 
- src/ui-components
+src/ui-components
 # production
 /build
 

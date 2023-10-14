@@ -1,4 +1,4 @@
-import { MouseEventHandler } from "react";
+import { HtmlHTMLAttributes, MouseEventHandler } from "react";
 
 export interface productData {
   name: string;
@@ -39,6 +39,6 @@ export interface buttonProps {
   handleClick?: MouseEventHandler<HTMLButtonElement>;
   btnType?: "button" | "submit";
   textStyles?: string;
-  rightIcon?: String;
+  rightIcon?: HTMLTemplateElement;
   isDisable?: boolean;
 }

@@ -707,6 +707,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "sub": {
+                    "name": "sub",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "isActive": {
                     "name": "isActive",
                     "isArray": false,
@@ -961,5 +968,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "9b9e11977acc40e1d62047e580ddb259"
+    "version": "8b7aad152409355dbd6f7055b603e20c"
 };

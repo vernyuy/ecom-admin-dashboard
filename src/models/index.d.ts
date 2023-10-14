@@ -255,6 +255,7 @@ type EagerUser = {
   readonly lastName: string;
   readonly email: string;
   readonly address: string;
+  readonly sub: string;
   readonly isActive: boolean;
   readonly userType?: UserType | keyof typeof UserType | null;
   readonly Cart?: Cart | null;
@@ -277,6 +278,7 @@ type LazyUser = {
   readonly lastName: string;
   readonly email: string;
   readonly address: string;
+  readonly sub: string;
   readonly isActive: boolean;
   readonly userType?: UserType | keyof typeof UserType | null;
   readonly Cart: AsyncItem<Cart | undefined>;

@@ -38,6 +38,21 @@ export const listProducts = createAsyncThunk("store/listProducts", async () => {
   }
 });
 
+export const filterProduct = createAsyncThunk("store/filter", async (filterby: any) => {
+  try {
+    const test = await productService.filterProducts(filterby);
+    console.log(test);
+    return test.result;
+  } catch (err: any) {
+    const message =
+      (err.response && err.response.data && err.response.data.message) ||
+      err.message ||
+      err.toString();
+    console.log(err);
+  }
+});
+
+
 export const productSlice: any = createSlice({
   name: "product",
   initialState,
@@ -75,14 +90,24 @@ export const productSlice: any = createSlice({
         state.products = action.payload;
         state.errorMsg = "";
         state.isLoading = false;
+        // localStorage.setItem("products", JSON.stringify(action.payload))
       })
       .addCase(listProducts.rejected, (state, action) => {
         state.products = null;
         state.isLoading = false;
         state.errorMsg = action.payload as string;
-      });
+      })
+
+      .addCase(filterProduct.fulfilled, (state, action) => {
+        // console.log(action);
+        state.products = action.payload;
+        state.errorMsg = "";
+        state.isLoading = false;
+        // localStorage.setItem("products", JSON.stringify(action.payload))
+      })
+      
   },
 });
 
-export const { reset } = productSlice.actions;
+export const { reset, filterOutStock } = productSlice.actions;
 export default productSlice.reducer;
