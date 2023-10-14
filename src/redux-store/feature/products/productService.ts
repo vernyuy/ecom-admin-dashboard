@@ -20,6 +20,18 @@ const listProducts = async () => {
   }
 };
 
+const deleteProducts = async (product: string[]) => {
+  try {
+    product.map(async(p)=>{
+      await DataStore.delete(Product, p);
+    })
+    const productResult = await DataStore.query(Product, Predicates.ALL);
+    return { success: true, result: productResult };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 const filterProducts = async (filter: any) => {
   try {
     // const filter
@@ -35,6 +47,9 @@ const filterProducts = async (filter: any) => {
         break;
       case 'category':
         productResult = await DataStore.query(Product, (product) => product.categoryID.eq(filter.category));
+        break;
+      case 'search':
+        productResult = await DataStore.query(Product, (product) => product.name.contains(filter.search.toLowerCase()));
         break;
     
       default:
@@ -55,7 +70,8 @@ const filterProducts = async (filter: any) => {
 const productService = {
   createProduct,
   listProducts,
-  filterProducts
+  filterProducts,
+  deleteProducts
 };
 
 export default productService;

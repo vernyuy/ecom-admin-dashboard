@@ -27,7 +27,6 @@ export const createProduct = createAsyncThunk(
 export const listProducts = createAsyncThunk("store/listProducts", async () => {
   try {
     const test = await productService.listProducts();
-    console.log(test);
     return test.result;
   } catch (err: any) {
     const message =
@@ -43,6 +42,19 @@ export const filterProduct = createAsyncThunk("store/filter", async (filterby: a
     const test = await productService.filterProducts(filterby);
     console.log(test);
     return test.result;
+  } catch (err: any) {
+    const message =
+      (err.response && err.response.data && err.response.data.message) ||
+      err.message ||
+      err.toString();
+    console.log(err);
+  }
+});
+
+export const deleteProductsFn = createAsyncThunk("store/deleteProducts", async (filterby: string[]) => {
+  try {
+    const res = await productService.deleteProducts(filterby);
+    return res.result;
   } catch (err: any) {
     const message =
       (err.response && err.response.data && err.response.data.message) ||
@@ -99,11 +111,15 @@ export const productSlice: any = createSlice({
       })
 
       .addCase(filterProduct.fulfilled, (state, action) => {
-        // console.log(action);
         state.products = action.payload;
         state.errorMsg = "";
         state.isLoading = false;
-        // localStorage.setItem("products", JSON.stringify(action.payload))
+      })
+
+      .addCase(deleteProductsFn.fulfilled, (state, action) => {
+        state.products = action.payload;
+        state.errorMsg = "";
+        state.isLoading = false;
       })
       
   },

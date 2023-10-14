@@ -7,8 +7,13 @@ export const store = configureStore({
   reducer: {
     auth: authSlice,
     product: productSlice,
-    category: categorySlice
+    category: categorySlice,
+    
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
