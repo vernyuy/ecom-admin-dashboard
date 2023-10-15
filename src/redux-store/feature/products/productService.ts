@@ -20,11 +20,12 @@ const listProducts = async () => {
   }
 };
 
-const deleteProducts = async (product: string[]) => {
+const deleteProducts = async (product: any) => {
   try {
-    product.map(async(p)=>{
+    console.log(product)
+    typeof product !== "string"? product?.map(async(p:string)=>{
       await DataStore.delete(Product, p);
-    })
+    }): await DataStore.delete(Product, product);
     const productResult = await DataStore.query(Product, Predicates.ALL);
     return { success: true, result: productResult };
   } catch (error) {

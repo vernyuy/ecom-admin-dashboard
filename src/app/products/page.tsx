@@ -46,15 +46,16 @@ export default function App() {
     console.log(selectedProducts)
   }
 
-  const deleteProducts = (e: any)=>{
+  const deleteProducts = (e: any, productId?: string)=>{
+    console.log(productId)
     e.preventDefault()
-    dispatch(deleteProductsFn(selectedProducts))
+    dispatch(deleteProductsFn(!productId?selectedProducts:productId))
   }
 
   return (
     <DashboardLayout>
       <main className="w-full h-full sticky top-0 overflow-y-hidden">
-        <nav className="flex" aria-label="Breadcrumb sticky top-0">
+        <nav className="flex sticky top-0 my-2" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
             <li className="inline-flex items-center">
               <Link
@@ -96,10 +97,10 @@ export default function App() {
             </li>
           </ol>
         </nav>
-        <div className="px-2 pb-2d bg-white h-scrdeen w-full shadow-sm dark:border-gray-700 sm:px-4 mt-f3 md:mt-5d">
+        <div className="px-2 pb-2d bg-white h-scrdeen w-full  rounded-ss-lg rounded-se-lg shadow-sm dark:border-gray-700 sm:px-4 mt-f3 md:mt-5d">
           <div className="w-full">
             <div className="mb-2">
-              <h1 className="text-md font-semibold text-gray-900 sm:text-xl dark:text-whidfgte">
+              <h1 className="text-md font-semibold text-gray-900 sm:text-xl dark:text-white py-2">
                 All products
               </h1>
             </div>
@@ -115,37 +116,37 @@ export default function App() {
                       name="text"
                       id="products-search"
                       value={search}
-                      className="bg-gray-50 outline-none border border-black text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full py-1.5 px-2.5"
+                      className="bg-gray-50 outline-none border border-gray-100 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full py-1.5 px-2.5"
                       placeholder="Search products by name"
                       onChange={(e)=>{setSearch(e.target.value); filterStock({filterBy: 'search', search:search})}}
                     />
                   </div>
                 </form>
               </div>
-              <div className="flex  justify-between gap-2">
+              <div className="flex border-none  justify-between gap-2">
               
 <div className="group">
 <Link
                 href={"/add-product"}
-                className=" border text-gray-900 font-semibold border-black focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-gray-900 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-center"
+                className=" border text-green-500 font-semibold border-green-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-green-300 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-center"
                 type="button"
               >
-                <Button title="Status" btnType="button" /> <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
+                <Button title="Status" btnType="button" /> <svg className="fill-current text-green-500 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
               </Link>
 
 <div id="dropdown" className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700">
     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
     <li>
-        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('all')}>All</a>
+        <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('all')}>All</a>
       </li>
       <li>
-        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('instock')}>In Stock</a>
+        <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('instock')}>In Stock</a>
       </li>
       <li>
-        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('sold')}>Sold</a>
+        <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('sold')}>Sold</a>
       </li>
       <li>
-        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">On promotion</a>
+        <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white">On promotion</a>
       </li>
     </ul>
 </div>
@@ -154,19 +155,19 @@ export default function App() {
 <div className="group">
 <Link
                                                                      href={"#"} 
-                className=" border text-gray-900 font-semibold border-black focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-gray-900 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-center"
+                className=" border text-green-500 font-semibold border-green-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-green-300 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-center"
                 type="button"
               >
-                <Button title="Category" btnType="button" /> <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
+                <Button title="Category" btnType="button" /> <svg className="fill-current text-green-500 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
               </Link>
 
 <div id="dropdown" className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700">
     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
     <li>
-        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('all')}>All</a>
+        <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('all')}>All</a>
       </li>
     {categories?.map((cat: any, index:number) => (<li key={index}>
-        <a key={cat.id} href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock({filterBy:"category", category:cat.id})}>{cat.name}</a>
+        <a key={cat.id} href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock({filterBy:"category", category:cat.id})}>{cat.name}</a>
       </li>))}
     </ul>
 </div>    
@@ -175,18 +176,18 @@ export default function App() {
 <div className="group">
 <Link
                 href={"#"}
-                className=" border text-gray-900 font-semibold border-black focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-gray-900 rounded-lg text-sm px-4 gap-1 py-1.5 flex items-center"
+                className=" border text-gray-900 font-semibold border-orange-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-orange-300 rounded-lg text-sm px-4 gap-1 py-1.5 flex items-center"
                 type="button"
               >
-                <Button title="Bulk actions" btnType="button" /> <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
+                <Button title="Bulk actions" btnType="button" containerStyles="text-orange-500 group-hover:text-white" /> <svg className="fill-current text-red-500 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
               </Link>
 
 <div id="dropdown" className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700">
-    <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-      {/* <li>
-        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update</a>
-      </li> */}
-      <Button title="delete selected" containerStyles="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" handleClick={deleteProducts} isDisable={selectedProducts?false:true}/>
+    <ul className="py-2 text-sm text-red-500 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+      <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
+        <Button title="delete selected" handleClick={deleteProducts} isDisable={selectedProducts?false:true}/>
+      </li>
+      
       {/* <li onClick={deleteProducts}>
         <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete selected</a>
       </li> */}
@@ -198,7 +199,7 @@ export default function App() {
 </div>
 <Link
                 href={"/add-product"}
-                className="text-gray-900 border border-black focus:ring-0 hover:text-white hover:border-none hover:bg-gray-900 font-semibold rounded-lg text-sm px-4 py-1.5"
+                className="text-gray-900 border border-green-300 focus:ring-0 hover:text-white hover:border-none hover:bg-gray-900 font-semibold rounded-lg text-sm px-4 py-1.5"
                 type="button"
               >
                 Add product
@@ -219,9 +220,6 @@ export default function App() {
           {products&&<table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
                     <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
                       <tr>
-                        <th className="w-4 pl-">
-                          #
-                        </th>
                         <th className="pl-2">
                           {/* <input type="checkbox"  /> */}
                         </th>
@@ -237,37 +235,38 @@ export default function App() {
                       {products?.map((product: any, index:number) => {
                         return (
                         <tr key={product.id} className="even:bg-gray-50">
-                          <td className="w-4 pl-1 text-center">
-                            {index+1}
-                          </td>
+                          
                           <th className="pl-2 ">
                             {<input type="checkbox" className="bg-black" value={product.id} onChange={select} />}
                           </th>
-                          <td className="w-20 flex">
+                          <td className="w-20 flex flex-col justify-center">
                             <Image
                               src="https://flowbite.com/docs/images/products/iphone-12.png"
                               alt="Apple Watch"
-                              className="h-5/3 m-auto"
-                              height={40}
-                              width={45}
+                              className="m-auto"
+                              height={30}
+                              width={40}
                             />
                           </td>
-                          <td className="p-4 text-sm font-normal text-gray-900 text-center whitespace-nowrap dark:text-white">
+                          <td className="px-2 text-sm font-normal text-gray-900 text-center whitespace-nowrap dark:text-white">
                             
-                            <span className="font-semibold text-center">
+                            <span className="font-semibold text-center flex flex-col">
                               <input type="text" onChange={(e)=>{}} className="text-center w-24 bg-transparent" value={product.name} />
+                              <div className=" text-black">
+                                <span className="text-green-500 text-[12px] font-medium hover:underline hover:cursor-pointer"><Link href={`/update-product/${product.id}`}>edit</Link></span> | <span className="text-red-500 text-[12px] font-medium hover:cursor-pointer hover:underline" onClick={(e)=>deleteProducts(e, product.id)}>delete</span>
+                              </div>
                             </span>
                           </td>
-                          <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                          <td className="px-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap dark:text-gray-400">
                             {product.description}
                           </td>
-                          <td className="p-4 text-sm font-normal text-gray-900 text-center whitespace-nowrap dark:text-white truncate">
+                          <td className="px-2 text-sm font-normal text-gray-900 text-center whitespace-nowrap dark:text-white truncate">
                           {categories?.map((cat: any)=>cat.id == product.categoryID? cat.name:'' )}
                           </td>
-                          <td className="p-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                          <td className="px-2 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                             {`$ ${product.price}`}
                           </td>
-                          <td className="p-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                          <td className="px-2 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                             {product.quantity}
                           </td>
 
@@ -277,7 +276,7 @@ export default function App() {
                              Sold</p>}
                             
                           </td>
-                          <td className="p-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                          <td className="px-2 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                             {product.quantity}
                           </td>
                         </tr>
@@ -311,9 +310,6 @@ export default function App() {
           
                     <tfoot className="bg-gray-100 dark:bg-blue-900 sticky top-0">
                       <tr>
-                      <th className="w- pl-">
-                          #
-                        </th>
                         <th className="w-4 pl-2">
                           {/* <input type="checkbox" onChange={select} value={'test'} /> */}
                         </th>

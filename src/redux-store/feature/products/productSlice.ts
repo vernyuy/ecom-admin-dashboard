@@ -51,7 +51,7 @@ export const filterProduct = createAsyncThunk("store/filter", async (filterby: a
   }
 });
 
-export const deleteProductsFn = createAsyncThunk("store/deleteProducts", async (filterby: string[]) => {
+export const deleteProductsFn = createAsyncThunk("store/deleteProducts", async (filterby: any) => {
   try {
     const res = await productService.deleteProducts(filterby);
     return res.result;
