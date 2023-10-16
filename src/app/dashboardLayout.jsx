@@ -196,25 +196,6 @@ export default function DashboardLayout({ children }) {
                       </a>
                     </li>
                     <li>
-                      <Link
-                        href="/products"
-                        className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700"
-                      >
-                        <svg
-                          className="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                          <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                        </svg>
-                        <span className="ml-3" sidebar-toggle-item="">
-                          Products
-                        </span>
-                      </Link>
-                    </li>
-                    <li>
                       <button
                         type="button"
                         className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
@@ -237,7 +218,7 @@ export default function DashboardLayout({ children }) {
                           className="flex-1 ml-3 text-left whitespace-nowrap"
                           sidebar-toggle-item=""
                         >
-                          Pages
+                          Products
                         </span>
                         <svg
                           sidebar-toggle-item=""
@@ -253,38 +234,46 @@ export default function DashboardLayout({ children }) {
                           ></path>
                         </svg>
                       </button>
-                      <ul id="dropdown-pages" className="hidden py-2 space-y-2">
+                      <ul id="dropdown-pages" className="py-2 space-y-2">
                         <li>
-                          <a
-                            href="https://flowbite-admin-dashboard.vercel.app/pages/pricing/"
+                          <Link
+                            href="/products"
                             className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
                           >
-                            Pricing
-                          </a>
+                            All products
+                          </Link>
                         </li>
                         <li>
-                          <a
-                            href="https://flowbite-admin-dashboard.vercel.app/pages/maintenance/"
+                          <Link
+                            href="/add-product"
                             className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
                           >
-                            Maintenance
-                          </a>
+                            Add new
+                          </Link>
                         </li>
                         <li>
-                          <a
-                            href="https://flowbite-admin-dashboard.vercel.app/pages/404/"
+                          <Link
+                            href="/categories"
                             className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
                           >
-                            404 not found
-                          </a>
+                            Categories
+                          </Link>
                         </li>
                         <li>
-                          <a
-                            href="https://flowbite-admin-dashboard.vercel.app/pages/500/"
+                          <Link
+                            href="/tags"
                             className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
                           >
-                            500 server error
-                          </a>
+                            Tags
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href="/attributes"
+                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+                          >
+                            Attributes
+                          </Link>
                         </li>
                       </ul>
                     </li>

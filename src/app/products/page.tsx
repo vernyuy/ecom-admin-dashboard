@@ -167,10 +167,7 @@ export default function App() {
                       {products?.map((product: any) => (
                         <tr key={product.id} className="even:bg-gray-50">
                           <td className="w-32 p-4">
-                            <img
-                              src="https://flowbite.com/docs/images/products/iphone-12.png"
-                              alt="Apple Watch"
-                            />
+                            <img src="https://flowbite.com/docs/images/products/iphone-12.png" />
                           </td>
                           <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
                             <span className="font-semibold">
