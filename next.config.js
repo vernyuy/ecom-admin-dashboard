@@ -1,8 +1,11 @@
 /** @type {import('next').NextConfig} */
+const config = require("./src/amplifyconfiguration.json");
+
 const nextConfig = {
   images: {
     domains: ["flowbite.com", "freesvg.org"],
   },
+  trailingSlash: true,
   webpack: (config, { webpack, isServer, nextRuntime }) => {
     // Avoid AWS SDK Node.js require issue
     if (isServer && nextRuntime === "nodejs")

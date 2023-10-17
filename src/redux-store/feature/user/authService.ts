@@ -1,6 +1,5 @@
 
-import { Auth } from "aws-amplify";
-import { DataStore } from 'aws-amplify';
+import { Auth, DataStore } from "aws-amplify";
 import { User, UserType } from "../../../models";
 import {confirmUserData, signinUserData, userData} from "@/src/types/types"
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
@@ -54,12 +53,22 @@ const confirmUser = async (user: confirmUserData) => {
     }
   }
 
-  const resendCode = async (user: any) =>{
+  const resendCode = async (email: string) =>{
     try{
-        const res = await Auth.resendSignUp(user.username)
-        console.log(res, "code sent");
+        const res = await Auth.resendSignUp(email)
     }catch(err){
         console.log(err)
+        throw err
+    }
+  }
+
+  const currentUser = async () =>{
+    try{
+        const res = await Auth.currentAuthenticatedUser()
+        return res
+    }catch(err){
+        console.log(err)
+        throw err
     }
   }
 
@@ -73,10 +82,12 @@ const confirmUser = async (user: confirmUserData) => {
 
   const googleSignIn = async ()=>{
     try {
-      await Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google }).then((data)=>{
+      const data = await Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google })
+      // const data = await Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google })
+      // .then((data: any)=>{
         console.log("afssfgsfsfsf", data)
         return data
-      })
+      // })
     }catch(err){
       console.log(err)
     }
@@ -84,7 +95,11 @@ const confirmUser = async (user: confirmUserData) => {
 const authService = {
     signin,
     signup,
-    confirmUser,googleSignIn
+    confirmUser,
+    googleSignIn, 
+    currentUser,
+    resendCode,
+    logOut,
 }
 
 export default authService

@@ -3,16 +3,18 @@
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { productData } from "@/src/types/types";
-import { createProduct } from "@/src/redux-store/feature/products/productSlice";
+import { createProduct, getProduct } from "@/src/redux-store/feature/products/productSlice";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import DashboardLayout from "../../dashboardLayout";
-import { useState } from "react";
+import DashboardLayout from "@/src/app/dashboardLayout";
+import { useEffect, useState } from "react";
 import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { listCategories } from "@/src/redux-store/feature/category/categorySlice";
 Amplify.configure({ ...awsExports, ssr: true });
 const schema = yup
   .object({
@@ -36,13 +38,24 @@ export default function App() {
   // const { product, errorMsg, isLoading }: any = useSelector(
   //   (state: RootState) => state.product,
   // );
-
-  const { user, errorMsg, isLoading }: any = useSelector(
+  const params = useParams()
+  const { products, errorMsg, isLoading }: any = useSelector(
     (state: RootState) => state.product,
   );
+  const { categories }: any = useSelector(
+    (state: RootState) => state.category,
+  );
+
+  useEffect(() => {
+    const productId = params.productId as string
+    dispatch(getProduct(productId))
+    dispatch(listCategories())
+  }, [dispatch])
+
+
   const [intitialValues, setIntitialValues] = useState({
-    price: 1,
-    name: "uhsd",
+    price: products?.price,
+    name: products?.name,
     description: "jeuidjuiwed",
     productImageUrls: ["hauidhdui"],
     quantity: 22,
@@ -127,6 +140,7 @@ export default function App() {
             <input
               {...register("name")}
               type="text"
+              value={products?.name}
               name="name"
               className="w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none"
               placeholder="Enter product name"
@@ -144,7 +158,7 @@ export default function App() {
             </label>
             <input
               {...register("price")}
-              value={intitialValues.price}
+              value={products?.price}
               type="number"
               name="price"
               className="w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none"
@@ -164,7 +178,7 @@ export default function App() {
             <input
               {...register("quantity")}
               type="number"
-              value={1}
+              value={products?.quantity}
               name="quantity"
               className="w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none"
               placeholder="Enter quantity"
@@ -180,9 +194,10 @@ export default function App() {
             >
               Colors
             </label>
+            {products?.colors}
             <input
               {...register("colors")}
-              type="text"
+              type="color"
               name="colors"
               className="w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none"
               placeholder="Enter color"
@@ -202,11 +217,10 @@ export default function App() {
               </button>
               <select
                 {...register("categoryID")}
-                defaultValue="category-one"
+                defaultValue={products?.categoryID}
                 className="w-full font-normal py-2.5 px-3 hover:cursor-pointer bg-white text-gray-700 border rounded-r outline-none"
               >
-                <option value="category-one">category one</option>
-                <option value="category-two">category two</option>
+                {categories?.map((cat: any)=><option value={cat.id}>{cat.name}</option>)}
               </select>
             </div>
             <p className="text-red-500 text-sm font-light pt-[6px]">
@@ -224,6 +238,7 @@ export default function App() {
               </button>
               <select
                 {...register("inStock")}
+                defaultValue={products?.inStock}
                 className="w-full font-normal py-2.5 px-3 bg-white hover:cursor-pointer text-gray-700 border rounded-r outline-none"
               >
                 <option value="true">True</option>
@@ -245,6 +260,7 @@ export default function App() {
               </button>
               <select
                 {...register("hasSizes")}
+                defaultValue={products?.hasSizes}
                 className="w-full font-normal py-2.5 px-3 hover:cursor-pointer bg-white text-gray-700 border rounded-r outline-none"
               >
                 <option value="true">True</option>
@@ -266,6 +282,7 @@ export default function App() {
               </button>
               <select
                 {...register("hasColors")}
+                defaultValue={products?.hasColors}
                 className="w-full font-normal py-2.5 px-3 hover:cursor-pointer bg-white text-gray-700 border rounded-r outline-none"
               >
                 <option value="true">True</option>
@@ -284,6 +301,7 @@ export default function App() {
             >
               Image(s)
             </label>
+            {products?.productImageUrls}
             <input
               {...register("productImageUrls")}
               type="file"
@@ -306,6 +324,7 @@ export default function App() {
               {...register("description")}
               name="description"
               rows={4}
+              value={products?.description}
               className="w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none text-[15px]"
               placeholder="Enter product description"
             />

@@ -1,7 +1,7 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import {useDispatch, useSelector} from "react-redux";
-import { confirmUser, reset, signup } from "@/src/redux-store/feature/user/authSlice";
+import { confirmUser, resendCode, reset, signup } from "@/src/redux-store/feature/user/authSlice";
 import { signinUserData, userData } from "@/src/types/types";
 import React, {useState, useEffect} from "react";
 import awsExports from "@/src/aws-exports";
@@ -13,26 +13,34 @@ Amplify.configure({ ...awsExports, ssr: true });
 
 
 export default function Register() {
-  const [code, setCode] = useState('')
+  const [code, setCode] = useState('');
+  const [codeSent, setCodeSent] = useState(false)
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter()
-
-  
                const params = useParams()
-    console.log(params)
-  const {user, errorMsg, isLoading, isSuccess}: any = useSelector((state: RootState)=> state.auth)
+  const {user, errorMsg, isLoading, isSuccess, issendCode}: any = useSelector((state: RootState)=> state.auth)
 
   useEffect(()=>{
     if(isSuccess){
         router.replace('/')
+        dispatch(reset())
     }
-    dispatch(reset())
   }, [isSuccess, isLoading, errorMsg, dispatch])
 
   const confirm_user = ()=>{
     const uState = params.userName as string
     const uMail = uState.replace('%40', '@')
       dispatch(confirmUser({email:uMail, code: code}))
+    }
+
+    const resendConfrimationCode = async (e: any)=>{
+      e.preventDefault();
+    const uState = params.userName as string
+    const email = uState.replace('%40', '@')
+      const test = await dispatch(resendCode(email))
+      if(isSuccess && issendCode){
+        setCodeSent(true)
+      }
     }
   return (
     <>
@@ -329,6 +337,12 @@ export default function Register() {
               <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
                     {errorMsg}
                   </h5>
+
+                  {/* <h5 className="text-green-600 text-[14px] font-medium">
+                    {codeSent?'Check your email for confirmation code':''}
+                  </h5> */}
+
+
                 <div className="mb-2">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
                     Code
@@ -341,15 +355,17 @@ export default function Register() {
                     className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
                     placeholder="- - - - - -"
                   />
-                  <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
-                    Error
-                  </h5>
                 </div>
-                
-                <div className="mb-6 flex justify-end font-semibold text-[14px]">
-                  Resend Code
+                <div className="flex justify-end">
+                  
+                <button className="mb-3 font-semibold text-[12px] text-green-500" onClick={(e)=>{e.preventDefault();resendConfrimationCode(e)}}>
+                  {
+                    issendCode && isLoading? 'Loading' :'Resend Code'
+                  }
+                  
+                </button>
                 </div>
-                <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading? 'Loading': "Signup"} handleClick={(e)=>{e.preventDefault(); confirm_user()}} btnType="submit"/>
+                <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading && !issendCode? 'Loading': "Confirm"} handleClick={(e)=>{e.preventDefault(); confirm_user()}} btnType="submit"/>
               </form>
             </div>
           </div>

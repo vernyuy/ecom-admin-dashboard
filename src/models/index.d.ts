@@ -167,6 +167,7 @@ type EagerProduct = {
   readonly id: string;
   readonly name: string;
   readonly description: string;
+  readonly productImage: string;
   readonly productImageUrls: string[];
   readonly price: number;
   readonly quantity: number;
@@ -188,6 +189,7 @@ type LazyProduct = {
   readonly id: string;
   readonly name: string;
   readonly description: string;
+  readonly productImage: string;
   readonly productImageUrls: string[];
   readonly price: number;
   readonly quantity: number;

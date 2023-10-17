@@ -20,6 +20,17 @@ const listProducts = async () => {
   }
 };
 
+const getProductById = async (id: string) => {
+  try {
+    const productResult = await DataStore.query(Product, id);
+    console.log(productResult)
+    return { success: true, result: productResult };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const deleteProducts = async (product: any) => {
   try {
     console.log(product)
@@ -72,7 +83,8 @@ const productService = {
   createProduct,
   listProducts,
   filterProducts,
-  deleteProducts
+  deleteProducts,
+  getProductById
 };
 
 export default productService;

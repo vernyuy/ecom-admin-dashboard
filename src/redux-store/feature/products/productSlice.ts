@@ -64,6 +64,20 @@ export const deleteProductsFn = createAsyncThunk("store/deleteProducts", async (
   }
 });
 
+export const getProduct = createAsyncThunk("store/getProductById", async (id: string) => {
+  try {
+    const res = await productService.getProductById(id);
+    console.log(res)
+    return res.result;
+  } catch (err: any) {
+    const message =
+      (err.response && err.response.data && err.response.data.message) ||
+      err.message ||
+      err.toString();
+    console.log(err);
+  }
+});
+
 
 export const productSlice: any = createSlice({
   name: "product",
@@ -120,6 +134,23 @@ export const productSlice: any = createSlice({
         state.products = action.payload;
         state.errorMsg = "";
         state.isLoading = false;
+      })
+
+      .addCase(getProduct.pending, (state) => {
+        state.products = null;
+        state.isLoading = true;
+        state.errorMsg = "";
+      })
+      .addCase(getProduct.fulfilled, (state, action) => {
+        state.products = action.payload;
+        state.errorMsg = "";
+        state.isLoading = false;
+        state.isCompleted = true;
+      })
+      .addCase(getProduct.rejected, (state, action) => {
+        state.products = null;
+        state.isLoading = false;
+        state.errorMsg = action.payload as string;
       })
       
   },

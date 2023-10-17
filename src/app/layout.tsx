@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       {/* className={inter.className} */}
-      <body>
+      <body className="fon font-sans">
         <Providers store={store}>{children}</Providers>
       </body>
     </html>
