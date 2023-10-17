@@ -1,8 +1,10 @@
-import { MouseEventHandler } from "react";
+import { HtmlHTMLAttributes, MouseEventHandler } from "react";
 
 export interface productData {
+  id?: Id;
   name: string;
   description: string;
+  productImage: string;
   productImageUrls: Array<string>;
   price: number;
   quantity: number;
@@ -39,6 +41,6 @@ export interface buttonProps {
   handleClick?: MouseEventHandler<HTMLButtonElement>;
   btnType?: "button" | "submit";
   textStyles?: string;
-  rightIcon?: String;
+  rightIcon?: HTMLTemplateElement;
   isDisable?: boolean;
 }

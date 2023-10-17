@@ -1,5 +1,6 @@
 import React from "react";
 import { buttonProps } from "../types/types";
+import Image from "next/image";
 
 const Button = ({
   title,
@@ -18,7 +19,7 @@ const Button = ({
       disabled={isDisable}
     >
       {" "}
-      {title}{" "}
+      {title}
     </button>
   );
 };

@@ -17,7 +17,7 @@ const signup = async (user: userData)=>{
             },
         }).then((data: any)=>{
           console.log(data.userSub)
-          const newUser = {...user, userType: UserType.ADMIN, isActive: true, id:data.userSub, address: "{\"town\":\"Douala\"}"}
+          const newUser = {...user, userType: UserType.ADMIN, isActive: true, sub:data.userSub, address: "{\"town\":\"Douala\"}"}
           const createUserResult = DataStore.save(
             new User(newUser)
         )
@@ -74,7 +74,7 @@ const confirmUser = async (user: confirmUserData) => {
   const googleSignIn = async ()=>{
     try {
       await Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google }).then((data)=>{
-        // console.log(data)
+        console.log("afssfgsfsfsf", data)
         return data
       })
     }catch(err){

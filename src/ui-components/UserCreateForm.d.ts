@@ -17,6 +17,7 @@ export declare type UserCreateFormInputValues = {
     lastName?: string;
     email?: string;
     address?: string;
+    sub?: string;
     isActive?: boolean;
     userType?: string;
 };
@@ -25,6 +26,7 @@ export declare type UserCreateFormValidationValues = {
     lastName?: ValidationFunction<string>;
     email?: ValidationFunction<string>;
     address?: ValidationFunction<string>;
+    sub?: ValidationFunction<string>;
     isActive?: ValidationFunction<boolean>;
     userType?: ValidationFunction<string>;
 };
@@ -35,6 +37,7 @@ export declare type UserCreateFormOverridesProps = {
     lastName?: PrimitiveOverrideProps<TextFieldProps>;
     email?: PrimitiveOverrideProps<TextFieldProps>;
     address?: PrimitiveOverrideProps<TextAreaFieldProps>;
+    sub?: PrimitiveOverrideProps<TextFieldProps>;
     isActive?: PrimitiveOverrideProps<SwitchFieldProps>;
     userType?: PrimitiveOverrideProps<SelectFieldProps>;
 } & EscapeHatchProps;

@@ -449,6 +449,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "productImage": {
+                    "name": "productImage",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "productImageUrls": {
                     "name": "productImageUrls",
                     "isArray": true,
@@ -707,6 +714,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "sub": {
+                    "name": "sub",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "isActive": {
                     "name": "isActive",
                     "isArray": false,
@@ -961,5 +975,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "9b9e11977acc40e1d62047e580ddb259"
+    "version": "f8ff0d54dd8ded8fe9d6b208a572450e"
 };
