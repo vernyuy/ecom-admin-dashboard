@@ -101,6 +101,38 @@ export const resendCode = createAsyncThunk(
   },
 );
 
+export const forgotPassword = createAsyncThunk(
+  "auth/forgotPassword",
+  async (email: string, thunkApi) => {
+    try {
+      return await authService.forgotPassword(email);
+    } catch (err: any) {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+      console.log(err);
+      return thunkApi.rejectWithValue(message);
+    }
+  },
+);
+
+export const forgotPasswordSubmit = createAsyncThunk(
+  "auth/forgotPasswordSubmit",
+  async (newData: any, thunkApi) => {
+    try {
+      return await authService.forgotPasswordSubmit(newData.email, newData.code, newData.password);
+    } catch (err: any) {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+      console.log(err);
+      return thunkApi.rejectWithValue(message);
+    }
+  },
+);
+
 export const signOut = createAsyncThunk(
   "auth/signOut",
   async (user: null, thunkApi) => {
@@ -118,7 +150,7 @@ export const signOut = createAsyncThunk(
 );
 
 const initialState: any = {
-  user: Map,
+  user: null,
   isLoggedIn: false,
   errorMsg: "",
   isLoading: false,
@@ -253,7 +285,6 @@ export const authSlice: any = createSlice({
           (state.isLoggedIn = false),
           (state.errorMsg = action.payload as string);
       })
-
       
       .addCase(resendCode.pending, (state, action) => {
         state.errorMsg = "";
@@ -267,6 +298,47 @@ export const authSlice: any = createSlice({
         state.issentCode = true;
       })
       .addCase(resendCode.rejected, (state, action) => {
+          (state.isLoading = false),
+          (state.isLoggedIn = false),
+          state.issentCode = false;
+          console.log(action.payload);
+          state.errorMsg = action.payload;
+      })
+
+      .addCase(forgotPassword.pending, (state, action) => {
+        state.errorMsg = "";
+        state.isLoading = true
+        state.issentCode = true
+      })
+      .addCase(forgotPassword.fulfilled, (state, action) => {
+        console.log("forgot")
+        state.errorMsg = "";
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.issentCode = true;
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+          (state.isLoading = false),
+          (state.isLoggedIn = false),
+          state.issentCode = false;
+          console.log(action.payload);
+          state.errorMsg = action.payload;
+      })
+
+
+      .addCase(forgotPasswordSubmit.pending, (state, action) => {
+        state.errorMsg = "";
+        state.isLoading = true
+        state.issentCode = true
+      })
+      .addCase(forgotPasswordSubmit.fulfilled, (state, action) => {
+        console.log("forgot confimr")
+        state.errorMsg = "";
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.issentCode = true;
+      })
+      .addCase(forgotPasswordSubmit.rejected, (state, action) => {
           (state.isLoading = false),
           (state.isLoggedIn = false),
           state.issentCode = false;

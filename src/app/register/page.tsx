@@ -9,35 +9,61 @@ import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";
 import { Button } from "@/src/components";
 import Link from "next/link";
+import PhoneInput from "react-phone-input-2";
+import 'react-phone-input-2/lib/style.css';
+import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
+
 Amplify.configure({ ...awsExports, ssr: true });
 
 
 
 export default function Register() {
   const [email, setEmail] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [country, setCountry] = useState('')
+  const [region, setRegion] = useState('')
+  const [phone, setPhone] = useState("");
+  const [city, setCity] = useState('')
+  const [zipCode, setZipCode] = useState('')
+  const [adLine1, setadLine1] = useState('')
+  const [adLine2, setadLine2] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch<AppDispatch>();
- const signupUser = (userLogin: userData)=>{
-      dispatch(signup(userLogin))
-    }
+
   const {user, errorMsg, isLoading, isSuccess, isGoogle}: any = useSelector((state: RootState)=> state.auth)
     const router = useRouter();
   useEffect(()=>{
-    if(isSuccess){
+    if(isSuccess && !isGoogle){
       router.replace(`/register/${email}`)
       dispatch(reset())
     }
-    
-  }, [isLoading, isSuccess, errorMsg, dispatch])
+    // dispatch(reset())
+  }, [isLoading, isSuccess, errorMsg])
   
   const googleSignin = ()=>{
     dispatch(googleSignIn(""))
   }
+
+  const signupUser = (userLogin: userData)=>{
+    userLogin.address = `{
+      \"coutry\":\"${country}\",
+      \"region\":\"${region}\",
+      \"city\":\"${city}\",
+      \"zipCode\":\"${zipCode}\",
+      \"addressLine1\":\"${adLine1}\",
+      \"addressLine2\":\"${adLine2}}\",
+  }`
+
+    console.log(userLogin)
+
+    dispatch(signup(userLogin))
+  }
   return (
     <>
-      <main className="h-screen w-full bg-white flex justify-center items-center px-36">
-        <div className="flex justify-center items-center min-[1100px]:gap-8 gap-8 w-full">
-          <div className="h-full w-full hidden md:block max-w-[600px]">
+      <main className="h-scree w-full bg-white flex justify-center items-center px-36 ">
+        <div className="flex justify-center items-center min-[1100px]:gap-5 gap-5 w-full">
+          {/* <div className="h-full w-full hidden md:block max-w-[600px]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className=""
@@ -318,84 +344,219 @@ export default function Register() {
                 fill="#F28F8F"
               />
             </svg>
-          </div>
-          <div className="h-full w-full max-w-md">
-            <div className="shadow-lg rounded-md h-fit w-full p-10 min-[1100px]:p-16">
-              <h2 className="border-t-[2px] w-fit text-black border-green-700 font-bold mb-8">
-                Register
-              </h2>
-              <form className="pb-[80px]">
-              <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
+          </div> */}
+          <div className="h-full w-full max-w-xl">
+            <div className="shadow-lg rounded-md h-fi w-full px-10 py-5 min-[1100px]:px-16">
+              <div className="flex justify-between">
+                <h2 className="border-t-[2px] w-fit text-black text-[22px] border-green-700 font-bold">
+                  Register
+                </h2>
+                <div className="my-auto">
+                  <span className="text-[14px]"><a href={'/login'} className="text-green-500 underline font-bold">Login</a></span>
+                </div>
+              </div>
+              <form className="pb-[10px]">
+              <h5 className="text-red-600 text-[14px] pl-0 pt-[3px] font-medium">
                     {errorMsg}
                   </h5>
+                
+                <div className="flex flex-wrap sm:flex-nowrap gap-2 w-full">
+                  <div className="mb-2 w-full">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      First Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      value={firstName}
+                      onChange={e=>setFirstName(e.target.value)}
+                      className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
+                      placeholder="First name"  
+                    />
+                    <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
+                    </h5>
+                  </div>
+
+                  <div className="mb-2 w-full">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Last Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      value={lastName}
+                      className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
+                      placeholder="Last name"
+                      onChange={e=>setLastName(e.target.value)}
+                    />
+                    <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
+                    </h5>
+                  </div>
+                </div>
+
+                <div className="border-gray-300  w-full">
+                   <div className="w-1/2 overflow-x-hidden border-gray-300">
+                   <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Phone number *
+                    </label>
+                  <PhoneInput
+                    country={"eg"}
+                    enableSearch={true}
+                    value={phone}
+                    containerClass=""
+                    buttonClass="bg-gray-50"
+                    inputClass="bg-gray-50 border bg-blue-600 focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-fulld p-1.5"
+                    onChange={(phone:any) => setPhone(phone)}
+                  />
+                   </div>
+                </div>
+
+                
+                <div className="flex gap-2 sm:flex-nowrap flex-wrap my-3">
+                  <div className="w-full">
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                        Country *
+                      </label>
+                    <CountryDropdown
+                      classes="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
+                      value={country}
+                      onChange={(val) => setCountry(val)} />
+                  </div>
+                  
+                  <div className="w-full">
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                        Region *
+                      </label>
+                    <RegionDropdown
+                    classes="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
+                      country={country}
+                      value={region}
+                      onChange={(val) => setRegion(val)} />
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <div className="mb-2 w-full">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      City *
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
+                      value={city}
+                      onChange={e=>setCity(e.target.value)}
+                      className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
+                      placeholder="San fransisco"
+                    />
+                  </div>
+
+                  <div className="mb-2 w-full">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      ZIP code
+                    </label>
+                    <input
+                      type="text"
+                      id="zipecode"
+                      value={zipCode}
+                      onChange={e=>setZipCode(e.target.value)}
+                      className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
+                      placeholder=""
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-2 w-full">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Address line 1 *
+                    </label>
+                    <input
+                      type="text"
+                      id="address_line_1"
+                      value={adLine1}
+                      onChange={e=>setadLine1(e.target.value)}
+                      className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
+                      placeholder="456 Elm Street"
+                    />
+                  </div>
+
+                  <div className="mb-2 w-full">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Address line 2
+                    </label>
+                    <input
+                      type="text"
+                      id="address_line_2"
+                      value={adLine2}
+                      onChange={e=>setadLine2(e.target.value)}
+                      className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
+                      placeholder="456 Elm Street"
+                    />
+                  </div>
+                {/* <div className="mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    Address
+                  </label>
+                  <input
+                    type="text"
+                    id="address"
+                    value={address}
+                    className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-1.5.5"
+                    placeholder="please enter your address"
+                    onChange={e=>setAddress(e.target.value)}
+                  />
+                  <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
+                  </h5>
+                </div> */}
+
                 <div className="mb-2">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Email
+                    Email *
                   </label>
                   <input
                     type="email"
                     id="email"
                     value={email}
                     onChange={e=>setEmail(e.target.value)}
-                    className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
+                    className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
                     placeholder="example@gmail.com"
                   />
-                  <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
-                    {/* Error */}
-                  </h5>
-                </div>
-                <div className="mb-2">
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    // value={password}
-                    // onChange={e=>setUsername(e.target.value)}
-                    className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
-                    placeholder="example@gmail.com"
-                  />
-                  <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
-                    {/* Error */}
-                  </h5>
                 </div>
 
                 <div className="mb-2">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Password
+                    Password *
                   </label>
                   <input
                     type="password"
                     id="password"
                     value={password}
                     onChange={e=>setPassword(e.target.value)}
-                    className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
-                    placeholder="example@gmail.com"
+                    className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
+                    placeholder="Enter you password"
                   />
                   <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
                     {/* Error */}
                   </h5>
                 </div>
                 {/* <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading? 'Loading': "Signup"} handleClick={(e)=>{e.preventDefault(); signupUser({email, password, firstName:'', lastName:'', phoneNumber:''})}} btnType="submit"/> */}
-                <button className="text-white mb-5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " onClick={(e)=>{e.preventDefault(); signupUser({email, password, firstName:'', lastName:'', phoneNumber:''})}} type="submit" disabled={isLoading? true: false}>
-                {isLoading? (
-                <div className="flex justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" className="" width="20" height="20" viewBox="0 0 24 24"><g><circle cx="12" cy="3" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate0" attributeName="r" begin="0;svgSpinners12DotsScaleRotate2.end-0.5s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="16.5" cy="4.21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate1" attributeName="r" begin="svgSpinners12DotsScaleRotate0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="7.5" cy="4.21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate2" attributeName="r" begin="svgSpinners12DotsScaleRotate4.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="19.79" cy="7.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate3" attributeName="r" begin="svgSpinners12DotsScaleRotate1.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="4.21" cy="7.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate4" attributeName="r" begin="svgSpinners12DotsScaleRotate6.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="21" cy="12" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate5" attributeName="r" begin="svgSpinners12DotsScaleRotate3.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="3" cy="12" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate6" attributeName="r" begin="svgSpinners12DotsScaleRotate8.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="19.79" cy="16.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate7" attributeName="r" begin="svgSpinners12DotsScaleRotate5.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="4.21" cy="16.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate8" attributeName="r" begin="svgSpinners12DotsScaleRotatea.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="16.5" cy="19.79" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate9" attributeName="r" begin="svgSpinners12DotsScaleRotate7.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="7.5" cy="19.79" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotatea" attributeName="r" begin="svgSpinners12DotsScaleRotateb.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="12" cy="21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotateb" attributeName="r" begin="svgSpinners12DotsScaleRotate9.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><animateTransform attributeName="transform" dur="6s" repeatCount="indefinite" type="rotate" values="360 12 12;0 12 12"/></g></svg> Loading </div>): "Register"}
-                  
-                </button>
+                <div className="flex gap-2">
+                  <button className="text-white mb-5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " onClick={(e)=>{e.preventDefault(); signupUser({email, password, firstName, lastName, phoneNumber:phone, address:''})}} type="submit" disabled={isLoading? true: false}>
+                  {isLoading? (
+                  <div className="flex justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" className="" width="20" height="20" viewBox="0 0 24 24"><g><circle cx="12" cy="3" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate0" attributeName="r" begin="0;svgSpinners12DotsScaleRotate2.end-0.5s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="16.5" cy="4.21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate1" attributeName="r" begin="svgSpinners12DotsScaleRotate0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="7.5" cy="4.21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate2" attributeName="r" begin="svgSpinners12DotsScaleRotate4.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="19.79" cy="7.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate3" attributeName="r" begin="svgSpinners12DotsScaleRotate1.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="4.21" cy="7.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate4" attributeName="r" begin="svgSpinners12DotsScaleRotate6.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="21" cy="12" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate5" attributeName="r" begin="svgSpinners12DotsScaleRotate3.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="3" cy="12" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate6" attributeName="r" begin="svgSpinners12DotsScaleRotate8.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="19.79" cy="16.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate7" attributeName="r" begin="svgSpinners12DotsScaleRotate5.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="4.21" cy="16.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate8" attributeName="r" begin="svgSpinners12DotsScaleRotatea.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="16.5" cy="19.79" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate9" attributeName="r" begin="svgSpinners12DotsScaleRotate7.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="7.5" cy="19.79" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotatea" attributeName="r" begin="svgSpinners12DotsScaleRotateb.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="12" cy="21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotateb" attributeName="r" begin="svgSpinners12DotsScaleRotate9.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><animateTransform attributeName="transform" dur="6s" repeatCount="indefinite" type="rotate" values="360 12 12;0 12 12"/></g></svg> Loading </div>): "Register"}
+                    
+                  </button>
 
-                <button className="text-white mb-5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " onClick={(e)=>{e.preventDefault(); googleSignin()}} type="submit" disabled={isLoading? true: false}>
-                {isLoading?isGoogle?
-                 <div className="flex justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" className="" width="20" height="20" viewBox="0 0 24 24"><g><circle cx="12" cy="3" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate0" attributeName="r" begin="0;svgSpinners12DotsScaleRotate2.end-0.5s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="16.5" cy="4.21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate1" attributeName="r" begin="svgSpinners12DotsScaleRotate0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="7.5" cy="4.21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate2" attributeName="r" begin="svgSpinners12DotsScaleRotate4.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="19.79" cy="7.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate3" attributeName="r" begin="svgSpinners12DotsScaleRotate1.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="4.21" cy="7.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate4" attributeName="r" begin="svgSpinners12DotsScaleRotate6.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="21" cy="12" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate5" attributeName="r" begin="svgSpinners12DotsScaleRotate3.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="3" cy="12" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate6" attributeName="r" begin="svgSpinners12DotsScaleRotate8.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="19.79" cy="16.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate7" attributeName="r" begin="svgSpinners12DotsScaleRotate5.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="4.21" cy="16.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate8" attributeName="r" begin="svgSpinners12DotsScaleRotatea.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="16.5" cy="19.79" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate9" attributeName="r" begin="svgSpinners12DotsScaleRotate7.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="7.5" cy="19.79" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotatea" attributeName="r" begin="svgSpinners12DotsScaleRotateb.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="12" cy="21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotateb" attributeName="r" begin="svgSpinners12DotsScaleRotate9.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><animateTransform attributeName="transform" dur="6s" repeatCount="indefinite" type="rotate" values="360 12 12;0 12 12"/></g></svg> Loading </div>: "Google": "Google"}
-                  
-                </button>
+                  <button className="text-white mb-3 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " onClick={(e)=>{e.preventDefault(); googleSignin()}} type="submit" disabled={isLoading? true: false}>
+                  {isLoading && isGoogle?
+                  <div className="flex justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" className="" width="20" height="20" viewBox="0 0 24 24"><g><circle cx="12" cy="3" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate0" attributeName="r" begin="0;svgSpinners12DotsScaleRotate2.end-0.5s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="16.5" cy="4.21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate1" attributeName="r" begin="svgSpinners12DotsScaleRotate0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="7.5" cy="4.21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate2" attributeName="r" begin="svgSpinners12DotsScaleRotate4.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="19.79" cy="7.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate3" attributeName="r" begin="svgSpinners12DotsScaleRotate1.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="4.21" cy="7.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate4" attributeName="r" begin="svgSpinners12DotsScaleRotate6.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="21" cy="12" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate5" attributeName="r" begin="svgSpinners12DotsScaleRotate3.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="3" cy="12" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate6" attributeName="r" begin="svgSpinners12DotsScaleRotate8.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="19.79" cy="16.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate7" attributeName="r" begin="svgSpinners12DotsScaleRotate5.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="4.21" cy="16.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate8" attributeName="r" begin="svgSpinners12DotsScaleRotatea.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="16.5" cy="19.79" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate9" attributeName="r" begin="svgSpinners12DotsScaleRotate7.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="7.5" cy="19.79" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotatea" attributeName="r" begin="svgSpinners12DotsScaleRotateb.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="12" cy="21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotateb" attributeName="r" begin="svgSpinners12DotsScaleRotate9.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><animateTransform attributeName="transform" dur="6s" repeatCount="indefinite" type="rotate" values="360 12 12;0 12 12"/></g></svg> Loading </div>: "Google"}
+                    
+                  </button>
+                </div>
                 {/* <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading? 'Loading': "Google"} handleClick={(e)=>{e.preventDefault(); googleSignin()}} btnType="submit"/> */}
                 
 
               </form>
-              <div>
-                <span className="text-[12px]">Already have an account? <Link href={'/login'} className="text-green-500 underline">Login</Link></span>
-              </div>
+              
             </div>
           </div>
         </div>

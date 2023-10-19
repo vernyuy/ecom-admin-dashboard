@@ -728,6 +728,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "phone": {
+                    "name": "phone",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "userType": {
                     "name": "userType",
                     "isArray": false,
@@ -975,5 +982,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "f8ff0d54dd8ded8fe9d6b208a572450e"
+    "version": "2e58bb321861d7817afcd5f55288e9e1"
 };

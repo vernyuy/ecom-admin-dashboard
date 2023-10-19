@@ -18,7 +18,7 @@ export interface userData {
   firstName: string;
   lastName: string;
   email: string;
-  // address: Map<str,
+  address: string,
   phoneNumber: string;
   password: string;
 }

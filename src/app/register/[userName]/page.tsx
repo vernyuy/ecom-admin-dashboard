@@ -18,7 +18,7 @@ export default function Register() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter()
                const params = useParams()
-  const {user, errorMsg, isLoading, isSuccess, issendCode}: any = useSelector((state: RootState)=> state.auth)
+  const {user, errorMsg, isLoading, isSuccess, issentCode}: any = useSelector((state: RootState)=> state.auth)
 
   useEffect(()=>{
     if(isSuccess){
@@ -38,7 +38,8 @@ export default function Register() {
     const uState = params.userName as string
     const email = uState.replace('%40', '@')
       const test = await dispatch(resendCode(email))
-      if(isSuccess && issendCode){
+      console.log(issentCode)
+      if(isSuccess && issentCode){
         setCodeSent(true)
       }
     }
@@ -338,9 +339,9 @@ export default function Register() {
                     {errorMsg}
                   </h5>
 
-                  {/* <h5 className="text-green-600 text-[14px] font-medium">
+                  <h5 className="text-green-600 text-[14px] font-medium">
                     {codeSent?'Check your email for confirmation code':''}
-                  </h5> */}
+                  </h5>
 
 
                 <div className="mb-2">
@@ -360,12 +361,12 @@ export default function Register() {
                   
                 <button className="mb-3 font-semibold text-[12px] text-green-500" onClick={(e)=>{e.preventDefault();resendConfrimationCode(e)}}>
                   {
-                    issendCode && isLoading? 'Loading' :'Resend Code'
+                    issentCode && isLoading? 'Sending' :'Resend Code'
                   }
                   
                 </button>
                 </div>
-                <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading && !issendCode? 'Loading': "Confirm"} handleClick={(e)=>{e.preventDefault(); confirm_user()}} btnType="submit"/>
+                <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading && !issentCode? 'Loading': "Confirm"} handleClick={(e)=>{e.preventDefault(); confirm_user()}} btnType="submit"/>
               </form>
             </div>
           </div>

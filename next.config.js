@@ -2,6 +2,7 @@
 const config = require("./src/amplifyconfiguration.json");
 
 const nextConfig = {
+  swcMinify: true,
   images: {
     domains: ["flowbite.com", "freesvg.org"],
   },

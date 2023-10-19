@@ -22,6 +22,7 @@ export default function Home() {
 
   useLayoutEffect(() => {
     dispatch(currentUser(null))
+    console.log(user)
     if(!user){
       router.replace('/login')
     }
