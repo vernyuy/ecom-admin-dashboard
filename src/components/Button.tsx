@@ -13,12 +13,11 @@ const Button = ({
 }: buttonProps) => {
   return (
     <button
-      className={containerStyles}
       type={btnType}
+      className={containerStyles}
       onClick={handleClick}
       disabled={isDisable}
     >
-      {" "}
       {title}
     </button>
   );

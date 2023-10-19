@@ -1,8 +1,33 @@
 "use client";
 import Link from "next/link";
-import {Button} from '@/src/components/'
+import { Auth } from "aws-amplify";
+import { useLayoutEffect } from "react";
+import awsExports from "@/src/aws-exports";
+import { Amplify } from "aws-amplify";
+import { Button } from "@/src/components";
+import { AppDispatch, RootState } from "@/src/redux-store/store";
+import {useDispatch, useSelector} from "react-redux";
+import { currentUser, googleSignIn, reset, signin } from "@/src/redux-store/feature/user/authSlice";
+import { signinUserData } from "@/src/types/types";
+import { useRouter } from "next/navigation";
+Amplify.configure({ ...awsExports, ssr: true });
 
 export default function Home() {
+
+  
+  const router = useRouter()
+
+  const dispatch = useDispatch<AppDispatch>();
+  const {user, errorMsg, isLoading, isSuccess, isError}: any = useSelector((state: RootState)=> state.auth)
+
+  useLayoutEffect(() => {
+    dispatch(currentUser(null))
+    console.log(user)
+    if(!user){
+      router.replace('/login')
+    }
+    console.log(user)
+  }, [])
 
   const handleClick = () =>{
     console.log("Hello world, Button Clicked")
@@ -24,7 +49,7 @@ export default function Home() {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
                       clipRule="evenodd"
                     ></path>
@@ -37,7 +62,7 @@ export default function Home() {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                       clipRule="evenodd"
                     ></path>
@@ -56,7 +81,7 @@ export default function Home() {
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
                           clipRule="evenodd"
                         ></path>
@@ -85,7 +110,7 @@ export default function Home() {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
                       clipRule="evenodd"
                     ></path>
@@ -209,7 +234,7 @@ export default function Home() {
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
-                              fill-rule="evenodd"
+                              fillRule="evenodd"
                               d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
                               clipRule="evenodd"
                             ></path>
@@ -250,7 +275,7 @@ export default function Home() {
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
-                              fill-rule="evenodd"
+                              fillRule="evenodd"
                               d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z"
                               clipRule="evenodd"
                             ></path>
@@ -321,7 +346,7 @@ export default function Home() {
                       >
                         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
                           clipRule="evenodd"
                         ></path>
@@ -369,7 +394,7 @@ export default function Home() {
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
                           clipRule="evenodd"
                         ></path>
@@ -405,7 +430,7 @@ export default function Home() {
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z"
                           clipRule="evenodd"
                         ></path>
@@ -425,7 +450,7 @@ export default function Home() {
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
                           clipRule="evenodd"
                         ></path>
@@ -445,7 +470,7 @@ export default function Home() {
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
                           clipRule="evenodd"
                         ></path>
@@ -466,7 +491,7 @@ export default function Home() {
                       >
                         <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z"></path>
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"
                           clipRule="evenodd"
                         ></path>
@@ -487,7 +512,7 @@ export default function Home() {
                       >
                         <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"></path>
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
                           clipRule="evenodd"
                         ></path>
@@ -507,7 +532,7 @@ export default function Home() {
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm2.5 3a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm6.207.293a1 1 0 00-1.414 0l-6 6a1 1 0 101.414 1.414l6-6a1 1 0 000-1.414zM12.5 10a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"
                           clipRule="evenodd"
                         ></path>
@@ -528,9 +553,9 @@ export default function Home() {
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
                           d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
                         ></path>
                       </svg>
@@ -564,7 +589,7 @@ export default function Home() {
                   >
                     <path
                       d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       clipRule="evenodd"
                     ></path>
                   </svg>
@@ -668,129 +693,149 @@ export default function Home() {
             <div className="relative flex flex-col flex-1 min-h-0 pt-0 bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
               <div className="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
                 <div className="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                  <ul className="pb-2 space-y-2">
-                    <li>
-                      <form action="#" method="GET" className="lg:hidden">
-                        <label className="sr-only">Search</label>
-                        <div className="relative">
-                          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg
-                              className="w-5 h-5 text-gray-500"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                clipRule="evenodd"
-                              ></path>
-                            </svg>
-                          </div>
-                          <input
-                            type="text"
-                            name="email"
-                            id="mobile-search"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Search"
-                          />
-                        </div>
-                      </form>
-                    </li>
-                    <li>
-                      <a
-                        href="https://flowbite-admin-dashboard.vercel.app/"
-                        className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700"
-                      >
-                        <svg
-                          className="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                          <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                        </svg>
-                        <span className="ml-3" sidebar-toggle-item="">
-                          Dashboard
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
-                        aria-controls="dropdown-pages"
-                        data-collapse-toggle="dropdown-pages"
-                      >
-                        <svg
-                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z"
-                            clipRule="evenodd"
-                          ></path>
-                        </svg>
-                        <span
-                          className="flex-1 ml-3 text-left whitespace-nowrap"
-                          sidebar-toggle-item=""
-                        >
-                          Pages
-                        </span>
-                        <svg
-                          sidebar-toggle-item=""
-                          className="w-6 h-6"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          ></path>
-                        </svg>
-                      </button>
-                      <ul id="dropdown-pages" className="hidden py-2 space-y-2">
-                        <li>
-                          <a
-                            href="https://flowbite-admin-dashboard.vercel.app/pages/pricing/"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
-                          >
-                            Pricing
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="https://flowbite-admin-dashboard.vercel.app/pages/maintenance/"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
-                          >
-                            Maintenance
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="https://flowbite-admin-dashboard.vercel.app/pages/404/"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
-                          >
-                            404 not found
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="https://flowbite-admin-dashboard.vercel.app/pages/500/"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
-                          >
-                            500 server error
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                <ul className="pb-2 space-y-2">
+
+{/* {sidebarLinks.map((_link:any, index:number)=>(
+  <li key={index} className="grou[">
+  <a
+    href={_link.url}
+    className="flex items-center p-2 text-base text-jgray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-grtay-700"
+  >
+    <Image
+      src={_link.icon}
+      height={1}
+      width={1}
+      alt="icon"
+      className="w-5 h-5 text-gray-500/25   transition duration-75 group-hover:text-gjray-900 dark:text-gray-400 dark:group-hover:text-white"
+    />
+    {/* <svg
+      className="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+      <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+    </svg> *
+    <span className="ml-3 text-gray-500" sidebar-toggle-item="">
+      {_link.title}
+    </span>
+  </a>
+</li>
+))} */}
+<li>
+  <a
+    href="/"
+    className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700"
+  >
+    <svg
+      className="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+      <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+    </svg>
+    <span className="ml-3" sidebar-toggle-item="">
+      Dashboard
+    </span>
+  </a>
+</li>
+<li>
+  <Link
+    href="/products"
+    className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700"
+  >
+    <svg
+      className="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+      <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+    </svg>
+    <span className="ml-3" sidebar-toggle-item="">
+      Products
+    </span>
+  </Link>
+</li>
+<li>
+  <button
+    type="button"
+    className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+    aria-controls="dropdown-pages"
+    data-collapse-toggle="dropdown-pages"
+  >
+    <svg
+      className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z"
+        clipRule="evenodd"
+      ></path>
+    </svg>
+    <span
+      className="flex-1 ml-3 text-left whitespace-nowrap"
+      sidebar-toggle-item=""
+    >
+      Pages
+    </span>
+    <svg
+      sidebar-toggle-item=""
+      className="w-6 h-6"
+      fill="currentColor"
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+        clipRule="evenodd"
+      ></path>
+    </svg>
+  </button>
+  <ul id="dropdown-pages" className="hidden py-2 space-y-2">
+    <li>
+      <a
+        href="https://flowbite-admin-dashboard.vercel.app/pages/pricing/"
+        className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+      >
+        Pricing
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://flowbite-admin-dashboard.vercel.app/pages/maintenance/"
+        className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+      >
+        Maintenance
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://flowbite-admin-dashboard.vercel.app/pages/404/"
+        className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+      >
+        404 not found
+      </a>
+    </li>
+    <li>
+      <a
+        href="https://flowbite-admin-dashboard.vercel.app/pages/500/"
+        className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+      >
+        500 server error
+      </a>
+    </li>
+  </ul>
+</li>
+</ul>
                   <div className="pt-2 space-y-2">
                     <a
                       href="https://github.com/themesberg/flowbite-admin-dashboard"
@@ -811,7 +856,7 @@ export default function Home() {
                       </span>
                     </a>
                   </div>
-                  <Button title="Test button" containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center" btnType="submit" handleClick={()=>handleClick()} isDisable={true}/>
+                  {/* <Button title="Test button" containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center" btnType="submit" handleClick={()=>handleClick()} isDisable={true}/> */}
                 </div>
               </div>
             </div>

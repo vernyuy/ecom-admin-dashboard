@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  swcMinify: true,
   images: {
     domains: ["flowbite.com", "freesvg.org"],
   },
+  trailingSlash: true,
   webpack: (config, { webpack, isServer, nextRuntime }) => {
     // Avoid AWS SDK Node.js require issue
     if (isServer && nextRuntime === "nodejs")

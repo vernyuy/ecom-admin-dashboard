@@ -1,5 +1,8 @@
 import Button from "./Button";
-import Delete from "./Delete";
 import Feedback from "./Feedback";
 import ColorPicker from "./ColorPicker";
-export { Button, Delete, Feedback, ColorPicker };
+import CustomModal from "./CustomModal";
+// import MyChat from "./LineChat";
+// import { BarChart } from "./BarChat";
+// import PieChart from "./PieChat";
+export { Button, CustomModal, Feedback, ColorPicker };

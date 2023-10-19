@@ -8,29 +8,32 @@ import {
   deleteProductsFn,
 } from "@/src/redux-store/feature/products/productSlice";
 import { listCategories } from "@/src/redux-store/feature/category/categorySlice";
-import DashboardLayout from "../dashboardLayout";
-import { useEffect, useState } from "react";
+import DashboardLayout from "@/src/app/dashboardLayout";
+import { useEffect, useLayoutEffect, useState } from "react";
 import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";
 import Link from "next/link";
 import Image from "next/image";
 import { productAttributes } from "@/src/constants";
-import { Button } from "@/src/components";
-import { current } from "@reduxjs/toolkit";
+import { Button, CustomModal } from "@/src/components";
 Amplify.configure({ ...awsExports, ssr: true });
 
 export default function App() {
   const [search, setSearch] = useState("");
+  const [isDelete, setisDelete] = useState(false);
   let selectedProducts: string[] = [];
-  useEffect(() => {
-    dispatch(listCategories());
-    dispatch(listProducts());
-  }, []);
-  const dispatch = useDispatch<AppDispatch>();
+
   const { products, isCompleted, errorMsg, isLoading }: any = useSelector(
     (state: RootState) => state.product,
   );
   const { categories }: any = useSelector((state: RootState) => state.category);
+  const dispatch = useDispatch<AppDispatch>();
+  useLayoutEffect(() => {
+    console.log("mounted");
+    dispatch(listCategories());
+    dispatch(listProducts());
+  }, [dispatch]);
+  console.log(categories);
 
   const filterStock = (filterBy: any) => {
     dispatch(filterProduct(filterBy));
@@ -49,9 +52,17 @@ export default function App() {
   };
 
   const deleteProducts = (e: any, productId?: string) => {
-    console.log(productId);
     e.preventDefault();
-    dispatch(deleteProductsFn(!productId ? selectedProducts : productId));
+    if (selectedProducts.length > 0) {
+      dispatch(deleteProductsFn(selectedProducts));
+      return "deleted";
+    } else if (productId) {
+      dispatch(deleteProductsFn(productId));
+      return "deleted";
+    } else {
+      console.log("Please select product(s) to delete");
+      return "deleted";
+    }
   };
 
   return (
@@ -72,7 +83,7 @@ export default function App() {
                 >
                   <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                 </svg>
-                Home {isLoading}
+                Home
               </Link>
             </li>
             <li>
@@ -99,7 +110,7 @@ export default function App() {
             </li>
           </ol>
         </nav>
-        <div className="px-2 mt-5 pb-2d bg-white h-scrdeen w-full  rounded-ss-lg rounded-se-lg shadow-sm dark:border-gray-700 sm:px-4 mt-f3 md:mt-5d">
+        <div className="px-2 pb-2d bg-white w-full  rounded-ss-lg rounded-se-lg shadow-sm dark:border-gray-700 sm:px-4 mt-f3 md:mt-5d">
           <div className="w-full">
             <div className="mb-2">
               <h1 className="text-md font-semibold text-gray-900 sm:text-xl dark:text-white py-2">
@@ -107,7 +118,7 @@ export default function App() {
               </h1>
             </div>
             <div className="items-center justify-between flex flex-col gap-2 sm:flex-row sm:flex-wrap md:divide-x md:divide-gray-100 pb-3">
-              <div className="flex items-center mb-4 sm:mb-0">
+              <div className="flex items-center mb-4 sm:mb-0 w-full sm:w-fit">
                 <form
                   className="sm:pr-3"
                   action="#"
@@ -120,13 +131,13 @@ export default function App() {
                   <label htmlFor="products-search" className="sr-only">
                     Search
                   </label>
-                  <div className="relative w-48 sm:w-64 xl:w-96">
+                  <div className="relative w-full sm:w-64  xl:w-96">
                     <input
                       type="text"
                       name="text"
                       id="products-search"
                       value={search}
-                      className="bg-gray-50 outline-none border border-gray-100 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full py-1.5 px-2.5"
+                      className="bg-gray-50 outline-none border border-gray-100 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 w-full py-1.5 px-2.5"
                       placeholder="Search products by name"
                       onChange={(e) => {
                         setSearch(e.target.value);
@@ -136,7 +147,7 @@ export default function App() {
                   </div>
                 </form>
               </div>
-              <div className="flex border-none  justify-between gap-2">
+              <div className="flex border-none flex-wrap gap-2">
                 <div className="group">
                   <Link
                     href={"/add-product"}
@@ -264,6 +275,7 @@ export default function App() {
                       title="Bulk actions"
                       btnType="button"
                       containerStyles="text-orange-500 group-hover:text-white"
+                      isDisable={true}
                     />{" "}
                     <svg
                       className="fill-current text-red-500 h-4 w-4"
@@ -285,8 +297,9 @@ export default function App() {
                       <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
                         <Button
                           title="delete selected"
-                          handleClick={deleteProducts}
-                          isDisable={selectedProducts ? false : true}
+                          handleClick={(e) => {
+                            setisDelete(true);
+                          }}
                         />
                       </li>
 
@@ -319,6 +332,31 @@ export default function App() {
                       <p className="font-semibold m-auto">It's empty here</p>
                     </div>
                   )}
+                  {isLoading && (
+                    <div className="w-full h-[100px] text-blue-500 flex">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        className="m-auto mx-auto"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                        >
+                          <animateTransform
+                            attributeName="transform"
+                            dur="0.75s"
+                            repeatCount="indefinite"
+                            type="rotate"
+                            values="0 12 12;360 12 12"
+                          />
+                        </path>
+                      </svg>
+                    </div>
+                  )}
+                  {isDelete ? <CustomModal isSuccess={true} /> : <></>}
                   {products && (
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
                       <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
@@ -331,7 +369,7 @@ export default function App() {
                               <th
                                 key={index}
                                 scope="col"
-                                className="px-4 py-2 text-center text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
+                                className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
                               >
                                 {item}
                               </th>
@@ -363,37 +401,16 @@ export default function App() {
                                 />
                               </td>
                               <td className="px-2 text-sm font-normal text-gray-900 text-center whitespace-nowrap dark:text-white">
-                                <span className="font-semibold text-center flex flex-col">
-                                  <input
-                                    type="text"
-                                    onChange={(e) => {}}
-                                    className="text-center w-24 bg-transparent"
-                                    value={product.name}
-                                  />
-                                  <div className=" text-black">
-                                    <span className="text-green-500 text-[12px] font-medium hover:underline hover:cursor-pointer">
-                                      <Link
-                                        href={`/update-product/${product.id}`}
-                                      >
-                                        edit
-                                      </Link>
-                                    </span>{" "}
-                                    |{" "}
-                                    <span
-                                      className="text-red-500 text-[12px] font-medium hover:cursor-pointer hover:underline"
-                                      onClick={(e) =>
-                                        deleteProducts(e, product.id)
-                                      }
-                                    >
-                                      delete
-                                    </span>
-                                  </div>
+                                <span className="font-semibold text-left flex flex-col">
+                                  <Link href={`/update-product/${product.id}`}>
+                                    {product.name}
+                                  </Link>
                                 </span>
                               </td>
-                              <td className="px-2 text-sm font-normal text-center text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              <td className="px-2 text-sm font-normal text-left text-gray-500 whitespace-nowrap dark:text-gray-400">
                                 {product.description}
                               </td>
-                              <td className="px-2 text-sm font-normal text-gray-900 text-center whitespace-nowrap dark:text-white truncate">
+                              <td className="px-2 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
                                 {categories?.map((cat: any) =>
                                   cat.id == product.categoryID ? cat.name : "",
                                 )}
@@ -424,31 +441,6 @@ export default function App() {
                           );
                         })}
                       </tbody>
-                      {isLoading && (
-                        <div className="w-full h-[100px] text-blue-500 flex">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="32"
-                            height="32"
-                            viewBox="0 0 24 24"
-                            className="m-auto mx-auto"
-                          >
-                            <path
-                              fill="currentColor"
-                              d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
-                            >
-                              <animateTransform
-                                attributeName="transform"
-                                dur="0.75s"
-                                repeatCount="indefinite"
-                                type="rotate"
-                                values="0 12 12;360 12 12"
-                              />
-                            </path>
-                          </svg>
-                        </div>
-                      )}
-
                       <tfoot className="bg-gray-100 dark:bg-blue-900 sticky top-0">
                         <tr>
                           <th className="w-4 pl-2">
@@ -459,7 +451,7 @@ export default function App() {
                               <th
                                 key={index}
                                 scope="col"
-                                className="px-4 py-2 text-center text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
+                                className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
                               >
                                 {item}
                               </th>

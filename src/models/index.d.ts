@@ -259,6 +259,7 @@ type EagerUser = {
   readonly address: string;
   readonly sub: string;
   readonly isActive: boolean;
+  readonly phone?: string | null;
   readonly userType?: UserType | keyof typeof UserType | null;
   readonly Cart?: Cart | null;
   readonly Orders?: (Order | null)[] | null;
@@ -282,6 +283,7 @@ type LazyUser = {
   readonly address: string;
   readonly sub: string;
   readonly isActive: boolean;
+  readonly phone?: string | null;
   readonly userType?: UserType | keyof typeof UserType | null;
   readonly Cart: AsyncItem<Cart | undefined>;
   readonly Orders: AsyncCollection<Order>;
