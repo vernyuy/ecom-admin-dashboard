@@ -1,3 +1,5 @@
 import Button from "./Button";
 import Delete from "./Delete";
-export { Button, Delete };
+import Feedback from "./Feedback";
+import ColorPicker from "./ColorPicker";
+export { Button, Delete, Feedback, ColorPicker };

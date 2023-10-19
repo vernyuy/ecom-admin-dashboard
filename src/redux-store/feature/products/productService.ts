@@ -6,8 +6,7 @@ const createProduct = async (product: productData) => {
     const productResult = await DataStore.save(new Product(product));
     return { success: true, result: productResult };
   } catch (error) {
-    console.log(error);
-    throw error;
+    return { success: false, result: error };
   }
 };
 const listProducts = async () => {
@@ -25,7 +24,8 @@ const listProduct = async (productId: any) => {
     return { success: true, result: product };
   } catch (error) {
     console.log(error);
-    throw error;
+    // throw error;
+    return { success: false, result: error };
   }
 };
 
@@ -89,14 +89,29 @@ const filterProducts = async (filter: any) => {
 
 const updateProduct = async (product: any) => {
   try {
-    const original: any = await DataStore.query(Product, product?.id);
+    const original: any = await DataStore.query(Product, product.id);
+    console.log("original : ", original);
     const updatedProduct = await DataStore.save(
-      Product.copyOf(original, product),
+      Product.copyOf(original, (updated) => {
+        updated.name = product.name;
+        updated.price = product.price;
+        updated.description = product.description;
+        updated.productImage = product.productImage;
+        updated.productImageUrls = product.productImageUrls;
+        updated.quantity = product.quantity;
+        updated.inStock = product.inStock;
+        updated.categoryID = product.categoryID;
+        updated.sizes = product.sizes;
+        updated.colors = product.colors;
+        updated.hasSizes = product.hasSizes;
+        updated.hasColors = product.hasColors;
+      }),
     );
+    console.log("values : ", updatedProduct);
     return { success: true, result: updatedProduct };
   } catch (error) {
-    console.log(error);
-    throw error;
+    console.log("values : ", error);
+    return { success: false, result: error };
   }
 };
 

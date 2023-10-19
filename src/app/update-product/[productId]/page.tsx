@@ -1,32 +1,36 @@
 "use client";
 import DashboardLayout from "@/src/app/dashboardLayout";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { AppDispatch, RootState } from "@/src/redux-store/store";
-import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "next/navigation";
-import {
-  updateProduct,
-  listProduct,
-} from "@/src/redux-store/feature/products/productSlice";
+import { useState, useEffect } from "react";
+import { Feedback, ColorPicker } from "@/src/components";
+import productService from "@/src/redux-store/feature/products/productService";
+import categoryService from "@/src/redux-store/feature/category/categoryService";
 import awsExports from "@/src/aws-exports";
 import { Amplify, Storage } from "aws-amplify";
 Amplify.configure({ ...awsExports, ssr: true });
 export default function App() {
   const params = useParams();
-  useEffect(() => {
-    dispatch(listProduct(params.productId));
-  }, []);
+  const productId = params.productId;
+  const [isComplete, setIsComplete] = useState(false);
+  const [states, setStates] = useState({
+    isLoading: false,
+    prodImg: false,
+    prodImgUrls: false,
+    showPicker: false,
+    errorMsg: "",
+    colErr: "",
+    currentColor: "#ffffff",
+  });
   const [errors, setErrors]: any = useState({});
-  const [prodImg, setProdImg] = useState(false);
-  const [prodImgUrls, setProdImgUrls] = useState(false);
   const [values, setValues] = useState({
+    id: productId,
     name: "",
-    price: 0,
+    price: 1,
     description: "",
     productImage: "",
     productImageUrls: [],
-    quantity: 0,
+    quantity: 1,
     inStock: true,
     categoryID: "",
     sizes: [],
@@ -34,11 +38,36 @@ export default function App() {
     hasSizes: false,
     hasColors: false,
   });
-  const dispatch = useDispatch<AppDispatch>();
-  const { product, errorMsg, isLoading, updating }: any = useSelector(
-    (state: RootState) => state.product,
-  );
-  const handleSubmit = (event: any, formErrors: any) => {
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      await productService.listProduct(productId).then((result) => {
+        const product: any = result.result;
+        setValues(product);
+      });
+    };
+
+    const listCategories = async () => {
+      await categoryService.listCategories().then((result) => {
+        const cat: any = result.result;
+        setCategories(cat);
+      });
+    };
+
+    fetchProduct();
+    listCategories();
+  }, []);
+
+  const resetStates = (name: string, value: any) => {
+    setStates({ ...states, [name]: value });
+  };
+
+  const resetIsComplete = () => {
+    setIsComplete(false);
+    setStates({ ...states, ["errorMsg"]: "" });
+  };
+
+  const handleSubmit = async (event: any, formErrors: any) => {
     event.preventDefault();
     if (values.name == "") {
       formErrors.name = "Required!";
@@ -59,14 +88,35 @@ export default function App() {
     if (values.productImage == "") {
       formErrors.productImage = "Required!";
     }
+    if (values.hasColors && values.colors.length == 0) {
+      formErrors.colors =
+        "Please if this product does not have colors unselect has colors field or add at least one color";
+    }
     if (Object.keys(formErrors).length === 0) {
-      dispatch(updateProduct(values));
+      setStates({ ...states, ["isLoading"]: true });
+      await productService.updateProduct(values).then((result) => {
+        const finalResult: any = result.result;
+        setIsComplete(true);
+        if (!result.success) {
+          setStates({ ...states, ["errorMsg"]: finalResult.message });
+        }
+        setStates({ ...states, ["isLoading"]: false });
+      });
     } else {
       setErrors(formErrors);
     }
   };
   const onChange = (event: any) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    if (name == "hasColors" || name == "hasSizes") {
+      if (name == "hasSizes") {
+        setValues({ ...values, [name]: !values.hasSizes });
+      } else {
+        setValues({ ...values, [name]: !values.hasColors });
+      }
+    } else {
+      setValues({ ...values, [name]: value });
+    }
   };
   const handleFocus = (event: any, formErrors: any) => {
     const { value, name } = event;
@@ -100,35 +150,33 @@ export default function App() {
     }
     return formErrors;
   };
-
-  const selectProductImage = () => {
-    document.getElementById("productImage")?.click();
+  const handleImage = (value: string) => {
+    document.getElementById(value)?.click();
   };
-
   const setProductImage = async (event: any) => {
-    setProdImg(true);
-    let file = event.target.files[0];
-    const key = await Storage.put(file.name.replace(" ", "_"), file, {
-      level: "public",
-      contentType: "image/png",
-    });
+    setStates({ ...states, ["prodImg"]: true });
+    try {
+      let file = event.target.files[0];
+      const key = await Storage.put(file.name.replace(" ", "_"), file, {
+        level: "public",
+        contentType: "image/png",
+      });
 
-    if (key) {
-      const newKey =
-        "https://commerceb8039144d9044463a5cf2714cc51248d193514-staging.s3.us-east-2.amazonaws.com/public/" +
-        key.key;
-      setValues({ ...values, [event.target.name]: newKey });
-      setProdImg(false);
+      if (key) {
+        const newKey =
+          "https://commerceb8039144d9044463a5cf2714cc51248d193514-staging.s3.us-east-2.amazonaws.com/public/" +
+          key.key;
+        setValues({ ...values, [event.target.name]: newKey });
+      }
+    } catch (error) {
+      console.log(error);
     }
-  };
-
-  const selectProductGalleryImage = () => {
-    document.getElementById("productImageUrls")?.click();
+    setStates({ ...states, ["prodImg"]: false });
   };
 
   const setProductImages = async (event: any) => {
     try {
-      setProdImgUrls(true);
+      setStates({ ...states, ["prodImgUrls"]: true });
       let file = event.target.files;
       let arrLinks: any = [];
       for (let i = 0; i < file.length; i++) {
@@ -149,10 +197,8 @@ export default function App() {
           [event.target.name]: [...values.productImageUrls, ...arrLinks],
         });
       }
-      setProdImgUrls(false);
-    } catch (error) {
-      setProdImgUrls(false);
-    }
+    } catch (error) {}
+    setStates({ ...states, ["prodImgUrls"]: false });
   };
 
   const removeImage = async (link: any) => {
@@ -168,8 +214,61 @@ export default function App() {
     }
   };
 
+  const handleChange = (color: any) => {
+    setStates({ ...states, ["currentColor"]: color.hex });
+  };
+
+  const addColor = (name: any, remove: Boolean, color: any) => {
+    if (remove) {
+      for (let i = 0; i < values.colors.length; i++) {
+        if (values.colors[i] === color) {
+          values.colors.splice(i, 1);
+        }
+      }
+      setValues({ ...values, [name]: values.colors });
+    } else {
+      let testValue = false;
+      for (let i = 0; i < values.colors.length; i++) {
+        if (values.colors[i] === states.currentColor) {
+          testValue = true;
+        }
+      }
+      if (testValue) {
+        setStates({
+          ...states,
+          ["colErr"]: "The color you are trying to add has already been added!",
+        });
+      } else {
+        setStates({ ...states, ["colErr"]: "" });
+        setValues({
+          ...values,
+          [name]: [...values.colors, states.currentColor],
+        });
+      }
+    }
+  };
+
   return (
     <DashboardLayout>
+      {isComplete && (
+        <Feedback
+          resetIsComplete={resetIsComplete}
+          errorMsg={states.errorMsg}
+          msg="Product successfully updated!"
+        />
+      )}
+
+      {states.showPicker && (
+        <ColorPicker
+          colors={values.colors}
+          currentColor={states.currentColor}
+          resetStates={resetStates}
+          handleChange={handleChange}
+          addColor={addColor}
+          colErr={states.colErr}
+        />
+      )}
+
       <nav className="flex mb-5 pt-3" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
           <li className="inline-flex items-center">
@@ -206,7 +305,7 @@ export default function App() {
                 className="ml-1 text-gray-400 md:ml-2 dark:text-gray-500"
                 aria-current="page"
               >
-                update product
+                Add product
               </span>
             </div>
           </li>
@@ -292,7 +391,7 @@ export default function App() {
                   type="button"
                   className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-l outline-none"
                 >
-                  Select category
+                  Category
                 </button>
                 <select
                   name="categoryID"
@@ -303,8 +402,12 @@ export default function App() {
                     errors?.categoryID && "border-red-500 text-red-500"
                   }`}
                 >
-                  <option value="category-one">category one</option>
-                  <option value="category-two">category two</option>
+                  <option>Select a category</option>
+                  {categories.map((cat: any) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <p className="text-red-500 text-sm font-light pt-[6px] error">
@@ -312,38 +415,85 @@ export default function App() {
               </p>
             </div>
 
-            <div className="flex items-center">
-              <input
-                id="hasColors"
-                type="checkbox"
-                name="hasColors"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                onChange={onChange}
-                checked={values.hasColors}
-              />
-              <label
-                htmlFor="hasColors"
-                className="ml-2 text-sm hover:cursor-pointer font-medium text-gray-400 dark:text-gray-500"
-              >
-                Has colors
-              </label>
+            <div className="flex w-full gap-3 pb-2">
+              <div className="flex w-full items-center pl-4 border border-gray-200 rounded">
+                <input
+                  id="hasColors"
+                  type="checkbox"
+                  name="hasColors"
+                  onChange={onChange}
+                  className="w-4 h-4  bg-gray-100 border-gray-300 rounded hover:cursor-pointer"
+                />
+                <label
+                  htmlFor="hasColors"
+                  className="w-full py-3 ml-2 text-sm font-medium text-gray-900 hover:cursor-pointer"
+                >
+                  has Colors
+                </label>
+              </div>
+              <div className="flex w-full items-center pl-4 border border-gray-200 rounded">
+                <input
+                  id="hasSizes"
+                  type="checkbox"
+                  name="hasSizes"
+                  onChange={onChange}
+                  className="w-4 h-4  bg-gray-100 border-gray-300 rounded hover:cursor-pointer"
+                />
+                <label
+                  htmlFor="hasSizes"
+                  className="w-full py-3 ml-2 text-sm font-medium text-gray-900 hover:cursor-pointer"
+                >
+                  has Colors
+                </label>
+              </div>
             </div>
-            <div className="flex items-center pb-2">
-              <input
-                id="hasSizes"
-                type="checkbox"
-                name="hasSizes"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                checked={values.hasSizes}
-                onChange={onChange}
-              />
-              <label
-                htmlFor="hasSizes"
-                className="ml-2 text-sm hover:cursor-pointer font-medium text-gray-400 dark:text-gray-500"
-              >
-                Has sizes
-              </label>
-            </div>
+
+            {(values.hasColors || values.hasSizes) && (
+              <div className="w-full min-[1000px]:flex max-[999px]:space-y-4 gap-4 h-full min-h-[50px]">
+                {values.hasColors ? (
+                  <div className="w-full">
+                    <div
+                      className={`w-full border rounded p-4 ${
+                        errors?.colors && "border-red-500"
+                      }`}
+                    >
+                      <div className="flex flex-wrap gap-3 pt-2">
+                        {values.colors.map((color: any) => (
+                          <div
+                            title="click to remove color"
+                            key={color}
+                            className={`rounded h-6 w-6 hover:cursor-pointer`}
+                            style={{ backgroundColor: color }}
+                            onClick={() => addColor("colors", true, color)}
+                          ></div>
+                        ))}
+                      </div>
+                      <div className="flex justify-center pt-2">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setStates({ ...states, ["showPicker"]: true })
+                          }
+                          className="text-white min-w-fit whitespace-nowrap bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl outline-none font-medium rounded-lg text-sm px-3 py-2 text-center mt-4"
+                        >
+                          Add color
+                        </button>
+                      </div>
+                    </div>
+                    <div className="text-red-500 text-sm font-light pt-2">
+                      {errors?.colors}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-full"></div>
+                )}
+                {values.hasSizes ? (
+                  <div className="w-full border rounded p-4"></div>
+                ) : (
+                  <div className="w-full"></div>
+                )}
+              </div>
+            )}
 
             <div className="w-full">
               <label
@@ -367,20 +517,15 @@ export default function App() {
                 {errors?.description}
               </p>
             </div>
-            <div className="w-full text-red-500">{errorMsg}</div>
-            <div
-              className={`flex justify-between items-center ${
-                !errorMsg && "pt-4"
-              }`}
-            >
+            <div className={`flex justify-between items-center`}>
               <div></div>
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={states.isLoading}
                 className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
               >
                 <span className="relative flex items-center px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                  {isLoading && (
+                  {states.isLoading && (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 mr-2"
@@ -414,7 +559,9 @@ export default function App() {
         <div className="w-full max-[1199px]:flex min-[1200px]:max-w-[350px] space-y-5 gap-5">
           <div
             className={`bg-white w-full ${
-              errors.productImage && "border border-red-500"
+              errors.productImage &&
+              values.productImage == "" &&
+              "border border-red-500"
             }`}
           >
             <div className="h-[50px] px-4 flex items-center border-b-[2.5px] ">
@@ -425,11 +572,12 @@ export default function App() {
                 id="productImage"
                 type="file"
                 name="productImage"
-                hidden
+                accept=".jpeg, .png, .jpg"
                 onChange={setProductImage}
+                hidden
               />
 
-              {prodImg ? (
+              {states.prodImg ? (
                 <div className="flex justify-center text-blue-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -632,7 +780,7 @@ export default function App() {
                   {values.productImage == "" ? (
                     <>
                       <div
-                        onClick={selectProductImage}
+                        onClick={() => handleImage("productImage")}
                         className="font-semibold text-[14px] pt-2 hover:cursor-pointer hover:text-blue-400"
                       >
                         Set product image
@@ -642,7 +790,7 @@ export default function App() {
                     <div className="">
                       <img className="h-auto" src={values.productImage} />
                       <div
-                        onClick={selectProductImage}
+                        onClick={() => handleImage("productImage")}
                         className="mt-2 hover:cursor-pointer"
                       >
                         <p className="font-medium text-green-500">Edit image</p>
@@ -651,8 +799,9 @@ export default function App() {
                   )}
                 </div>
               )}
-
-              <div className="text-red-500 pt-2">{errors?.productImage}</div>
+              {values.productImage == "" && (
+                <div className="text-red-500 pt-2">{errors?.productImage}</div>
+              )}
             </div>
           </div>
           <div className="bg-white w-full">
@@ -664,11 +813,12 @@ export default function App() {
                 id="productImageUrls"
                 type="file"
                 name="productImageUrls"
-                hidden
+                accept=".jpeg, .png, .jpg"
                 onChange={setProductImages}
                 multiple
+                hidden
               />
-              {prodImgUrls ? (
+              {states.prodImgUrls ? (
                 <div className="flex justify-center text-blue-500">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -871,7 +1021,7 @@ export default function App() {
                   {values.productImageUrls.length === 0 ? (
                     <>
                       <div
-                        onClick={selectProductGalleryImage}
+                        onClick={() => handleImage("productImageUrls")}
                         className="font-semibold text-[14px] pt-3 pl-2 hover:cursor-pointer hover:text-blue-400"
                       >
                         Set product gallery images
@@ -896,7 +1046,7 @@ export default function App() {
                       </div>
 
                       <div
-                        onClick={selectProductGalleryImage}
+                        onClick={() => handleImage("productImageUrls")}
                         className="mt-2 hover:cursor-pointer"
                       >
                         <p className="font-medium text-green-500">

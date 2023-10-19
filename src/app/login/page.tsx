@@ -1,43 +1,47 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
-import {useDispatch, useSelector} from "react-redux";
-import { googleSignIn, reset, signin } from "@/src/redux-store/feature/user/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  googleSignIn,
+  reset,
+  signin,
+} from "@/src/redux-store/feature/user/authSlice";
 import { signinUserData } from "@/src/types/types";
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";
 import { Button } from "@/src/components";
 Amplify.configure({ ...awsExports, ssr: true });
 
-
 export default function Login() {
   const dispatch = useDispatch<AppDispatch>();
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
-  const {user, errorMsg, isLoading, isSuccess, isError}: any = useSelector((state: RootState)=> state.auth)
-  
-  useEffect(()=>{
-    if(isSuccess){
-      console.log(user)
-      router.replace('/')
-    dispatch(reset())
-    }
-    if(errorMsg === "User is not confirmed."){
-      router.replace(`/register/${email}`)
-    dispatch(reset())
-    }
-    
-  },[dispatch, isError, isSuccess, errorMsg])
+  const { user, errorMsg, isLoading, isSuccess, isError }: any = useSelector(
+    (state: RootState) => state.auth,
+  );
 
-  const signinUser = (userLogin: signinUserData)=>{
-    dispatch(signin(userLogin))
-  }
-  const googleSignin = ()=>{
-    dispatch(googleSignIn(""))
-  }
+  useEffect(() => {
+    if (isSuccess) {
+      console.log(user);
+      router.replace("/");
+      dispatch(reset());
+    }
+    if (errorMsg === "User is not confirmed.") {
+      router.replace(`/register/${email}`);
+      dispatch(reset());
+    }
+  }, [dispatch, isError, isSuccess, errorMsg]);
+
+  const signinUser = (userLogin: signinUserData) => {
+    dispatch(signin(userLogin));
+  };
+  const googleSignin = () => {
+    dispatch(googleSignIn(""));
+  };
   return (
     <>
       <main className="h-screen w-full bg-white flex justify-center items-center px-36">
@@ -330,9 +334,9 @@ export default function Login() {
                 Login
               </h2>
               <form className="pb-[80px]">
-              <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
-                    {errorMsg}
-                  </h5>
+                <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
+                  {errorMsg}
+                </h5>
                 <div className="mb-2">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
                     Email
@@ -341,7 +345,7 @@ export default function Login() {
                     type="email"
                     id="email"
                     value={email}
-                    onChange={e=>setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
                     placeholder="example@gmail.com"
                   />
@@ -357,7 +361,7 @@ export default function Login() {
                     type="password"
                     id="password"
                     value={password}
-                    onChange={e=>setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
                     placeholder="example@gmail.com"
                   />
@@ -370,9 +374,26 @@ export default function Login() {
                 </div>
 
                 {/* <div className="flex flex-wrap justify-between"> */}
-                <Button containerStyles="text-white mb-5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading? 'Loading': "Login"} handleClick={(e)=>{e.preventDefault(); signinUser({email, password})}} btnType="submit" isDisable={isLoading? true: false}/>
-                
-                <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading? 'Loading': "Google"} handleClick={(e)=>{e.preventDefault(); googleSignin()}} btnType="submit"/>
+                <Button
+                  containerStyles="text-white mb-5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
+                  title={isLoading ? "Loading" : "Login"}
+                  handleClick={(e) => {
+                    e.preventDefault();
+                    signinUser({ email, password });
+                  }}
+                  btnType="submit"
+                  isDisable={isLoading ? true : false}
+                />
+
+                <Button
+                  containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
+                  title={isLoading ? "Loading" : "Google"}
+                  handleClick={(e) => {
+                    e.preventDefault();
+                    googleSignin();
+                  }}
+                  btnType="submit"
+                />
 
                 {/* </div> */}
               </form>

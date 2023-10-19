@@ -4,7 +4,7 @@ export default function DashboardLayout({ children }) {
   return (
     <>
       {/* <Delete /> */}
-      <main className="bg-gray-50 h-screen">
+      <main className="bg-gray-50 h-screen overflow-hidden">
         <nav className="fixed z-30 w-full bg-white border-b border-gray-200">
           <div className="px-3 py-3 lg:px-5 lg:pl-3">
             <div className="flex items-center justify-between">
@@ -44,7 +44,7 @@ export default function DashboardLayout({ children }) {
                   <div className="relative mt-1 lg:w-96">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                       <svg
-                        className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                        className="w-5 h-5 text-gray-500"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +69,7 @@ export default function DashboardLayout({ children }) {
                 <button
                   id="toggleSidebarMobileSearch"
                   type="button"
-                  className="p-2 text-gray-500 rounded-lg lg:hidden hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="p-2 text-gray-500 rounded-lg lg:hidden hover:text-gray-900 hover:bg-gray-100"
                 >
                   <span className="sr-only">Search</span>
 
@@ -90,7 +90,7 @@ export default function DashboardLayout({ children }) {
                 <button
                   type="button"
                   data-dropdown-toggle="notification-dropdown"
-                  className="p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700"
+                  className="p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100"
                 >
                   <span className="sr-only">View notifications</span>
 
@@ -107,7 +107,7 @@ export default function DashboardLayout({ children }) {
                 <button
                   type="button"
                   data-dropdown-toggle="apps-dropdown"
-                  className="hidden p-2 text-gray-500 rounded-lg sm:flex hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700"
+                  className="hidden p-2 text-gray-500 rounded-lg sm:flex hover:text-gray-900 hover:bg-gray-100"
                 >
                   <span className="sr-only">View notifications</span>
 
@@ -125,7 +125,7 @@ export default function DashboardLayout({ children }) {
                   id="theme-toggle"
                   data-tooltip-target="tooltip-toggle"
                   type="button"
-                  className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
+                  className="text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 rounded-lg text-sm p-2.5"
                 >
                   <svg
                     id="theme-toggle-dark-icon"
@@ -154,7 +154,7 @@ export default function DashboardLayout({ children }) {
                 <div className="flex items-center ml-3">
                   <button
                     type="button"
-                    className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                    className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
                     id="user-menu-button-2"
                     aria-expanded="false"
                     data-dropdown-toggle="dropdown-2"
@@ -171,18 +171,18 @@ export default function DashboardLayout({ children }) {
           </div>
         </nav>
         <div className="flex pt-16 overflow-hidden">
-          <aside className="fixed hidden md:block top-0 left-0 z-20 pt-16 flex-col flex-shrink-0 w-64 h-full font-normal duration-75 lg:flex transition-width">
-            <div className="relative flex flex-col flex-1 min-h-0 pt-0 bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+          <aside className="fixed h-screen bg-white overflow-y-auto hidden md:block top-0 left-0 z-20 pt-16 flex-col flex-shrink-0 w-64  font-normal duration-75 lg:flex transition-width">
+            <div className="relative flex flex-col flex-1 min-h-0 pt-0 border-r border-gray-200">
               <div className="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
-                <div className="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                <div className="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200">
                   <ul className="pb-2 space-y-2">
                     <li>
                       <a
                         href="https://flowbite-admin-dashboard.vercel.app/"
-                        className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700"
+                        className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group"
                       >
                         <svg
-                          className="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                          className="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 "
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -198,12 +198,12 @@ export default function DashboardLayout({ children }) {
                     <li>
                       <button
                         type="button"
-                        className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+                        className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
                         aria-controls="dropdown-pages"
                         data-collapse-toggle="dropdown-pages"
                       >
                         <svg
-                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -237,42 +237,76 @@ export default function DashboardLayout({ children }) {
                       <ul id="dropdown-pages" className="py-2 space-y-2">
                         <li>
                           <Link
-                            href="/products"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
-                          >
-                            All products
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
                             href="/add-product"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
                           >
                             Add new
                           </Link>
                         </li>
                         <li>
                           <Link
+                            href="/products"
+                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
+                          >
+                            All products
+                          </Link>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <button
+                        type="button"
+                        className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
+                        aria-controls="dropdown-pages"
+                        data-collapse-toggle="dropdown-pages"
+                      >
+                        <svg
+                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
+                        <span
+                          className="flex-1 ml-3 text-left whitespace-nowrap"
+                          sidebar-toggle-item=""
+                        >
+                          Categories
+                        </span>
+                        <svg
+                          sidebar-toggle-item=""
+                          className="w-6 h-6"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
+                      </button>
+                      <ul id="dropdown-pages" className="py-2 space-y-2">
+                        <li>
+                          <Link
+                            href="/add-product"
+                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
+                          >
+                            Add Category
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
                             href="/categories"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
                           >
-                            Categories
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="/tags"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
-                          >
-                            Tags
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href="/attributes"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
-                          >
-                            Attributes
+                            All categories
                           </Link>
                         </li>
                       </ul>
@@ -282,11 +316,11 @@ export default function DashboardLayout({ children }) {
                     <a
                       href="https://github.com/themesberg/flowbite-admin-dashboard"
                       target="_blank"
-                      className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700"
+                      className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 group"
                     >
                       <svg
                         aria-hidden="true"
-                        className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                        className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
                         fill="currentColor"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 496 512"
@@ -303,9 +337,10 @@ export default function DashboardLayout({ children }) {
             </div>
           </aside>
 
-          <div className="flex md:pl-64 overflow-hidden bg-gray-50 w-full pb-20">
+          <div className="flex overflow-y-auto h-screen md:pl-64 overflow-hidden bg-gray-50 w-full">
             <div className="px-4 w-full">
               <div className="my-4">{children}</div>
+              <div className="h-[200px] w-full"></div>
             </div>
           </div>
         </div>
