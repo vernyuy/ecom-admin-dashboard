@@ -1,4 +1,4 @@
-import DashboardLayout from "../dashboardLayout";
+import DashboardLayout from "@/src/app/dashboardLayout";
 export default function Categories() {
   return (
     <>

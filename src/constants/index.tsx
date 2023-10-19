@@ -1,50 +1,51 @@
 export const productAttributes = [
-    "IMAGE",
-    "NAME",
-    "DESCRIPTION",
-    "CATEGORY",
-    "PRICE",
-    "QUANTITY",
-    "STATUS"
-  ];
+  "IMAGE",
+  "NAME",
+  "DESCRIPTION",
+  "CATEGORY",
+  "PRICE",
+  "QUANTITY",
+  "STATUS",
+  "Date",
+];
 
-  export const userAttributes = [
-    "FIRST NAME",
-    "LAST NAME",
-    "PHONE",
-    "EMAIL",
-    "COUNTRY",
-    "REGION",
-    "CITY",
-    "ZIP CODE",
-    "STATUS",
-    "ADDRESS LINE"
-  ];
+export const userAttributes = [
+  "FIRST NAME",
+  "LAST NAME",
+  "PHONE",
+  "EMAIL",
+  "COUNTRY",
+  "REGION",
+  "CITY",
+  "ZIP CODE",
+  "STATUS",
+  "ADDRESS LINE",
+];
 
-  export const sidebarLinks = [
-    {
-      title: "Dashboard",
-      url: "/",
-      icon: '/ZondiconsChartPie.svg'
-    },
-    {
-      title: "Products",
-      url: "/products",
-      icon: '/MdiTableLarge.svg'
-    },
-    {
-      title: "Socials",
-      url: "#",
-      icon: '/ZondiconsChartPie.svg'
-    },
-  ];
+export const sidebarLinks = [
+  {
+    title: "Dashboard",
+    url: "/",
+    icon: "/ZondiconsChartPie.svg",
+  },
+  {
+    title: "Products",
+    url: "/products",
+    icon: "/MdiTableLarge.svg",
+  },
+  {
+    title: "Socials",
+    url: "#",
+    icon: "/ZondiconsChartPie.svg",
+  },
+];
 
 export const users = [
   {
     id: 1,
     firstName: "John",
     lastName: "Doe",
-    email:"johndoe@email.com",
+    email: "johndoe@email.com",
     phone: "+237 650 863 381",
     isActive: false,
     address: {
@@ -53,14 +54,14 @@ export const users = [
       city: "Yaounde",
       zipcode: 12345,
       addressLine1: "Tarred Malingo, Molyko Buea",
-      addressLine2: ""
-    }
+      addressLine2: "",
+    },
   },
   {
     id: 2,
     firstName: "John",
     lastName: "Doe",
-    email:"johndoe@email.com",
+    email: "johndoe@email.com",
     phone: "+237 650 863 381",
     isActive: true,
     address: {
@@ -69,14 +70,14 @@ export const users = [
       city: "Limbe",
       zipcode: 12345,
       addressLine1: "Tarred Malingo, Molyko Buea",
-      addressLine2: ""
-    }
+      addressLine2: "",
+    },
   },
   {
     id: 3,
     firstName: "John",
     lastName: "Doe",
-    email:"johndoe@email.com",
+    email: "johndoe@email.com",
     phone: "+237 650 863 381",
     isActive: false,
     address: {
@@ -85,14 +86,14 @@ export const users = [
       city: "Buea",
       zipcode: 12345,
       addressLine1: "Tarred Malingo, Molyko Buea",
-      addressLine2: ""
-    }
+      addressLine2: "",
+    },
   },
   {
     id: 4,
     firstName: "John",
     lastName: "Doe",
-    email:"johndoe@email.com",
+    email: "johndoe@email.com",
     phone: "+237 650 863 381",
     isActive: true,
     address: {
@@ -101,14 +102,14 @@ export const users = [
       city: "Douala",
       zipcode: 12345,
       addressLine1: "Tarred Malingo, Molyko Buea",
-      addressLine2: ""
-    }
+      addressLine2: "",
+    },
   },
   {
-    id:5,
+    id: 5,
     firstName: "John",
     lastName: "Doe",
-    email:"johndoe@email.com",
+    email: "johndoe@email.com",
     phone: "+237 650 863 381",
     isActive: false,
     address: {
@@ -117,14 +118,14 @@ export const users = [
       city: "Douala",
       zipcode: 12345,
       addressLine1: "Tarred Malingo, Molyko Buea",
-      addressLine2: ""
-    }
+      addressLine2: "",
+    },
   },
   {
     id: 6,
     firstName: "John",
     lastName: "Doe",
-    email:"johndoe@email.com",
+    email: "johndoe@email.com",
     phone: "+237 650 863 381",
     isActive: true,
     address: {
@@ -133,8 +134,7 @@ export const users = [
       city: "Douala",
       zipcode: 12345,
       addressLine1: "Tarred Malingo, Molyko Buea",
-      addressLine2: ""
-    }
-  }
-]
-  
+      addressLine2: "",
+    },
+  },
+];
