@@ -31,7 +31,7 @@ export default function Register() {
     const uState = params.userName as string
     const uMail = uState.replace('%40', '@')
       dispatch(confirmUser({email:uMail, code: code}))
-    }
+  }
 
     const resendConfrimationCode = async (e: any)=>{
       e.preventDefault();
