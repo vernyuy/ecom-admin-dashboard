@@ -2,16 +2,15 @@
 
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import { Amplify, withSSRContext } from "aws-amplify";
 import awsExports from "../aws-exports";
-import { Provider } from "react-redux";
 import { Providers } from "../redux-store/providers";
 import { store } from "../redux-store/store";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
-const inter = Inter({ subsets: ["latin", "greek"] });
+// const inter = Inter({ subsets: ["latin", "greek"] });
 
 export const metadata: Metadata = {
   title: "Commerce",
@@ -25,7 +24,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      {/* className={inter.className} */}
+      <body className="fon font-sans">
         <Providers store={store}>{children}</Providers>
       </body>
     </html>
