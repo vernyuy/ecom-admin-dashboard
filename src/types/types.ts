@@ -1,7 +1,7 @@
 import { HtmlHTMLAttributes, MouseEventHandler } from "react";
 
 export interface productData {
-  id?: Id;
+  id?: string;
   name: string;
   description: string;
   productImage: string;
@@ -15,12 +15,20 @@ export interface productData {
   hasSizes: boolean;
   hasColors: boolean;
 }
+export interface categoryData {
+  id?: string;
+  name: string;
+  description: string;
+  isParent: boolean;
+  parentCategoryId?: string;
+  categoryImageUrl?: string;
+}
 
 export interface userData {
   firstName: string;
   lastName: string;
   email: string;
-  address: string,
+  address: string;
   phoneNumber: string;
   password: string;
 }

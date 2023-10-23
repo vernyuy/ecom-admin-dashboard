@@ -1,11 +1,8 @@
 import Link from "next/link";
-import { CustomModal } from "@/src/components";
 import { sidebarLinks } from "@/src/constants";
-import Image from "next/image";
 export default function DashboardLayout({ children }: any) {
   return (
     <>
-      {/* <Delete /> */}
       <main className="bg-gray-50 h-screen overflow-hidden">
         <nav className="fixed z-30 w-full bg-white border-b border-gray-200">
           <div className="px-3 py-3 lg:px-5 lg:pl-3">
@@ -178,34 +175,6 @@ export default function DashboardLayout({ children }: any) {
               <div className="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
                 <div className="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200">
                   <ul className="pb-2 space-y-2">
-                    {/* {sidebarLinks.map((_link:any, index:number)=>(
-                      <li key={index} className="grou[">
-                      <a
-                        href={_link.url}
-                        className="flex items-center p-2 text-base text-jgray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-grtay-700"
-                      >
-                        <Image
-                          src={_link.icon}
-                          height={1}
-                          width={1}
-                          alt="icon"
-                          className="w-5 h-5 text-gray-500/25   transition duration-75 group-hover:text-gjray-900 dark:text-gray-400 dark:group-hover:text-white"
-                        />
-                        {/* <svg
-                          className="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                          <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                        </svg> *
-                        <span className="ml-3 text-gray-500" sidebar-toggle-item="">
-                          {_link.title}
-                        </span>
-                      </a>
-                    </li>
-                    ))} */}
                     <li>
                       <a
                         href="/"
@@ -225,7 +194,7 @@ export default function DashboardLayout({ children }: any) {
                         </span>
                       </a>
                     </li>
-                    <li>
+                    <li className="group">
                       <button
                         type="button"
                         className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
@@ -251,8 +220,7 @@ export default function DashboardLayout({ children }: any) {
                           Products
                         </span>
                         <svg
-                          sidebar-toggle-item=""
-                          className="w-6 h-6"
+                          className="w-6 h-6 -rotate-90 group-hover:rotate-0"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -264,7 +232,10 @@ export default function DashboardLayout({ children }: any) {
                           ></path>
                         </svg>
                       </button>
-                      <ul id="dropdown-pages" className="py-2 space-y-2">
+                      <ul
+                        id="dropdown-pages"
+                        className="py-2 space-y-2 hidden group-hover:block"
+                      >
                         <li>
                           <Link
                             href="/add-product"
@@ -283,7 +254,7 @@ export default function DashboardLayout({ children }: any) {
                         </li>
                       </ul>
                     </li>
-                    <li>
+                    <li className="group">
                       <button
                         type="button"
                         className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
@@ -291,17 +262,16 @@ export default function DashboardLayout({ children }: any) {
                         data-collapse-toggle="dropdown-pages"
                       >
                         <svg
-                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
+                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                          viewBox="0 0 24 24"
                         >
                           <path
-                            fillRule="evenodd"
-                            d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z"
-                            clipRule="evenodd"
-                          ></path>
+                            d="M4 11h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zm10 0h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zM4 21h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1zm13 0c2.206 0 4-1.794 4-4s-1.794-4-4-4s-4 1.794-4 4s1.794 4 4 4z"
+                            fill="currentColor"
+                          />
                         </svg>
+
                         <span
                           className="flex-1 ml-3 text-left whitespace-nowrap"
                           sidebar-toggle-item=""
@@ -309,8 +279,7 @@ export default function DashboardLayout({ children }: any) {
                           Categories
                         </span>
                         <svg
-                          sidebar-toggle-item=""
-                          className="w-6 h-6"
+                          className="w-6 h-6 -rotate-90 group-hover:rotate-0"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -322,10 +291,13 @@ export default function DashboardLayout({ children }: any) {
                           ></path>
                         </svg>
                       </button>
-                      <ul id="dropdown-pages" className="py-2 space-y-2">
+                      <ul
+                        id="dropdown-pages"
+                        className="py-2 space-y-2 hidden group-hover:block"
+                      >
                         <li>
                           <Link
-                            href="/add-product"
+                            href="/add-category"
                             className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
                           >
                             Add Category
@@ -341,8 +313,28 @@ export default function DashboardLayout({ children }: any) {
                         </li>
                       </ul>
                     </li>
+                    <li>
+                      <a
+                        href="/users"
+                        className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            fill="#6b7280"
+                            d="M24 14.6c0 .6-1.2 1-2.6 1.2c-.9-1.7-2.7-3-4.8-3.9c.2-.3.4-.5.6-.8h.8c3.1-.1 6 1.8 6 3.5zM6.8 11H6c-3.1 0-6 1.9-6 3.6c0 .6 1.2 1 2.6 1.2c.9-1.7 2.7-3 4.8-3.9l-.6-.9zm5.2 1c2.2 0 4-1.8 4-4s-1.8-4-4-4s-4 1.8-4 4s1.8 4 4 4zm0 1c-4.1 0-8 2.6-8 5c0 2 8 2 8 2s8 0 8-2c0-2.4-3.9-5-8-5zm5.7-3h.3c1.7 0 3-1.3 3-3s-1.3-3-3-3c-.5 0-.9.1-1.3.3c.8 1 1.3 2.3 1.3 3.7c0 .7-.1 1.4-.3 2zM6 10h.3C6.1 9.4 6 8.7 6 8c0-1.4.5-2.7 1.3-3.7C6.9 4.1 6.5 4 6 4C4.3 4 3 5.3 3 7s1.3 3 3 3z"
+                          />
+                        </svg>
+                        <span className="ml-3" sidebar-toggle-item="">
+                          Users
+                        </span>
+                      </a>
+                    </li>
                   </ul>
-                  <div className="pt-2 space-y-2">
+                  {/* <div className="pt-2 space-y-2">
                     <a
                       href="https://github.com/themesberg/flowbite-admin-dashboard"
                       target="_blank"
@@ -361,7 +353,7 @@ export default function DashboardLayout({ children }: any) {
                         GitHub Repository
                       </span>
                     </a>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

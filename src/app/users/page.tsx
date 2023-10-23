@@ -1,78 +1,77 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts, reset, filterProduct, deleteProductsFn } from "@/src/redux-store/feature/products/productSlice";
+import {
+  listProducts,
+  filterProduct,
+  deleteProductsFn,
+} from "@/src/redux-store/feature/products/productSlice";
 import { listCategories } from "@/src/redux-store/feature/category/categorySlice";
 import DashboardLayout from "@/src/app/dashboardLayout";
 import { useEffect, useLayoutEffect, useState } from "react";
-// import awsExports from "@/src/aws-exports";
-// import { Amplify } from "aws-amplify";
 import Link from "next/link";
-import Image from "next/image"
 import { userAttributes, users } from "@/src/constants";
-import { Button, CustomModal } from "@/src/components";
-// Amplify.configure({ ...awsExports, ssr: true });
-import config from '@/src/amplifyconfiguration.json';
-import { Amplify } from 'aws-amplify';
+import { Button, CustomModal, Delete } from "@/src/components";
+import awsExports from "@/src/aws-exports";
+import { Amplify } from "aws-amplify";
 import { CountryDropdown } from "react-country-region-selector";
 
-Amplify.configure({...config, ssr:true});
+Amplify.configure({ ...awsExports, ssr: true });
 
 export default function App() {
-  const [search, setSearch] = useState('')
-  const [city, setCity] = useState('')
-  const [country, setCountry] = useState('')
-  
-  const [isDelete, setisDelete] =useState(false)
+  const [search, setSearch] = useState("");
+  const [city, setCity] = useState("");
+  const [del, setDel] = useState(false);
+  const [country, setCountry] = useState("");
+
+  const [isDelete, setisDelete] = useState(false);
   let selectedProducts: string[] = [];
 
   const { products, isCompleted, errorMsg, isLoading }: any = useSelector(
     (state: RootState) => state.product,
   );
-  const { categories }: any = useSelector(
-    (state: RootState) => state.category,
-  );
+  const { categories }: any = useSelector((state: RootState) => state.category);
   const dispatch = useDispatch<AppDispatch>();
   useLayoutEffect(() => {
     console.log("mounted");
-    dispatch(listCategories())
+    dispatch(listCategories());
     dispatch(listProducts());
   }, [dispatch]);
-console.log(categories)
+  console.log(categories);
 
-  const filterStock = (filterBy: any)=>{
-    dispatch(filterProduct(filterBy))
-    console.log(products)
-  }
+  const filterStock = (filterBy: any) => {
+    dispatch(filterProduct(filterBy));
+    console.log(products);
+  };
 
-  const select = (e: any)=>{
-    if(e.target.checked){
-      selectedProducts.push(e.target.value)
-    }else{
-      selectedProducts = selectedProducts.filter((p)=>{
-       return p !== e.target.value
-      })
+  const select = (e: any) => {
+    if (e.target.checked) {
+      selectedProducts.push(e.target.value);
+    } else {
+      selectedProducts = selectedProducts.filter((p) => {
+        return p !== e.target.value;
+      });
     }
-    console.log(selectedProducts)
-  }
+    console.log(selectedProducts);
+  };
 
-  const deleteProducts = (e: any, productId?: string)=>{
-    e.preventDefault()
-    if(selectedProducts.length > 0){
-      dispatch(deleteProductsFn(selectedProducts))
-      return ("deleted")
-    }else if(productId){
-      dispatch(deleteProductsFn(productId))
-      return ("deleted")
+  const deleteProducts = (e: any, productId?: string) => {
+    e.preventDefault();
+    if (selectedProducts.length > 0) {
+      dispatch(deleteProductsFn(selectedProducts));
+      return "deleted";
+    } else if (productId) {
+      dispatch(deleteProductsFn(productId));
+      return "deleted";
+    } else {
+      console.log("Please select product(s) to delete");
+      return "deleted";
     }
-    else{
-      console.log("Please select product(s) to delete")
-      return ("deleted")
-    }
-  }
+  };
 
   return (
     <DashboardLayout>
+      {/* <Delete item="User" /> */}
       <main className="w-full h-full sticky top-0 overflow-y-hidden">
         <nav className="flex sticky top-0 my-2" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
@@ -110,22 +109,30 @@ console.log(categories)
                   className="ml-1 text-gray-400 md:ml-2 dark:text-gray-500"
                   aria-current="page"
                 >
-                  Products
+                  Users
                 </span>
               </div>
             </li>
           </ol>
         </nav>
-        <div className="px-2 pb-2d bg-white w-full  rounded-ss-lg rounded-se-lg shadow-sm dark:border-gray-700 sm:px-4 mt-f3 md:mt-5d">
+        <div className="px-2 mt-5 pb-2d bg-white w-full  rounded-ss-lg rounded-se-lg shadow-sm dark:border-gray-700 sm:px-4 mt-f3 md:mt-5d">
           <div className="w-full">
             <div className="mb-2">
-              <h1 className="text-md font-semibold text-gray-900 sm:text-xl dark:text-white py-2">
-                All products
+              <h1 className="text-md pt-5 font-semibold text-gray-900 sm:text-xl dark:text-white py-2">
+                All Users
               </h1>
             </div>
             <div className="items-center justify-between flex flex-col gap-2 sm:flex-row sm:flex-wrap md:divide-x md:divide-gray-100 pb-3">
               <div className="flex items-center mb-4 sm:mb-0 w-full sm:w-fit">
-                <form className="sm:pr-3" action="#" onSubmit={(e)=>{e.preventDefault(); filterStock({filterBy: 'search', search:search})}} method="GET">
+                <form
+                  className="sm:pr-3"
+                  action="#"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    filterStock({ filterBy: "search", search: search });
+                  }}
+                  method="GET"
+                >
                   <label htmlFor="products-search" className="sr-only">
                     Search
                   </label>
@@ -136,144 +143,122 @@ console.log(categories)
                       id="products-search"
                       value={search}
                       className="bg-gray-50 outline-none border border-gray-100 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 w-full py-1.5 px-2.5"
-                      placeholder="Search products by name"
-                      onChange={(e)=>{setSearch(e.target.value); filterStock({filterBy: 'search', search:search})}}
+                      placeholder="Search users by name"
+                      onChange={(e) => {
+                        setSearch(e.target.value);
+                        filterStock({ filterBy: "search", search: search });
+                      }}
                     />
                   </div>
                 </form>
               </div>
               <div className="flex border-none flex-wrap gap-2">
-              
-              <div className="group">
-                <Link
-                  href={"/add-product"}
-                  className=" border text-green-500 font-semibold border-green-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-green-300 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-center"
-                  type="button"
-                >
-                  <Button title="Status" btnType="button" /> <svg className="fill-current text-green-500 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
-                </Link>
+                <div className="group">
+                  <Link
+                    href={"/add-product"}
+                    className=" border text-green-500 font-semibold border-green-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-green-300 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-center"
+                    type="button"
+                  >
+                    <Button title="Status" btnType="button" />{" "}
+                    <svg
+                      className="fill-current text-green-500 h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />{" "}
+                    </svg>
+                  </Link>
 
-                <div id="dropdown" className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700">
-                    <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                    <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('all')}>All</a>
+                  <div
+                    id="dropdown"
+                    className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700"
+                  >
+                    <ul
+                      className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                      aria-labelledby="dropdownDefaultButton"
+                    >
+                      <li>
+                        <a
+                          href="#"
+                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          onClick={() => filterStock("all")}
+                        >
+                          All
+                        </a>
                       </li>
                       <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('instock')}>Active</a>
+                        <a
+                          href="#"
+                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          onClick={() => filterStock("instock")}
+                        >
+                          Active
+                        </a>
                       </li>
                       <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('sold')}>Blocked</a>
+                        <a
+                          href="#"
+                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          onClick={() => filterStock("sold")}
+                        >
+                          Blocked
+                        </a>
                       </li>
                       {/* <li>
                         <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white">On promotion</a>
                       </li> */}
                     </ul>
-                </div>
-              </div>
-
-              <div className="group">
-                {/* <Link
-                                                                      href={"#"} 
-                  className=" border text-green-500 font-semibold border-green-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-green-300 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-center"
-                  type="button"
-                >
-                  <Button title="Country" btnType="button" /> <svg className="fill-current text-green-500 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
-                </Link> */}
-
-                
-                <div className=" max-w-[96px]">
-                    <CountryDropdown
-                      
-                      classes="border text-green-500 max-w-[96px] font-semibold border-green-300 focus:ring-0 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-centersd "
-                      value={country}
-                      onChange={(val) => setCountry(val)} />
                   </div>
-
-                {/* <div id="dropdown" className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700">
-                    <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                    <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('all')}>All</a>
-                      </li>
-                    {categories?.map((cat: any, index:number) => (<li key={index}>
-                        <a key={cat.id} href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock({filterBy:"category", category:cat.id})}>{cat.name}</a>
-                      </li>))}
-                    </ul>
-                </div>     */}
-              </div>
-
-              <div className="group">
-                <Link
-                                                                     href={"#"} 
-                className=" border text-green-500 font-semibold border-green-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-green-300 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-center"
-                type="button"
-              >
-                <Button title="City" btnType="button" /> <svg className="fill-current text-green-500 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
-              </Link>
-
-                <div id="dropdown" className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700">
-                    <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                    <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('all')}>All</a>
-                      </li>
-                    {categories?.map((cat: any, index:number) => (<li key={index}>
-                        <a key={cat.id} href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock({filterBy:"category", category:cat.id})}>{cat.name}</a>
-                      </li>))}
-                    </ul>
-                </div>    
-              </div>
-
-              <div className="group">
-                <Link
-                                                                      href={"#"} 
-                  className=" border text-green-500 font-semibold border-green-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-green-300 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-center"
-                  type="button"
-                >
-                  <Button title="Region" btnType="button" /> <svg className="fill-current text-green-500 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
-                </Link>
-
-                  <div id="dropdown" className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700">
-                      <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                      <li>
-                          <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock('all')}>All</a>
-                        </li>
-                      {categories?.map((cat: any, index:number) => (<li key={index}>
-                          <a key={cat.id} href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={()=>filterStock({filterBy:"category", category:cat.id})}>{cat.name}</a>
-                        </li>))}
-                      </ul>
-                  </div>    
-              </div>
-
-              <div className="group">
-                <Link
-                  href={"#"}
-                  className=" border text-gray-900 font-semibold border-orange-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-orange-300 rounded-lg text-sm px-4 gap-1 py-1.5 flex items-center"
-                  type="button"
-                >
-                  <Button title="Actions" btnType="button" containerStyles="text-orange-500 group-hover:text-white" isDisable={true} /> <svg className="fill-current text-red-500 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
-                </Link>
-
-                <div id="dropdown" className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700">
-                    <ul className="py-2 text-sm text-red-500 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                      <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                        <Button title="delete selected" handleClick={(e)=>{setisDelete(true)}}/>
-                      </li>
-                      
-                      {/* <li onClick={deleteProducts}>
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete selected</a>
-                      </li> */}
-                      {/* <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Bulk action</a>
-                      </li> */}
-                    </ul>
                 </div>
-              </div>
-{/* <Link
-                href={"/add-product"}
-                className="text-gray-900 border border-green-300 focus:ring-0 hover:text-white hover:border-none hover:bg-gray-900 font-semibold rounded-lg text-sm px-4 py-1.5"
-                type="button"
-              >
-                Add product
-              </Link> */}
+
+                <div className="group">
+                  <CountryDropdown
+                    classes="border text-green-500 max-w-[152px] font-semibold border-green-300 hover:cursor-pointer rounded-lg text-sm px-3 py-1.5 flex gap-1 items-centersd "
+                    value={country}
+                    onChange={(val) => setCountry(val)}
+                  />
+                </div>
+
+                <div className="group">
+                  <Link
+                    href={"#"}
+                    className=" border text-gray-900 font-semibold border-orange-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-orange-300 rounded-lg text-sm px-4 gap-1 py-1.5 flex items-center"
+                    type="button"
+                  >
+                    <Button
+                      title="Actions"
+                      btnType="button"
+                      containerStyles="text-orange-500 group-hover:text-white"
+                      isDisable={true}
+                    />{" "}
+                    <svg
+                      className="fill-current text-red-500 h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />{" "}
+                    </svg>
+                  </Link>
+
+                  <div
+                    id="dropdown"
+                    className="z-10 hidden mt-1 group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-[105px] dark:bg-gray-700"
+                  >
+                    <ul
+                      className="py-2 text-sm text-red-500 dark:text-gray-200"
+                      aria-labelledby="dropdownDefaultButton"
+                    >
+                      <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                        <Button
+                          title="Delete"
+                          handleClick={(e) => {
+                            setisDelete(true);
+                          }}
+                        />
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -282,121 +267,146 @@ console.log(categories)
             <div className="overflow-x-autdfo rounded-lg">
               <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
-                {!isLoading && isCompleted && products?.length == 0 && (
-            <div className="w-full h-[100px] flex justify-center items-center">
-              <p className="font-semibold m-auto">It's empty here</p>
-            </div>
-          )}
-           {isLoading && (
-            <div className="w-full h-[100px] text-blue-500 flex">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                className="m-auto mx-auto"
-              >
-                <path
-                  fill="currentColor"
-                  d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
-                >
-                  <animateTransform
-                    attributeName="transform"
-                    dur="0.75s"
-                    repeatCount="indefinite"
-                    type="rotate"
-                    values="0 12 12;360 12 12"
-                  />
-                </path>
-              </svg>
-            </div>
-          )}
-          {isDelete?<CustomModal isSuccess={true} />:<></>}{products&&<table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
-                    <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
-                      <tr className="[&:nth-child(1)]:bg-blue-50d0">
-                        <th className="pl-2">
-                          {/* <input type="checkbox"  /> */}
-                        </th>
-                        {userAttributes.map((item:string, index:number)=><th key={index}
-                          scope="col"
-                          className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase dark:text-white"
+                  {!isLoading && isCompleted && products?.length == 0 && (
+                    <div className="w-full h-[100px] flex justify-center items-center">
+                      <p className="font-semibold m-auto">It's empty here</p>
+                    </div>
+                  )}
+                  {isLoading && (
+                    <div className="w-full h-[100px] text-blue-500 flex">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        className="m-auto mx-auto"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
                         >
-                          {item}
-                        </th>)}
-                      </tr>
-                    </thead>
-                    <tbody className="">
-                      {users?.map((user: any, index:number) => {
-                        return (
-                        <tr key={user.id} className="even:bg-gray-50 hover:bg-green-100 text-black hover:cursor-pointer ">
-                          
-                          <td className="px-2 ">
-                            {<input type="checkbox" className="bg-black" value={user.id} onChange={select} />}
-                          </td>
-                          <td className="flex flex-col justify-center sticky left-0 bg-white h-full py-2 ">
-                            {user.firstName}
-                          </td>
-                          <td className="p-2 text-sm font-normal text-gray-900 text-center whitespace-nowrap dark:text-white">
-                            
-                            <span className="font-semibold text-left flex flex-col">
-                            <Link href={`/update-product/${user.id}`}>{user.lastName}</Link>
-                              
-                            </span>
-                          </td>
-                          <td className="px-2 text-sm font-normal text-left text-gray-500 whitespace-nowrap dark:text-gray-400">
-                            {user.email}
-                          </td>
-                          <td className="px-2 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
-                          {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}  {user.phone}
-                          </td>
-                          <td className="px-2 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                            {`${user.address.country}`}
-                          </td>
-                          <td className="px-2 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                            {user.address.region}
-                          </td>
-                          <td className="px-2 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                            {user.address.city}
-                          </td>
-
-                          <td className="px-2 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                            {user.address.zipcode}
-                          </td>
-                          
-                          <td className="px-2 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                            {user.address.addressLine1}
-                          </td>
-
-                          <td className="text-center items-center h-full">
-                          {user.isActive?<p className="bg-green-100 m-auto text-green-800 h-full w-fit text-xs font-medium mr-2 px-2 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500"> 
-                             Active</p>:<p className="bg-red-100 m-auto text-red-800 h-full w-fit text-xs font-medium mr-2 px-2 py-0.5 rounded-md dark:bg-gray-700 dark:text-red-400 border border-red-100 dark:border-red-500"> 
-                             Blocked</p>}
-                            
-                          </td>
+                          <animateTransform
+                            attributeName="transform"
+                            dur="0.75s"
+                            repeatCount="indefinite"
+                            type="rotate"
+                            values="0 12 12;360 12 12"
+                          />
+                        </path>
+                      </svg>
+                    </div>
+                  )}
+                  {isDelete ? <CustomModal isSuccess={true} /> : <></>}
+                  {products && (
+                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
+                      <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
+                        <tr className="[&:nth-child(1)]:bg-blue-50d0">
+                          <th className="pl-2">
+                            {/* <input type="checkbox"  /> */}
+                          </th>
+                          {userAttributes.map((item: string, index: number) => (
+                            <th
+                              key={index}
+                              scope="col"
+                              className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap dark:text-white"
+                            >
+                              {item}
+                            </th>
+                          ))}
                         </tr>
-                        // </Link>
-                      )})}
-                    </tbody>
-                    <tfoot className="bg-gray-100 dark:bg-blue-900 sticky top-0">
-                      <tr>
-                        <th className="w-4 pl-2">
-                          {/* <input type="checkbox" onChange={select} value={'test'} /> */}
-                        </th>
-                        {userAttributes.map((item:string, index: number)=><th key={index}
-                          scope="col"
-                          className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
-                        >
-                          {item}
-                        </th>)}
-                      </tr>
-                    </tfoot>
-                  </table>}
-                  
+                      </thead>
+                      <tbody className="">
+                        {users?.map((user: any, index: number) => {
+                          return (
+                            <tr
+                              key={user.id}
+                              className="even:bg-gray-50 text-black hover:cursor-pointer group"
+                            >
+                              <td className="px-2 ">
+                                {
+                                  <input
+                                    type="checkbox"
+                                    className="bg-black"
+                                    value={user.id}
+                                    onChange={select}
+                                  />
+                                }
+                              </td>
+                              <td
+                                className={`flex p-4 flex-col justify-center sticky left-0 h-full py-2 ${
+                                  index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                }`}
+                              >
+                                {user.firstName}
+                              </td>
+                              <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                                <span className="font-semibold text-left flex flex-col">
+                                  <Link href={`/update-product/${user.id}`}>
+                                    {user.lastName}
+                                  </Link>
+                                </span>
+                              </td>
+                              <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                {user.email}
+                              </td>
+                              <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
+                                {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
+                                {user.phone}
+                              </td>
+                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                {`${user.address.country}`}
+                              </td>
+                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                {user.address.region}
+                              </td>
+                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                {user.address.city}
+                              </td>
+
+                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                {user.address.zipcode}
+                              </td>
+
+                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                {user.address.addressLine1}
+                              </td>
+
+                              <td className="flex justify-start items-center p-4 h-full">
+                                {user.isActive ? (
+                                  <div className="bg-green-100 rounded-md  text-green-800 h-full w-fit text-xs font-medium px-2 py-1">
+                                    Active
+                                  </div>
+                                ) : (
+                                  <div className="bg-red-100 text-red-800 h-full w-fit text-xs font-medium px-2 py-1 rounded-md">
+                                    Blocked
+                                  </div>
+                                )}
+                              </td>
+                            </tr>
+                            // </Link>
+                          );
+                        })}
+                      </tbody>
+                      <tfoot className="bg-gray-100 dark:bg-blue-900 sticky top-0">
+                        <tr>
+                          <th className="w-4 pl-2"></th>
+                          {userAttributes.map((item: string, index: number) => (
+                            <th
+                              key={index}
+                              scope="col"
+                              className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
+                            >
+                              {item}
+                            </th>
+                          ))}
+                        </tr>
+                      </tfoot>
+                    </table>
+                  )}
                 </div>
               </div>
             </div>
           </div>
-          
         </div>
 
         <div className="sticky bottom-0 right-0 items-center w-full px-4 py-2 bg-white border-t border-gray-200 sm:flex sm:justify-between dark:bg-gray-800 dark:border-gray-700">

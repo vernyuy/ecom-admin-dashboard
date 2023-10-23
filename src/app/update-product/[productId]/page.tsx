@@ -13,12 +13,12 @@ export default function App() {
   const params = useParams();
   const productId = params.productId;
   const [isComplete, setIsComplete] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [states, setStates] = useState({
     isLoading: false,
     prodImg: false,
     prodImgUrls: false,
     showPicker: false,
-    errorMsg: "",
     colErr: "",
     currentColor: "#ffffff",
   });
@@ -64,7 +64,7 @@ export default function App() {
 
   const resetIsComplete = () => {
     setIsComplete(false);
-    setStates({ ...states, ["errorMsg"]: "" });
+    setErrorMsg("");
   };
 
   const handleSubmit = async (event: any, formErrors: any) => {
@@ -92,13 +92,16 @@ export default function App() {
       formErrors.colors =
         "Please if this product does not have colors unselect has colors field or add at least one color";
     }
+    if (!values.hasColors && values.colors.length != 0) {
+      setValues({ ...values, ["colors"]: [] });
+    }
     if (Object.keys(formErrors).length === 0) {
       setStates({ ...states, ["isLoading"]: true });
       await productService.updateProduct(values).then((result) => {
         const finalResult: any = result.result;
         setIsComplete(true);
         if (!result.success) {
-          setStates({ ...states, ["errorMsg"]: finalResult.message });
+          setErrorMsg(finalResult.message);
         }
         setStates({ ...states, ["isLoading"]: false });
       });
@@ -120,33 +123,20 @@ export default function App() {
   };
   const handleFocus = (event: any, formErrors: any) => {
     const { value, name } = event;
-    if (name == "name") {
-      if (value == "") {
-        formErrors.name = "Required!";
-      } else if (!/^[A-Za-z0-9]{3,16}$/.test(value)) {
-        errors.name =
-          "product name should be 3-16 characters and shouldn't include any special character";
-      }
+    if (name == "name" && value == "") {
+      formErrors.name = "Required!";
     }
-    if (name == "price") {
-      if (value == "") {
-        errors.price = "Required!";
-      }
+    if (name == "description" && value == "") {
+      formErrors.description = "Required!";
     }
-    if (name == "quantity") {
-      if (value == "") {
-        formErrors.quantity = "Required!";
-      }
+    if (values.price == 0 && value == "") {
+      formErrors.price = "Price can not be zero";
     }
-    if (name == "categoryID") {
-      if (value == "") {
-        formErrors.categoryID = "Required!";
-      }
+    if (values.quantity == 0 && value == "") {
+      formErrors.quantity = "Quantity can not be zero";
     }
-    if (name == "description") {
-      if (value == "") {
-        formErrors.description = "Required!";
-      }
+    if (values.categoryID == "" && value == "") {
+      formErrors.categoryID = "Required!";
     }
     return formErrors;
   };
@@ -253,7 +243,7 @@ export default function App() {
       {isComplete && (
         <Feedback
           resetIsComplete={resetIsComplete}
-          errorMsg={states.errorMsg}
+          errorMsg={errorMsg}
           msg="Product successfully updated!"
         />
       )}
@@ -328,7 +318,7 @@ export default function App() {
                 type="text"
                 name="name"
                 className={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none ${
-                  errors?.name && "border-red-500 text-red-500"
+                  errors?.name && "border-red-500"
                 }`}
                 placeholder="Enter product name"
                 value={values.name}
@@ -350,7 +340,7 @@ export default function App() {
                 type="number"
                 name="price"
                 className={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none ${
-                  errors?.price && "border-red-500 text-red-500"
+                  errors?.price && "border-red-500 "
                 }`}
                 placeholder="Enter product price"
                 value={values.price}
@@ -373,7 +363,7 @@ export default function App() {
                 type="number"
                 name="quantity"
                 className={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none ${
-                  errors?.quantity && "border-red-500 text-red-500"
+                  errors?.quantity && "border-red-500"
                 }`}
                 placeholder="Enter quantity"
                 value={values.quantity}
@@ -399,7 +389,7 @@ export default function App() {
                   onChange={onChange}
                   onBlur={(e) => setErrors(handleFocus(e.target, {}))}
                   className={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded-r outline-none ${
-                    errors?.categoryID && "border-red-500 text-red-500"
+                    errors?.categoryID && "border-red-500"
                   }`}
                 >
                   <option>Select a category</option>
@@ -416,36 +406,74 @@ export default function App() {
             </div>
 
             <div className="flex w-full gap-3 pb-2">
-              <div className="flex w-full items-center pl-4 border border-gray-200 rounded">
-                <input
-                  id="hasColors"
-                  type="checkbox"
-                  name="hasColors"
-                  onChange={onChange}
-                  className="w-4 h-4  bg-gray-100 border-gray-300 rounded hover:cursor-pointer"
-                />
-                <label
-                  htmlFor="hasColors"
-                  className="w-full py-3 ml-2 text-sm font-medium text-gray-900 hover:cursor-pointer"
-                >
-                  has Colors
-                </label>
-              </div>
-              <div className="flex w-full items-center pl-4 border border-gray-200 rounded">
-                <input
-                  id="hasSizes"
-                  type="checkbox"
-                  name="hasSizes"
-                  onChange={onChange}
-                  className="w-4 h-4  bg-gray-100 border-gray-300 rounded hover:cursor-pointer"
-                />
-                <label
-                  htmlFor="hasSizes"
-                  className="w-full py-3 ml-2 text-sm font-medium text-gray-900 hover:cursor-pointer"
-                >
-                  has Colors
-                </label>
-              </div>
+              {values.hasColors ? (
+                <div className="flex w-full items-center pl-4 border border-gray-200 rounded">
+                  <input
+                    id="hasColors"
+                    type="checkbox"
+                    name="hasColors"
+                    onChange={onChange}
+                    checked
+                    className="w-4 h-4  bg-gray-100 border-gray-300 rounded hover:cursor-pointer"
+                  />
+                  <label
+                    htmlFor="hasColors"
+                    className="w-full py-3 ml-2 text-sm font-medium text-gray-900 hover:cursor-pointer"
+                  >
+                    has Colors
+                  </label>
+                </div>
+              ) : (
+                <div className="flex w-full items-center pl-4 border border-gray-200 rounded">
+                  <input
+                    id="hasColors"
+                    type="checkbox"
+                    name="hasColors"
+                    onChange={onChange}
+                    className="w-4 h-4  bg-gray-100 border-gray-300 rounded hover:cursor-pointer"
+                  />
+                  <label
+                    htmlFor="hasColors"
+                    className="w-full py-3 ml-2 text-sm font-medium text-gray-900 hover:cursor-pointer"
+                  >
+                    has Colors
+                  </label>
+                </div>
+              )}
+              {values.hasSizes ? (
+                <div className="flex w-full items-center pl-4 border border-gray-200 rounded">
+                  <input
+                    id="hasSizes"
+                    type="checkbox"
+                    name="hasSizes"
+                    onChange={onChange}
+                    checked
+                    className="w-4 h-4  bg-gray-100 border-gray-300 rounded hover:cursor-pointer"
+                  />
+                  <label
+                    htmlFor="hasSizes"
+                    className="w-full py-3 ml-2 text-sm font-medium text-gray-900 hover:cursor-pointer"
+                  >
+                    has Colors
+                  </label>
+                </div>
+              ) : (
+                <div className="flex w-full items-center pl-4 border border-gray-200 rounded">
+                  <input
+                    id="hasSizes"
+                    type="checkbox"
+                    name="hasSizes"
+                    onChange={onChange}
+                    className="w-4 h-4  bg-gray-100 border-gray-300 rounded hover:cursor-pointer"
+                  />
+                  <label
+                    htmlFor="hasSizes"
+                    className="w-full py-3 ml-2 text-sm font-medium text-gray-900 hover:cursor-pointer"
+                  >
+                    has Colors
+                  </label>
+                </div>
+              )}
             </div>
 
             {(values.hasColors || values.hasSizes) && (
@@ -506,7 +534,7 @@ export default function App() {
                 name="description"
                 rows={6}
                 className={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none text-[15px] ${
-                  errors?.description && "border-red-500 text-red-500"
+                  errors?.description && "border-red-500"
                 }`}
                 placeholder="Enter product description"
                 value={values.description}

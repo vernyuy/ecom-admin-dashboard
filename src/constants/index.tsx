@@ -8,6 +8,7 @@ export const productAttributes = [
   "STATUS",
   "Date",
 ];
+export const categoryAttributes = ["Image", "Name", "Description", "Is parent"];
 
 export const userAttributes = [
   "FIRST NAME",
