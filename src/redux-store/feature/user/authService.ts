@@ -1,5 +1,5 @@
 
-import { Auth, DataStore } from "aws-amplify";
+import { Auth, DataStore, withSSRContext } from "aws-amplify";
 import { User, UserType } from "../../../models";
 import {confirmUserData, signinUserData, userData} from "@/src/types/types"
 import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
@@ -76,8 +76,9 @@ const confirmUser = async (user: confirmUserData) => {
   }
 
   const googleSignIn = async ()=>{
+    const test = withSSRContext()
     try {
-      const data = await Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google })
+      const data = await test.Auth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Google })
         return data
     }catch(err){
       console.log(`Error logging user with google: ${err}`)

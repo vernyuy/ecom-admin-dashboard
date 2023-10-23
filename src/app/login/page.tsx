@@ -22,6 +22,7 @@ export default function Login() {
   
   useEffect(()=>{
     const test = Auth.currentAuthenticatedUser()
+    console.log(test)
     if(isSuccess && !isGoogle){
       dispatch(reset())
     }
@@ -382,7 +383,7 @@ export default function Login() {
 
               </form>
               <div>
-                <span className="text-[12px]">Don't have an account? <a href={'/register'} className="text-green-500 underline">register</a></span>
+                <span className="text-[12px]">Don't have an account? <a href={'/register'} className="text-green-500 underline">Register</a></span>
               </div>
             </div>
           </div>
