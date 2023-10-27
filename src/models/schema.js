@@ -90,6 +90,20 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "amount": {
+                    "name": "amount",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "paymentIntentId": {
+                    "name": "paymentIntentId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "orderId": {
                     "name": "orderId",
                     "isArray": false,
@@ -982,5 +996,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "2e58bb321861d7817afcd5f55288e9e1"
+    "version": "86025bc576ae1e45e5f001d79bdc719f"
 };

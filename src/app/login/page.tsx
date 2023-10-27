@@ -332,7 +332,7 @@ export default function Login() {
               </h2>
               <form className="pb-[80px]">
                 <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
-                  {errorMsg}
+                  {errorMsg.replace('Username', 'Email')}
                 </h5>
                 <div className="mb-2">
                   <label className="block mb-2 text-sm font-medium text-gray-900">

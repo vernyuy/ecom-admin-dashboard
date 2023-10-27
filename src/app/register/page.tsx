@@ -75,7 +75,7 @@ export default function Register() {
               </div>
               <form className="pb-[10px]">
               <h5 className="text-red-600 text-[14px] pl-0 pt-[3px] font-medium">
-                    {errorMsg}
+                    {errorMsg.replace('Username', 'Email')}
                   </h5>
                 
                 <div className="flex flex-wrap sm:flex-nowrap gap-2 w-full">

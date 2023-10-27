@@ -323,7 +323,7 @@ export default function Register() {
               </h2>
               <form className="pb-[80px]">
               <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
-                    {errorMsg}
+                    {errorMsg.replace('Username', 'Email')}
                   </h5>
 
                   <h5 className="text-green-600 text-[14px] font-medium">

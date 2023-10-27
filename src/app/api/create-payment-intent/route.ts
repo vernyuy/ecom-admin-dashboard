@@ -31,74 +31,74 @@ export async function GET(req: NextRequest) {
           images: ['https://cdn.rebrickable.com/media/thumbs/sets/5006530-1/79749.jpg/1000x800p.jpg']
         }
       }
-    },
-    {
-      quantity: 1,
-      price_data:{
-        currency: "usd",
-        unit_amount: 100,
-        product_data:{
-          name: 'Test product',
-          description: "test products description",
-          images: ['https://m.media-amazon.com/images/I/61FPCiv2cvL._AC_UY300_.jpg']
-        }
-      }
-    },
-    {
-      quantity: 1,
-      price_data:{
-        currency: "usd",
-        unit_amount: 100,
-        product_data:{
-          name: 'Test product',
-          description: "test products description",
-          images: ['https://cdn.rebrickable.com/media/thumbs/sets/5006530-1/79749.jpg/1000x800p.jpg']
-        }
-      }
-    },
-    {
-      quantity: 1,
-      price_data:{
-        currency: "usd",
-        unit_amount: 100,
-        product_data:{
-          name: 'Test product',
-          description: "test products description",
-          images: ['https://m.media-amazon.com/images/I/61FPCiv2cvL._AC_UY300_.jpg']
-        }
-      }
-    },
-    {
-      quantity: 1,
-      price_data:{
-        currency: "usd",
-        unit_amount: 100,
-        product_data:{
-          name: 'Test product',
-          description: "test products description",
-          images: ['https://cdn.rebrickable.com/media/thumbs/sets/5006530-1/79749.jpg/1000x800p.jpg']
-        }
-      }
-    },
-    {
-      quantity: 1,
-      price_data:{
-        currency: "usd",
-        unit_amount: 100,
-        product_data:{
-          name: 'Test product',
-          description: "test products description",
-          images: ['https://m.media-amazon.com/images/I/61FPCiv2cvL._AC_UY300_.jpg']
-        }
-      }
     }
+    // {
+    //   quantity: 1,
+    //   price_data:{
+    //     currency: "usd",
+    //     unit_amount: 100,
+    //     product_data:{
+    //       name: 'Test product',
+    //       description: "test products description",
+    //       images: ['https://m.media-amazon.com/images/I/61FPCiv2cvL._AC_UY300_.jpg']
+    //     }
+    //   }
+    // },
+    // {
+    //   quantity: 1,
+    //   price_data:{
+    //     currency: "usd",
+    //     unit_amount: 100,
+    //     product_data:{
+    //       name: 'Test product',
+    //       description: "test products description",
+    //       images: ['https://cdn.rebrickable.com/media/thumbs/sets/5006530-1/79749.jpg/1000x800p.jpg']
+    //     }
+    //   }
+    // },
+    // {
+    //   quantity: 1,
+    //   price_data:{
+    //     currency: "usd",
+    //     unit_amount: 100,
+    //     product_data:{
+    //       name: 'Test product',
+    //       description: "test products description",
+    //       images: ['https://m.media-amazon.com/images/I/61FPCiv2cvL._AC_UY300_.jpg']
+    //     }
+    //   }
+    // },
+    // {
+    //   quantity: 1,
+    //   price_data:{
+    //     currency: "usd",
+    //     unit_amount: 100,
+    //     product_data:{
+    //       name: 'Test product',
+    //       description: "test products description",
+    //       images: ['https://cdn.rebrickable.com/media/thumbs/sets/5006530-1/79749.jpg/1000x800p.jpg']
+    //     }
+    //   }
+    // },
+    // {
+    //   quantity: 1,
+    //   price_data:{
+    //     currency: "usd",
+    //     unit_amount: 100,
+    //     product_data:{
+    //       name: 'Test product',
+    //       description: "test products description",
+    //       images: ['https://m.media-amazon.com/images/I/61FPCiv2cvL._AC_UY300_.jpg']
+    //     }
+    //   }
+    // }
   ]
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: items,
     mode: 'payment',
-    success_url: 'http://localhost:3000/external-auth'
+    success_url: 'http://localhost:3000/payment-succeeded'
   })
 
   console.log(session)
