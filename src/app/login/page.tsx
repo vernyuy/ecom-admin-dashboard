@@ -24,6 +24,7 @@ export default function Login() {
     const test = Auth.currentAuthenticatedUser()
     console.log(test)
     if(isSuccess && !isGoogle){
+      router.replace('/')
       dispatch(reset())
     }
     if(errorMsg === "User is not confirmed."){

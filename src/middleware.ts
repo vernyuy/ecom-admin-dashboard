@@ -29,23 +29,23 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    if(cognitoCookies.length === 0 && request.nextUrl.pathname === '/categories'){
+    if(cognitoCookies.length === 0 && request.nextUrl.pathname.startsWith('/categories')){
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    if(cognitoCookies.length === 0 && request.nextUrl.pathname === '/add-product'){
+    if(cognitoCookies.length === 0 && request.nextUrl.pathname.startsWith('/add-product')){
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    if(cognitoCookies.length === 0 && request.nextUrl.pathname === '/users'){
+    if(cognitoCookies.length === 0 && request.nextUrl.pathname.startsWith('/users')){
         return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    if(cognitoCookies.length === 0 && request.nextUrl.pathname === '/products'){
+    if(cognitoCookies.length === 0 && request.nextUrl.pathname.startsWith('/products')){
         return NextResponse.redirect(new URL('/login', request.url))
     }
     
-    if(cognitoCookies.length === 0 && request.nextUrl.pathname === '/add-category'){
+    if(cognitoCookies.length === 0 && request.nextUrl.pathname.startsWith('/add-category')){
         return NextResponse.redirect(new URL('/login', request.url))
     }
     
