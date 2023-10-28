@@ -28,7 +28,30 @@ export async function middleware(request: NextRequest) {
     if(cognitoCookies.length === 0 && request.nextUrl.pathname === '/'){
         return NextResponse.redirect(new URL('/login', request.url))
     }
+
+    if(cognitoCookies.length === 0 && request.nextUrl.pathname === '/categories'){
+        return NextResponse.redirect(new URL('/login', request.url))
+    }
+
+    if(cognitoCookies.length === 0 && request.nextUrl.pathname === '/add-product'){
+        return NextResponse.redirect(new URL('/login', request.url))
+    }
+
+    if(cognitoCookies.length === 0 && request.nextUrl.pathname === '/users'){
+        return NextResponse.redirect(new URL('/login', request.url))
+    }
+
+    if(cognitoCookies.length === 0 && request.nextUrl.pathname === '/products'){
+        return NextResponse.redirect(new URL('/login', request.url))
+    }
     
+    if(cognitoCookies.length === 0 && request.nextUrl.pathname === '/add-category'){
+        return NextResponse.redirect(new URL('/login', request.url))
+    }
+    
+    if(cognitoCookies.length === 0 && request.nextUrl.pathname.startsWith('/update-product/')){
+        return NextResponse.redirect(new URL('/login', request.url))
+    }
     if(cognitoCookies.length === 0 && request.nextUrl.pathname.includes('/login')){
         return NextResponse.next()
     }
