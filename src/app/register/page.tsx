@@ -2,28 +2,25 @@
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import {useDispatch, useSelector} from "react-redux";
 import { googleSignIn, reset, signup } from "@/src/redux-store/feature/user/authSlice";
-import { signinUserData, userData } from "@/src/types/types";
+import { userData } from "@/src/types/types";
 import React, {useState, useEffect} from "react";
-import { useRouter, usePathname, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";
-import { Button } from "@/src/components";
-import Link from "next/link";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
 import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
 
-// if (typeof window !== "undefined") {
-  // awsExports.oauth['redirectSignIn'] = `https://dev.d1t3pfulk6p7x8.amplifyapp.com/external-auth/`
-  // awsExports.oauth['redirectSignOut'] = `https://dev.d1t3pfulk6p7x8.amplifyapp.com/`
-// }
+if (typeof window !== "undefined")
+{
+  console.log("Client side")
+  console.log(window.location.origin)
+  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
+  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
+}
 
 
 Amplify.configure({ ...awsExports, ssr: true });
-
-// const router = useRouter()
-
-// console.log("Window:>>>>>", window.location)
 
 export default function Register() {
   const [email, setEmail] = useState('')
