@@ -7,6 +7,11 @@ import { Feedback } from "@/src/components";
 import categoryService from "@/src/redux-store/feature/category/categoryService";
 import awsExports from "@/src/aws-exports";
 import { Amplify, Storage } from "aws-amplify";
+
+if (typeof window !== "undefined") {
+  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
+  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
+}
 Amplify.configure({ ...awsExports, ssr: true });
 export default function UpdateCategory(props: any) {
   const searchParams = useSearchParams();

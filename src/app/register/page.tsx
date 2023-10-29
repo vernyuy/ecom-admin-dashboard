@@ -13,9 +13,17 @@ import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
 import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
 
+// if (typeof window !== "undefined") {
+  // awsExports.oauth['redirectSignIn'] = `https://dev.d1t3pfulk6p7x8.amplifyapp.com/external-auth/`
+  // awsExports.oauth['redirectSignOut'] = `https://dev.d1t3pfulk6p7x8.amplifyapp.com/`
+// }
+
+
 Amplify.configure({ ...awsExports, ssr: true });
 
+// const router = useRouter()
 
+// console.log("Window:>>>>>", window.location)
 
 export default function Register() {
   const [email, setEmail] = useState('')

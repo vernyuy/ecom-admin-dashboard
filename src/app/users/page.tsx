@@ -16,6 +16,10 @@ import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";
 import { CountryDropdown } from "react-country-region-selector";
 
+if (typeof window !== "undefined") {
+  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
+  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
+}
 Amplify.configure({ ...awsExports, ssr: true });
 
 export default function App() {
