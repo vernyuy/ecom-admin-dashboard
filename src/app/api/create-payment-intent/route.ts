@@ -98,7 +98,8 @@ export async function GET(req: NextRequest) {
     payment_method_types: ["card"],
     line_items: items,
     mode: 'payment',
-    success_url: 'http://localhost:3000/payment-succeeded'
+    success_url: 'http://localhost:3000/payment-succeeded',
+    customer_email: 'fonchu.e.venyuy@gmail.com'
   })
 
   console.log(session)

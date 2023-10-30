@@ -8,6 +8,12 @@ import awsExports from "@/src/aws-exports";
 import { useParams, useRouter } from "next/navigation";
 import { Amplify } from "aws-amplify";
 import { Button } from "@/src/components";
+
+
+if (typeof window !== "undefined") {
+  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
+  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
+}
 Amplify.configure({ ...awsExports, ssr: true });
 
 

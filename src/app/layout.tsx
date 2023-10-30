@@ -8,6 +8,10 @@ import awsExports from "../aws-exports";
 import { Providers } from "../redux-store/providers";
 import { store } from "../redux-store/store";
 
+// if (typeof window !== "undefined") {
+//   awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
+//   awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
+// }
 Amplify.configure({ ...awsExports, ssr: true });
 
 // const inter = Inter({ subsets: ["latin", "greek"] });
