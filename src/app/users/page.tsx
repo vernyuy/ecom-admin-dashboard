@@ -35,16 +35,10 @@ export default function App() {
   const { users, errorMsg, isLoading }: any = useSelector(
     (state: RootState) => state.user,
   );
-  const { categories }: any = useSelector((state: RootState) => state.category);
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    console.log("mounted");
     dispatch(listUsers(null))
-    console.log(users)
-    // dispatch(listCategories());
-    // dispatch(listProducts());
   }, [dispatch]);
-  console.log(categories);
 
   // const filterStock = (filterBy: any) => {
   //   dispatch(filterProduct(filterBy));
