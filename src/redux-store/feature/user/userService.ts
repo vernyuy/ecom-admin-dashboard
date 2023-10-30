@@ -37,7 +37,8 @@ const filterUsers = async (filter: any) => {
             let customers = []
             const users = await DataStore.query(User);
             userResult = users.filter(user => {
-                if(user.address.coutry === filter.country) return user
+                const country = JSON.stringify(user.address)
+                if(JSON.parse(country).coutry === filter.country) return user
             })
             break;
         case "search":
