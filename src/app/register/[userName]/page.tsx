@@ -26,7 +26,7 @@ export default function Register() {
   const {user, errorMsg, isLoading, isSuccess, issentCode}: any = useSelector((state: RootState)=> state.auth)
 
   useEffect(()=>{
-    if(isSuccess){
+    if(isSuccess && !issentCode){
         router.replace('/')
         dispatch(reset())
     }

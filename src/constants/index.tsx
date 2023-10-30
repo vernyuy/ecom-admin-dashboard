@@ -13,14 +13,14 @@ export const categoryAttributes = ["Image", "Name", "Description", "Is parent"];
 export const userAttributes = [
   "FIRST NAME",
   "LAST NAME",
-  "PHONE",
   "EMAIL",
+  "PHONE",
   "COUNTRY",
   "REGION",
   "CITY",
   "ZIP CODE",
-  "STATUS",
   "ADDRESS LINE",
+  "STATUS",
 ];
 
 export const sidebarLinks = [
