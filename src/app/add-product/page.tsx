@@ -145,7 +145,7 @@ export default function App() {
 
       if (key) {
         const newKey =
-          "https://commerceb8039144d9044463a5cf2714cc51248d193514-staging.s3.us-east-2.amazonaws.com/public/" +
+          "https://commerceb8039144d9044463a5cf2714cc51248d193514-staging.s3.us-east-1.amazonaws.com/public/" +
           key.key;
         setValues({ ...values, [event.target.name]: newKey });
       }

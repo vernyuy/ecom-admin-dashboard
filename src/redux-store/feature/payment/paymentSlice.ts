@@ -2,13 +2,13 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { userData, signinUserData, confirmUserData } from "@/src/types/types";
-import userService from "./userService";
+import paymentService from "./paymentService";
 
-export const listUsers = createAsyncThunk(
-  "user/listUsers",
+export const listPayments = createAsyncThunk(
+  "user/listPayment",
   async (user: null, thunkApi) => {
     try {
-      return await userService.getAllUsers();
+      return await paymentService.getAllPayments();
     } catch (err: any) {
       const message =
         (err.response && err.response.data && err.response.data.message) ||
@@ -21,11 +21,11 @@ export const listUsers = createAsyncThunk(
 );
 
 
-export const filterUsers = createAsyncThunk(
+export const filterPayment = createAsyncThunk(
   "store/filter",
   async (filterby: any) => {
     try {
-      const res = await userService.filterUsers(filterby);
+      const res = await paymentService.filterPayments(filterby);
       // console.log(test);
       return res.result;
     } catch (err: any) {
@@ -38,11 +38,11 @@ export const filterUsers = createAsyncThunk(
   },
 );
 
-export const deleteUsers = createAsyncThunk(
-  "user/deleteUsers",
+export const deletePayments = createAsyncThunk(
+  "order/deleteorder",
   async (filterby: any) => {
     try {
-      const res = await userService.deleteUsers(filterby);
+      const res = await paymentService.deletePayments(filterby);
       return res.result;
     } catch (err: any) {
       const message =
@@ -54,19 +54,19 @@ export const deleteUsers = createAsyncThunk(
   },
 );
 const initialState: any = {
-    users: [],
+    payments: [],
   errorMsg: "",
   isLoading: false,
   isSuccess: false,
   isError: false,
 };
 
-export const userSlice: any = createSlice({
+export const paymentSlice: any = createSlice({
   name: "auth",
   initialState,
   reducers: {
       reset: (state) => {
-          state.users = [],
+          state.payments = [],
         (state.errorMsg = ""),
         (state.isLoading = false),
         (state.isSuccess = false),
@@ -75,34 +75,34 @@ export const userSlice: any = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(listUsers.pending, (state, action) => {
-        state.users = [];
+      .addCase(listPayments.pending, (state, action) => {
+        state.payments = [];
         state.isLoggedIn = false;
         state.errorMsg = "";
         state.isLoading = true;
       })
-        .addCase(listUsers.fulfilled, (state, action) => {
+        .addCase(listPayments.fulfilled, (state, action) => {
             console.log(action.payload);
-        state.users = action.payload;
+        state.payments = action.payload;
         state.errorMsg = "";
         state.isLoading = false;
         state.isSuccess = true;
       })
-      .addCase(listUsers.rejected, (state, action) => {
-        (state.users = []),
+      .addCase(listPayments.rejected, (state, action) => {
+        (state.payments = []),
           (state.isLoading = false),
             (state.errorMsg = action.payload as string);
           state.isSuccess = false
       })
     
-    .addCase(filterUsers.fulfilled, (state, action) => {
-        state.users = action.payload;
+    .addCase(filterPayment.fulfilled, (state, action) => {
+        state.payments = action.payload;
         state.errorMsg = "";
         state.isLoading = false;
     })
     
-    .addCase(deleteUsers.fulfilled, (state, action) => {
-        state.users = action.payload;
+    .addCase(deletePayments.fulfilled, (state, action) => {
+        state.payments = action.payload;
         state.errorMsg = "";
         state.isLoading = false;
       })
@@ -110,5 +110,5 @@ export const userSlice: any = createSlice({
   },
 });
 
-export const { reset } = userSlice.actions;
-export default userSlice.reducer;
+export const { reset } = paymentSlice.actions;
+export default paymentSlice.reducer;

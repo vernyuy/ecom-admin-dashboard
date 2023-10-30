@@ -139,3 +139,19 @@ export const users = [
     },
   },
 ];
+
+export const orderAttributes = [
+  "ORDER ID",
+  "USER ID",
+  "ORDER DATE",
+  "ORDER STATUS"
+];
+
+export const paymentAttributes = [
+  "PAYMENT ID",
+  "USER ID",
+  "AMOUNT",
+  "PAYMENT DATE",
+  "PAYMENT INTENT ID",
+  "PAYMENT STATUS"
+];

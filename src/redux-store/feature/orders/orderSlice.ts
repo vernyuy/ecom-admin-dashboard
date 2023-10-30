@@ -2,13 +2,13 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { userData, signinUserData, confirmUserData } from "@/src/types/types";
-import userService from "./userService";
+import orderService from "./orderService";
 
-export const listUsers = createAsyncThunk(
-  "user/listUsers",
+export const listOrders = createAsyncThunk(
+  "user/listOrder",
   async (user: null, thunkApi) => {
     try {
-      return await userService.getAllUsers();
+      return await orderService.getAllOrders();
     } catch (err: any) {
       const message =
         (err.response && err.response.data && err.response.data.message) ||
@@ -21,11 +21,11 @@ export const listUsers = createAsyncThunk(
 );
 
 
-export const filterUsers = createAsyncThunk(
+export const filterOrders = createAsyncThunk(
   "store/filter",
   async (filterby: any) => {
     try {
-      const res = await userService.filterUsers(filterby);
+      const res = await orderService.filterOrders(filterby);
       // console.log(test);
       return res.result;
     } catch (err: any) {
@@ -38,11 +38,11 @@ export const filterUsers = createAsyncThunk(
   },
 );
 
-export const deleteUsers = createAsyncThunk(
-  "user/deleteUsers",
+export const deleteOrders = createAsyncThunk(
+  "order/deleteorder",
   async (filterby: any) => {
     try {
-      const res = await userService.deleteUsers(filterby);
+      const res = await orderService.deleteOrders(filterby);
       return res.result;
     } catch (err: any) {
       const message =
@@ -54,19 +54,19 @@ export const deleteUsers = createAsyncThunk(
   },
 );
 const initialState: any = {
-    users: [],
+    orders: [],
   errorMsg: "",
   isLoading: false,
   isSuccess: false,
   isError: false,
 };
 
-export const userSlice: any = createSlice({
+export const orderSlice: any = createSlice({
   name: "auth",
   initialState,
   reducers: {
       reset: (state) => {
-          state.users = [],
+          state.orders = [],
         (state.errorMsg = ""),
         (state.isLoading = false),
         (state.isSuccess = false),
@@ -75,34 +75,34 @@ export const userSlice: any = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(listUsers.pending, (state, action) => {
-        state.users = [];
+      .addCase(listOrders.pending, (state, action) => {
+        state.orders = [];
         state.isLoggedIn = false;
         state.errorMsg = "";
         state.isLoading = true;
       })
-        .addCase(listUsers.fulfilled, (state, action) => {
+        .addCase(listOrders.fulfilled, (state, action) => {
             console.log(action.payload);
-        state.users = action.payload;
+        state.orders = action.payload;
         state.errorMsg = "";
         state.isLoading = false;
         state.isSuccess = true;
       })
-      .addCase(listUsers.rejected, (state, action) => {
-        (state.users = []),
+      .addCase(listOrders.rejected, (state, action) => {
+        (state.orders = []),
           (state.isLoading = false),
             (state.errorMsg = action.payload as string);
           state.isSuccess = false
       })
     
-    .addCase(filterUsers.fulfilled, (state, action) => {
-        state.users = action.payload;
+    .addCase(filterOrders.fulfilled, (state, action) => {
+        state.orders = action.payload;
         state.errorMsg = "";
         state.isLoading = false;
     })
     
-    .addCase(deleteUsers.fulfilled, (state, action) => {
-        state.users = action.payload;
+    .addCase(deleteOrders.fulfilled, (state, action) => {
+        state.orders = action.payload;
         state.errorMsg = "";
         state.isLoading = false;
       })
@@ -110,5 +110,5 @@ export const userSlice: any = createSlice({
   },
 });
 
-export const { reset } = userSlice.actions;
-export default userSlice.reducer;
+export const { reset } = orderSlice.actions;
+export default orderSlice.reducer;
