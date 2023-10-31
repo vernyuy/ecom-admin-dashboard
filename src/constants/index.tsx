@@ -13,14 +13,14 @@ export const categoryAttributes = ["Image", "Name", "Description", "Is parent"];
 export const userAttributes = [
   "FIRST NAME",
   "LAST NAME",
-  "PHONE",
   "EMAIL",
+  "PHONE",
   "COUNTRY",
   "REGION",
   "CITY",
   "ZIP CODE",
-  "STATUS",
   "ADDRESS LINE",
+  "STATUS",
 ];
 
 export const sidebarLinks = [
@@ -138,4 +138,20 @@ export const users = [
       addressLine2: "",
     },
   },
+];
+
+export const orderAttributes = [
+  "ORDER ID",
+  "USER ID",
+  "ORDER DATE",
+  "ORDER STATUS"
+];
+
+export const paymentAttributes = [
+  "PAYMENT ID",
+  "USER ID",
+  "AMOUNT",
+  "PAYMENT DATE",
+  "PAYMENT INTENT ID",
+  "PAYMENT STATUS"
 ];

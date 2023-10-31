@@ -9,6 +9,10 @@ import awsExports from "@/src/aws-exports";
 import { Amplify, Auth } from "aws-amplify";
 import { Button } from "@/src/components";
 import Link from "next/link";
+if (typeof window !== "undefined") {
+  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
+  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
+}
 Amplify.configure({ ...awsExports, ssr: true });
 
 export default function Login() {
@@ -24,6 +28,7 @@ export default function Login() {
     const test = Auth.currentAuthenticatedUser()
     console.log(test)
     if(isSuccess && !isGoogle){
+      router.replace('/')
       dispatch(reset())
     }
     if(errorMsg === "User is not confirmed."){
@@ -332,7 +337,7 @@ export default function Login() {
               </h2>
               <form className="pb-[80px]">
                 <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
-                  {errorMsg}
+                  {errorMsg.replace('Username', 'Email')}
                 </h5>
                 <div className="mb-2">
                   <label className="block mb-2 text-sm font-medium text-gray-900">

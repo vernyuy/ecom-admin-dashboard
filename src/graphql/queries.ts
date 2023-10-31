@@ -2,14 +2,13 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "./scr/types/amplify";
+import * as APITypes from "../types/amplify";
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
   __generatedQueryOutput: OutputType;
 };
 
-export const getReviewsRating =
-  /* GraphQL */ `query GetReviewsRating($id: ID!) {
+export const getReviewsRating = /* GraphQL */ `query GetReviewsRating($id: ID!) {
   getReviewsRating(id: $id) {
     id
     review
@@ -24,9 +23,9 @@ export const getReviewsRating =
   }
 }
 ` as GeneratedQuery<
-    APITypes.GetReviewsRatingQueryVariables,
-    APITypes.GetReviewsRatingQuery
-  >;
+  APITypes.GetReviewsRatingQueryVariables,
+  APITypes.GetReviewsRatingQuery
+>;
 export const listReviewsRatings = /* GraphQL */ `query ListReviewsRatings(
   $filter: ModelReviewsRatingFilterInput
   $limit: Int
@@ -91,6 +90,8 @@ export const getPayment = /* GraphQL */ `query GetPayment($id: ID!) {
   getPayment(id: $id) {
     id
     paymentStatus
+    amount
+    paymentIntentId
     orderId
     userID
     createdAt
@@ -114,6 +115,8 @@ export const listPayments = /* GraphQL */ `query ListPayments(
     items {
       id
       paymentStatus
+      amount
+      paymentIntentId
       orderId
       userID
       createdAt
@@ -147,6 +150,8 @@ export const syncPayments = /* GraphQL */ `query SyncPayments(
     items {
       id
       paymentStatus
+      amount
+      paymentIntentId
       orderId
       userID
       createdAt
@@ -182,6 +187,8 @@ export const paymentsByUserID = /* GraphQL */ `query PaymentsByUserID(
     items {
       id
       paymentStatus
+      amount
+      paymentIntentId
       orderId
       userID
       createdAt
@@ -225,6 +232,8 @@ export const getOrder = /* GraphQL */ `query GetOrder($id: ID!) {
     Payment {
       id
       paymentStatus
+      amount
+      paymentIntentId
       orderId
       userID
       createdAt

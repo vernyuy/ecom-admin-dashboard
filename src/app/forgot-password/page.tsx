@@ -8,6 +8,12 @@ import awsExports from "@/src/aws-exports";
 import { useParams, useRouter } from "next/navigation";
 import { Amplify } from "aws-amplify";
 import { Button } from "@/src/components";
+
+
+if (typeof window !== "undefined") {
+  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
+  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
+}
 Amplify.configure({ ...awsExports, ssr: true });
 
 
@@ -323,7 +329,7 @@ export default function Register() {
               </h2>
               <form className="pb-[80px]">
               <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
-                    {errorMsg}
+                    {errorMsg.replace('Username', 'Email')}
                   </h5>
 
                   <h5 className="text-green-600 text-[14px] font-medium">

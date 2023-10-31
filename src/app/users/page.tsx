@@ -1,12 +1,7 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  listProducts,
-  filterProduct,
-  deleteProductsFn,
-} from "@/src/redux-store/feature/products/productSlice";
-import { listCategories } from "@/src/redux-store/feature/category/categorySlice";
+import { deleteUsers, filterUsers, listUsers } from "@/src/redux-store/feature/user/userSlice";
 import DashboardLayout from "@/src/app/dashboardLayout";
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
@@ -16,6 +11,11 @@ import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";
 import { CountryDropdown } from "react-country-region-selector";
 
+
+if (typeof window !== "undefined") {
+  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
+  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
+}
 Amplify.configure({ ...awsExports, ssr: true });
 
 export default function App() {
@@ -25,43 +25,46 @@ export default function App() {
   const [country, setCountry] = useState("");
 
   const [isDelete, setisDelete] = useState(false);
-  let selectedProducts: string[] = [];
+  let selectedUsers: string[] = [];
 
-  const { products, isCompleted, errorMsg, isLoading }: any = useSelector(
-    (state: RootState) => state.product,
+  const { users, errorMsg, isLoading }: any = useSelector(
+    (state: RootState) => state.user,
   );
-  const { categories }: any = useSelector((state: RootState) => state.category);
   const dispatch = useDispatch<AppDispatch>();
-  useLayoutEffect(() => {
-    console.log("mounted");
-    dispatch(listCategories());
-    dispatch(listProducts());
+  useEffect(() => {
+    dispatch(listUsers(null))
   }, [dispatch]);
-  console.log(categories);
 
-  const filterStock = (filterBy: any) => {
-    dispatch(filterProduct(filterBy));
-    console.log(products);
+  const filterCustomers = (filterBy: any) => {
+    dispatch(filterUsers(filterBy));
+    console.log(users);
   };
 
   const select = (e: any) => {
     if (e.target.checked) {
-      selectedProducts.push(e.target.value);
+      selectedUsers.push(e.target.value);
     } else {
-      selectedProducts = selectedProducts.filter((p) => {
-        return p !== e.target.value;
+      selectedUsers = selectedUsers.filter((u) => {
+        return u !== e.target.value;
       });
     }
-    console.log(selectedProducts);
+    console.log(selectedUsers);
   };
 
-  const deleteProducts = (e: any, productId?: string) => {
-    e.preventDefault();
-    if (selectedProducts.length > 0) {
-      dispatch(deleteProductsFn(selectedProducts));
+  useEffect(() => {
+    if (isDelete)
+    {
+      deleteUsersFn()
+    }
+    filterCustomers({ filterBy: "category", country: country })
+  }, [isDelete, country]);
+  const deleteUsersFn = (userId?: string) => {
+    console.log("Users>>>>>: ",selectedUsers)
+    if (selectedUsers.length > 0) {
+      dispatch(deleteUsers(selectedUsers));
       return "deleted";
-    } else if (productId) {
-      dispatch(deleteProductsFn(productId));
+    } else if (userId) {
+      dispatch(deleteUsers(userId));
       return "deleted";
     } else {
       console.log("Please select product(s) to delete");
@@ -129,7 +132,7 @@ export default function App() {
                   action="#"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    filterStock({ filterBy: "search", search: search });
+                    filterCustomers({ filterBy: "search", search: search });
                   }}
                   method="GET"
                 >
@@ -146,7 +149,7 @@ export default function App() {
                       placeholder="Search users by name"
                       onChange={(e) => {
                         setSearch(e.target.value);
-                        filterStock({ filterBy: "search", search: search });
+                        filterCustomers({ filterBy: "search", search: search });
                       }}
                     />
                   </div>
@@ -181,7 +184,7 @@ export default function App() {
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          onClick={() => filterStock("all")}
+                          onClick={() => filterCustomers("all")}
                         >
                           All
                         </a>
@@ -190,7 +193,7 @@ export default function App() {
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          onClick={() => filterStock("instock")}
+                          onClick={() => filterCustomers("active")}
                         >
                           Active
                         </a>
@@ -199,7 +202,7 @@ export default function App() {
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          onClick={() => filterStock("sold")}
+                          onClick={() => filterCustomers("blocked")}
                         >
                           Blocked
                         </a>
@@ -215,7 +218,9 @@ export default function App() {
                   <CountryDropdown
                     classes="border text-green-500 max-w-[152px] font-semibold border-green-300 hover:cursor-pointer rounded-lg text-sm px-3 py-1.5 flex gap-1 items-centersd "
                     value={country}
-                    onChange={(val) => setCountry(val)}
+                    onChange={(val) => {
+                      setCountry(val);
+                    }}
                   />
                 </div>
 
@@ -248,12 +253,32 @@ export default function App() {
                       className="py-2 text-sm text-red-500 dark:text-gray-200"
                       aria-labelledby="dropdownDefaultButton"
                     >
+
                       <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
                         <Button
                           title="Delete"
                           handleClick={(e) => {
-                            setisDelete(true);
+                            // setisDelete(true);
+                            deleteUsersFn()
                           }}
+                        />
+                      </li>
+
+                      <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                        <Button
+                          title="Block"
+                          // handleClick={(e) => {
+                          //   setisDelete(true);
+                          // }}
+                        />
+                      </li>
+
+                      <li className="block px-4 py-2 hover:bg-green-100 text-green-500 dark:hover:bg-gray-600 dark:hover:text-white">
+                        <Button
+                          title="Unblock"
+                          // handleClick={(e) => {
+                          //   setisDelete(true);
+                          // }}
                         />
                       </li>
                     </ul>
@@ -267,12 +292,12 @@ export default function App() {
             <div className="overflow-x-autdfo rounded-lg">
               <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
-                  {!isLoading && isCompleted && products?.length == 0 && (
-                    <div className="w-full h-[100px] flex justify-center items-center">
+                  {/* {!isLoading && isCompleted && products?.length == 0 && ( */}
+                    {/* <div className="w-full h-[100px] flex justify-center items-center">
                       <p className="font-semibold m-auto">It's empty here</p>
-                    </div>
-                  )}
-                  {isLoading && (
+                    </div> */}
+                  {/* )} */}
+                  {isLoading ? (
                     <div className="w-full h-[100px] text-blue-500 flex">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -295,9 +320,7 @@ export default function App() {
                         </path>
                       </svg>
                     </div>
-                  )}
-                  {isDelete ? <CustomModal isSuccess={true} /> : <></>}
-                  {products && (
+                  ) :
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
                       <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
                         <tr className="[&:nth-child(1)]:bg-blue-50d0">
@@ -333,9 +356,8 @@ export default function App() {
                                 }
                               </td>
                               <td
-                                className={`flex p-4 flex-col justify-center sticky left-0 h-full py-2 ${
-                                  index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                }`}
+                                className={`flex p-4 flex-col justify-center sticky left-0 h-full py-2 ${index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                  }`}
                               >
                                 {user.firstName}
                               </td>
@@ -354,7 +376,7 @@ export default function App() {
                                 {user.phone}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {`${user.address.country}`}
+                                {`${user.address.coutry}`}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                                 {user.address.region}
@@ -401,8 +423,8 @@ export default function App() {
                           ))}
                         </tr>
                       </tfoot>
-                    </table>
-                  )}
+                    </table>}
+                  {/* )} */}
                 </div>
               </div>
             </div>
@@ -448,11 +470,11 @@ export default function App() {
             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
               Showing{" "}
               <span className="font-semibold text-gray-900 dark:text-white">
-                1-{products?.length}
+                1-{users?.length}
               </span>{" "}
               of{" "}
               <span className="font-semibold text-gray-900 dark:text-white">
-                {products?.length}
+                {users?.length}
               </span>
             </span>
           </div>

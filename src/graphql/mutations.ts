@@ -2,17 +2,17 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "./scr/types/amplify";
-type GeneratedSubscription<InputType, OutputType> = string & {
-  __generatedSubscriptionInput: InputType;
-  __generatedSubscriptionOutput: OutputType;
+import * as APITypes from "../types/amplify";
+type GeneratedMutation<InputType, OutputType> = string & {
+  __generatedMutationInput: InputType;
+  __generatedMutationOutput: OutputType;
 };
 
-export const onCreateReviewsRating =
-  /* GraphQL */ `subscription OnCreateReviewsRating(
-  $filter: ModelSubscriptionReviewsRatingFilterInput
+export const createReviewsRating = /* GraphQL */ `mutation CreateReviewsRating(
+  $input: CreateReviewsRatingInput!
+  $condition: ModelReviewsRatingConditionInput
 ) {
-  onCreateReviewsRating(filter: $filter) {
+  createReviewsRating(input: $input, condition: $condition) {
     id
     review
     stars
@@ -25,15 +25,15 @@ export const onCreateReviewsRating =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnCreateReviewsRatingSubscriptionVariables,
-    APITypes.OnCreateReviewsRatingSubscription
-  >;
-export const onUpdateReviewsRating =
-  /* GraphQL */ `subscription OnUpdateReviewsRating(
-  $filter: ModelSubscriptionReviewsRatingFilterInput
+` as GeneratedMutation<
+  APITypes.CreateReviewsRatingMutationVariables,
+  APITypes.CreateReviewsRatingMutation
+>;
+export const updateReviewsRating = /* GraphQL */ `mutation UpdateReviewsRating(
+  $input: UpdateReviewsRatingInput!
+  $condition: ModelReviewsRatingConditionInput
 ) {
-  onUpdateReviewsRating(filter: $filter) {
+  updateReviewsRating(input: $input, condition: $condition) {
     id
     review
     stars
@@ -46,15 +46,15 @@ export const onUpdateReviewsRating =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnUpdateReviewsRatingSubscriptionVariables,
-    APITypes.OnUpdateReviewsRatingSubscription
-  >;
-export const onDeleteReviewsRating =
-  /* GraphQL */ `subscription OnDeleteReviewsRating(
-  $filter: ModelSubscriptionReviewsRatingFilterInput
+` as GeneratedMutation<
+  APITypes.UpdateReviewsRatingMutationVariables,
+  APITypes.UpdateReviewsRatingMutation
+>;
+export const deleteReviewsRating = /* GraphQL */ `mutation DeleteReviewsRating(
+  $input: DeleteReviewsRatingInput!
+  $condition: ModelReviewsRatingConditionInput
 ) {
-  onDeleteReviewsRating(filter: $filter) {
+  deleteReviewsRating(input: $input, condition: $condition) {
     id
     review
     stars
@@ -67,15 +67,19 @@ export const onDeleteReviewsRating =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnDeleteReviewsRatingSubscriptionVariables,
-    APITypes.OnDeleteReviewsRatingSubscription
-  >;
-export const onCreatePayment =
-  /* GraphQL */ `subscription OnCreatePayment($filter: ModelSubscriptionPaymentFilterInput) {
-  onCreatePayment(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.DeleteReviewsRatingMutationVariables,
+  APITypes.DeleteReviewsRatingMutation
+>;
+export const createPayment = /* GraphQL */ `mutation CreatePayment(
+  $input: CreatePaymentInput!
+  $condition: ModelPaymentConditionInput
+) {
+  createPayment(input: $input, condition: $condition) {
     id
     paymentStatus
+    amount
+    paymentIntentId
     orderId
     userID
     createdAt
@@ -86,15 +90,19 @@ export const onCreatePayment =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnCreatePaymentSubscriptionVariables,
-    APITypes.OnCreatePaymentSubscription
-  >;
-export const onUpdatePayment =
-  /* GraphQL */ `subscription OnUpdatePayment($filter: ModelSubscriptionPaymentFilterInput) {
-  onUpdatePayment(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.CreatePaymentMutationVariables,
+  APITypes.CreatePaymentMutation
+>;
+export const updatePayment = /* GraphQL */ `mutation UpdatePayment(
+  $input: UpdatePaymentInput!
+  $condition: ModelPaymentConditionInput
+) {
+  updatePayment(input: $input, condition: $condition) {
     id
     paymentStatus
+    amount
+    paymentIntentId
     orderId
     userID
     createdAt
@@ -105,15 +113,19 @@ export const onUpdatePayment =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnUpdatePaymentSubscriptionVariables,
-    APITypes.OnUpdatePaymentSubscription
-  >;
-export const onDeletePayment =
-  /* GraphQL */ `subscription OnDeletePayment($filter: ModelSubscriptionPaymentFilterInput) {
-  onDeletePayment(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.UpdatePaymentMutationVariables,
+  APITypes.UpdatePaymentMutation
+>;
+export const deletePayment = /* GraphQL */ `mutation DeletePayment(
+  $input: DeletePaymentInput!
+  $condition: ModelPaymentConditionInput
+) {
+  deletePayment(input: $input, condition: $condition) {
     id
     paymentStatus
+    amount
+    paymentIntentId
     orderId
     userID
     createdAt
@@ -124,13 +136,15 @@ export const onDeletePayment =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnDeletePaymentSubscriptionVariables,
-    APITypes.OnDeletePaymentSubscription
-  >;
-export const onCreateOrder =
-  /* GraphQL */ `subscription OnCreateOrder($filter: ModelSubscriptionOrderFilterInput) {
-  onCreateOrder(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.DeletePaymentMutationVariables,
+  APITypes.DeletePaymentMutation
+>;
+export const createOrder = /* GraphQL */ `mutation CreateOrder(
+  $input: CreateOrderInput!
+  $condition: ModelOrderConditionInput
+) {
+  createOrder(input: $input, condition: $condition) {
     id
     orderItems
     Cart {
@@ -154,6 +168,8 @@ export const onCreateOrder =
     Payment {
       id
       paymentStatus
+      amount
+      paymentIntentId
       orderId
       userID
       createdAt
@@ -174,13 +190,15 @@ export const onCreateOrder =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnCreateOrderSubscriptionVariables,
-    APITypes.OnCreateOrderSubscription
-  >;
-export const onUpdateOrder =
-  /* GraphQL */ `subscription OnUpdateOrder($filter: ModelSubscriptionOrderFilterInput) {
-  onUpdateOrder(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.CreateOrderMutationVariables,
+  APITypes.CreateOrderMutation
+>;
+export const updateOrder = /* GraphQL */ `mutation UpdateOrder(
+  $input: UpdateOrderInput!
+  $condition: ModelOrderConditionInput
+) {
+  updateOrder(input: $input, condition: $condition) {
     id
     orderItems
     Cart {
@@ -204,6 +222,8 @@ export const onUpdateOrder =
     Payment {
       id
       paymentStatus
+      amount
+      paymentIntentId
       orderId
       userID
       createdAt
@@ -224,13 +244,15 @@ export const onUpdateOrder =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnUpdateOrderSubscriptionVariables,
-    APITypes.OnUpdateOrderSubscription
-  >;
-export const onDeleteOrder =
-  /* GraphQL */ `subscription OnDeleteOrder($filter: ModelSubscriptionOrderFilterInput) {
-  onDeleteOrder(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.UpdateOrderMutationVariables,
+  APITypes.UpdateOrderMutation
+>;
+export const deleteOrder = /* GraphQL */ `mutation DeleteOrder(
+  $input: DeleteOrderInput!
+  $condition: ModelOrderConditionInput
+) {
+  deleteOrder(input: $input, condition: $condition) {
     id
     orderItems
     Cart {
@@ -254,6 +276,8 @@ export const onDeleteOrder =
     Payment {
       id
       paymentStatus
+      amount
+      paymentIntentId
       orderId
       userID
       createdAt
@@ -274,13 +298,15 @@ export const onDeleteOrder =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnDeleteOrderSubscriptionVariables,
-    APITypes.OnDeleteOrderSubscription
-  >;
-export const onCreateCart =
-  /* GraphQL */ `subscription OnCreateCart($filter: ModelSubscriptionCartFilterInput) {
-  onCreateCart(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.DeleteOrderMutationVariables,
+  APITypes.DeleteOrderMutation
+>;
+export const createCart = /* GraphQL */ `mutation CreateCart(
+  $input: CreateCartInput!
+  $condition: ModelCartConditionInput
+) {
+  createCart(input: $input, condition: $condition) {
     id
     productId
     productQty
@@ -331,13 +357,15 @@ export const onCreateCart =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnCreateCartSubscriptionVariables,
-    APITypes.OnCreateCartSubscription
-  >;
-export const onUpdateCart =
-  /* GraphQL */ `subscription OnUpdateCart($filter: ModelSubscriptionCartFilterInput) {
-  onUpdateCart(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.CreateCartMutationVariables,
+  APITypes.CreateCartMutation
+>;
+export const updateCart = /* GraphQL */ `mutation UpdateCart(
+  $input: UpdateCartInput!
+  $condition: ModelCartConditionInput
+) {
+  updateCart(input: $input, condition: $condition) {
     id
     productId
     productQty
@@ -388,13 +416,15 @@ export const onUpdateCart =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnUpdateCartSubscriptionVariables,
-    APITypes.OnUpdateCartSubscription
-  >;
-export const onDeleteCart =
-  /* GraphQL */ `subscription OnDeleteCart($filter: ModelSubscriptionCartFilterInput) {
-  onDeleteCart(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.UpdateCartMutationVariables,
+  APITypes.UpdateCartMutation
+>;
+export const deleteCart = /* GraphQL */ `mutation DeleteCart(
+  $input: DeleteCartInput!
+  $condition: ModelCartConditionInput
+) {
+  deleteCart(input: $input, condition: $condition) {
     id
     productId
     productQty
@@ -445,13 +475,15 @@ export const onDeleteCart =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnDeleteCartSubscriptionVariables,
-    APITypes.OnDeleteCartSubscription
-  >;
-export const onCreateProduct =
-  /* GraphQL */ `subscription OnCreateProduct($filter: ModelSubscriptionProductFilterInput) {
-  onCreateProduct(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.DeleteCartMutationVariables,
+  APITypes.DeleteCartMutation
+>;
+export const createProduct = /* GraphQL */ `mutation CreateProduct(
+  $input: CreateProductInput!
+  $condition: ModelProductConditionInput
+) {
+  createProduct(input: $input, condition: $condition) {
     id
     name
     description
@@ -473,13 +505,15 @@ export const onCreateProduct =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnCreateProductSubscriptionVariables,
-    APITypes.OnCreateProductSubscription
-  >;
-export const onUpdateProduct =
-  /* GraphQL */ `subscription OnUpdateProduct($filter: ModelSubscriptionProductFilterInput) {
-  onUpdateProduct(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.CreateProductMutationVariables,
+  APITypes.CreateProductMutation
+>;
+export const updateProduct = /* GraphQL */ `mutation UpdateProduct(
+  $input: UpdateProductInput!
+  $condition: ModelProductConditionInput
+) {
+  updateProduct(input: $input, condition: $condition) {
     id
     name
     description
@@ -501,13 +535,15 @@ export const onUpdateProduct =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnUpdateProductSubscriptionVariables,
-    APITypes.OnUpdateProductSubscription
-  >;
-export const onDeleteProduct =
-  /* GraphQL */ `subscription OnDeleteProduct($filter: ModelSubscriptionProductFilterInput) {
-  onDeleteProduct(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.UpdateProductMutationVariables,
+  APITypes.UpdateProductMutation
+>;
+export const deleteProduct = /* GraphQL */ `mutation DeleteProduct(
+  $input: DeleteProductInput!
+  $condition: ModelProductConditionInput
+) {
+  deleteProduct(input: $input, condition: $condition) {
     id
     name
     description
@@ -529,13 +565,15 @@ export const onDeleteProduct =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnDeleteProductSubscriptionVariables,
-    APITypes.OnDeleteProductSubscription
-  >;
-export const onCreateCategory =
-  /* GraphQL */ `subscription OnCreateCategory($filter: ModelSubscriptionCategoryFilterInput) {
-  onCreateCategory(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.DeleteProductMutationVariables,
+  APITypes.DeleteProductMutation
+>;
+export const createCategory = /* GraphQL */ `mutation CreateCategory(
+  $input: CreateCategoryInput!
+  $condition: ModelCategoryConditionInput
+) {
+  createCategory(input: $input, condition: $condition) {
     id
     name
     description
@@ -555,13 +593,15 @@ export const onCreateCategory =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnCreateCategorySubscriptionVariables,
-    APITypes.OnCreateCategorySubscription
-  >;
-export const onUpdateCategory =
-  /* GraphQL */ `subscription OnUpdateCategory($filter: ModelSubscriptionCategoryFilterInput) {
-  onUpdateCategory(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.CreateCategoryMutationVariables,
+  APITypes.CreateCategoryMutation
+>;
+export const updateCategory = /* GraphQL */ `mutation UpdateCategory(
+  $input: UpdateCategoryInput!
+  $condition: ModelCategoryConditionInput
+) {
+  updateCategory(input: $input, condition: $condition) {
     id
     name
     description
@@ -581,13 +621,15 @@ export const onUpdateCategory =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnUpdateCategorySubscriptionVariables,
-    APITypes.OnUpdateCategorySubscription
-  >;
-export const onDeleteCategory =
-  /* GraphQL */ `subscription OnDeleteCategory($filter: ModelSubscriptionCategoryFilterInput) {
-  onDeleteCategory(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.UpdateCategoryMutationVariables,
+  APITypes.UpdateCategoryMutation
+>;
+export const deleteCategory = /* GraphQL */ `mutation DeleteCategory(
+  $input: DeleteCategoryInput!
+  $condition: ModelCategoryConditionInput
+) {
+  deleteCategory(input: $input, condition: $condition) {
     id
     name
     description
@@ -607,13 +649,15 @@ export const onDeleteCategory =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnDeleteCategorySubscriptionVariables,
-    APITypes.OnDeleteCategorySubscription
-  >;
-export const onCreateUser =
-  /* GraphQL */ `subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
-  onCreateUser(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.DeleteCategoryMutationVariables,
+  APITypes.DeleteCategoryMutation
+>;
+export const createUser = /* GraphQL */ `mutation CreateUser(
+  $input: CreateUserInput!
+  $condition: ModelUserConditionInput
+) {
+  createUser(input: $input, condition: $condition) {
     id
     firstName
     lastName
@@ -671,13 +715,15 @@ export const onCreateUser =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnCreateUserSubscriptionVariables,
-    APITypes.OnCreateUserSubscription
-  >;
-export const onUpdateUser =
-  /* GraphQL */ `subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
-  onUpdateUser(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.CreateUserMutationVariables,
+  APITypes.CreateUserMutation
+>;
+export const updateUser = /* GraphQL */ `mutation UpdateUser(
+  $input: UpdateUserInput!
+  $condition: ModelUserConditionInput
+) {
+  updateUser(input: $input, condition: $condition) {
     id
     firstName
     lastName
@@ -735,13 +781,15 @@ export const onUpdateUser =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnUpdateUserSubscriptionVariables,
-    APITypes.OnUpdateUserSubscription
-  >;
-export const onDeleteUser =
-  /* GraphQL */ `subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
-  onDeleteUser(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.UpdateUserMutationVariables,
+  APITypes.UpdateUserMutation
+>;
+export const deleteUser = /* GraphQL */ `mutation DeleteUser(
+  $input: DeleteUserInput!
+  $condition: ModelUserConditionInput
+) {
+  deleteUser(input: $input, condition: $condition) {
     id
     firstName
     lastName
@@ -799,13 +847,15 @@ export const onDeleteUser =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnDeleteUserSubscriptionVariables,
-    APITypes.OnDeleteUserSubscription
-  >;
-export const onCreateStore =
-  /* GraphQL */ `subscription OnCreateStore($filter: ModelSubscriptionStoreFilterInput) {
-  onCreateStore(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.DeleteUserMutationVariables,
+  APITypes.DeleteUserMutation
+>;
+export const createStore = /* GraphQL */ `mutation CreateStore(
+  $input: CreateStoreInput!
+  $condition: ModelStoreConditionInput
+) {
+  createStore(input: $input, condition: $condition) {
     id
     name
     logoUrl
@@ -822,13 +872,15 @@ export const onCreateStore =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnCreateStoreSubscriptionVariables,
-    APITypes.OnCreateStoreSubscription
-  >;
-export const onUpdateStore =
-  /* GraphQL */ `subscription OnUpdateStore($filter: ModelSubscriptionStoreFilterInput) {
-  onUpdateStore(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.CreateStoreMutationVariables,
+  APITypes.CreateStoreMutation
+>;
+export const updateStore = /* GraphQL */ `mutation UpdateStore(
+  $input: UpdateStoreInput!
+  $condition: ModelStoreConditionInput
+) {
+  updateStore(input: $input, condition: $condition) {
     id
     name
     logoUrl
@@ -845,13 +897,15 @@ export const onUpdateStore =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnUpdateStoreSubscriptionVariables,
-    APITypes.OnUpdateStoreSubscription
-  >;
-export const onDeleteStore =
-  /* GraphQL */ `subscription OnDeleteStore($filter: ModelSubscriptionStoreFilterInput) {
-  onDeleteStore(filter: $filter) {
+` as GeneratedMutation<
+  APITypes.UpdateStoreMutationVariables,
+  APITypes.UpdateStoreMutation
+>;
+export const deleteStore = /* GraphQL */ `mutation DeleteStore(
+  $input: DeleteStoreInput!
+  $condition: ModelStoreConditionInput
+) {
+  deleteStore(input: $input, condition: $condition) {
     id
     name
     logoUrl
@@ -868,7 +922,7 @@ export const onDeleteStore =
     __typename
   }
 }
-` as GeneratedSubscription<
-    APITypes.OnDeleteStoreSubscriptionVariables,
-    APITypes.OnDeleteStoreSubscription
-  >;
+` as GeneratedMutation<
+  APITypes.DeleteStoreMutationVariables,
+  APITypes.DeleteStoreMutation
+>;

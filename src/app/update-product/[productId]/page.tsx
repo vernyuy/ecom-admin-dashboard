@@ -8,6 +8,10 @@ import productService from "@/src/redux-store/feature/products/productService";
 import categoryService from "@/src/redux-store/feature/category/categoryService";
 import awsExports from "@/src/aws-exports";
 import { Amplify, Storage } from "aws-amplify";
+if (typeof window !== "undefined") {
+  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
+  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
+}
 Amplify.configure({ ...awsExports, ssr: true });
 export default function App() {
   const params = useParams();

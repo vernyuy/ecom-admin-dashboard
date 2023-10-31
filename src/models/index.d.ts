@@ -48,6 +48,8 @@ type EagerPayment = {
   };
   readonly id: string;
   readonly paymentStatus: boolean;
+  readonly amount: number;
+  readonly paymentIntentId: string;
   readonly orderId: string;
   readonly userID: string;
   readonly createdAt?: string | null;
@@ -61,6 +63,8 @@ type LazyPayment = {
   };
   readonly id: string;
   readonly paymentStatus: boolean;
+  readonly amount: number;
+  readonly paymentIntentId: string;
   readonly orderId: string;
   readonly userID: string;
   readonly createdAt?: string | null;

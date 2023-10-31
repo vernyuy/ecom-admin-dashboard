@@ -8,6 +8,11 @@ import awsExports from "@/src/aws-exports";
 import { useParams, useRouter } from "next/navigation";
 import { Amplify } from "aws-amplify";
 import { Button } from "@/src/components";
+// if (typeof window !== "undefined") {
+//   console.log(window.location.origin)
+  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
+  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
+// }
 Amplify.configure({ ...awsExports, ssr: true });
 
 
@@ -21,7 +26,7 @@ export default function Register() {
   const {user, errorMsg, isLoading, isSuccess, issentCode}: any = useSelector((state: RootState)=> state.auth)
 
   useEffect(()=>{
-    if(isSuccess){
+    if(isSuccess && !issentCode){
         router.replace('/')
         dispatch(reset())
     }

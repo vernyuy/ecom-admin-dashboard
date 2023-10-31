@@ -7,6 +7,10 @@ import productService from "@/src/redux-store/feature/products/productService";
 import categoryService from "@/src/redux-store/feature/category/categoryService";
 import awsExports from "@/src/aws-exports";
 import { Amplify, Storage } from "aws-amplify";
+if (typeof window !== "undefined") {
+  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
+  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
+}
 Amplify.configure({ ...awsExports, ssr: true });
 export default function App() {
   const [isComplete, setIsComplete] = useState(false);
@@ -141,7 +145,7 @@ export default function App() {
 
       if (key) {
         const newKey =
-          "https://commerceb8039144d9044463a5cf2714cc51248d193514-staging.s3.us-east-2.amazonaws.com/public/" +
+          "https://commerceb8039144d9044463a5cf2714cc51248d193514-staging.s3.us-east-1.amazonaws.com/public/" +
           key.key;
         setValues({ ...values, [event.target.name]: newKey });
       }

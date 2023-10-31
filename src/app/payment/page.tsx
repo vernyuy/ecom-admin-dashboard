@@ -1,67 +1,67 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  listProducts,
-  reset,
-  filterProduct,
-  deleteProductsFn,
-} from "@/src/redux-store/feature/products/productSlice";
-import categoryService from "@/src/redux-store/feature/category/categoryService";
-import { listCategories } from "@/src/redux-store/feature/category/categorySlice";
 import DashboardLayout from "@/src/app/dashboardLayout";
 import { useEffect, useLayoutEffect, useState } from "react";
+import Link from "next/link";
+import { paymentAttributes } from "@/src/constants";
+import { Button, CustomModal, Delete } from "@/src/components";
 import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";
-import Link from "next/link";
-import { categoryAttributes } from "@/src/constants";
-import { Button, CustomModal } from "@/src/components";
+import { CountryDropdown } from "react-country-region-selector";
+import { deletePayments, filterPayment, listPayments } from "@/src/redux-store/feature/payment/paymentSlice";
+
+
 if (typeof window !== "undefined") {
   awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
   awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
 }
 Amplify.configure({ ...awsExports, ssr: true });
 
-export default function Categories() {
+export default function Page() {
   const [search, setSearch] = useState("");
+  const [del, setDel] = useState(false);
+
   const [isDelete, setisDelete] = useState(false);
-  let selectedProducts: string[] = [];
+  let selectedPayments: string[] = [];
 
-  const { products, isCompleted, errorMsg, isLoading }: any = useSelector(
-    (state: RootState) => state.product,
+  const { payments, errorMsg, isLoading }: any = useSelector(
+    (state: RootState) => state.payment,
   );
-  const { categories }: any = useSelector((state: RootState) => state.category);
   const dispatch = useDispatch<AppDispatch>();
-  useLayoutEffect(() => {
-    console.log("mounted");
-    dispatch(listCategories());
-    dispatch(listProducts());
+  useEffect(() => {
+    dispatch(listPayments(null))
   }, [dispatch]);
-  console.log(categories);
 
-  const filterStock = (filterBy: any) => {
-    dispatch(filterProduct(filterBy));
-    console.log(products);
+  const filterPay = (filterBy: any) => {
+    dispatch(filterPayment(filterBy));
   };
 
   const select = (e: any) => {
     if (e.target.checked) {
-      selectedProducts.push(e.target.value);
+      selectedPayments.push(e.target.value);
     } else {
-      selectedProducts = selectedProducts.filter((p) => {
-        return p !== e.target.value;
+      selectedPayments = selectedPayments.filter((o) => {
+        return o !== e.target.value;
       });
     }
-    console.log(selectedProducts);
+    console.log(selectedPayments);
   };
 
-  const deleteProducts = (e: any, productId?: string) => {
-    e.preventDefault();
-    if (selectedProducts.length > 0) {
-      dispatch(deleteProductsFn(selectedProducts));
+  useEffect(() => {
+    if (isDelete)
+    {
+      deletePaymentsFn()
+    }
+    filterPay({ filterBy: "category"})
+  }, [isDelete]);
+  const deletePaymentsFn = (payId?: string) => {
+    console.log("Users>>>>>: ",selectedPayments)
+    if (selectedPayments.length > 0) {
+      dispatch(deletePayments(selectedPayments));
       return "deleted";
-    } else if (productId) {
-      dispatch(deleteProductsFn(productId));
+    } else if (payId) {
+      dispatch(deletePayments(payId));
       return "deleted";
     } else {
       console.log("Please select product(s) to delete");
@@ -71,6 +71,7 @@ export default function Categories() {
 
   return (
     <DashboardLayout>
+      {/* <Delete item="User" /> */}
       <main className="w-full h-full sticky top-0 overflow-y-hidden">
         <nav className="flex sticky top-0 my-2" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
@@ -108,7 +109,7 @@ export default function Categories() {
                   className="ml-1 text-gray-400 md:ml-2 dark:text-gray-500"
                   aria-current="page"
                 >
-                  Categories
+                  Users
                 </span>
               </div>
             </li>
@@ -117,8 +118,8 @@ export default function Categories() {
         <div className="px-2 mt-5 pb-2d bg-white w-full  rounded-ss-lg rounded-se-lg shadow-sm dark:border-gray-700 sm:px-4 mt-f3 md:mt-5d">
           <div className="w-full">
             <div className="mb-2">
-              <h1 className="text-md font-semibold text-gray-900 sm:text-xl dark:text-white py-2 pt-4">
-                All categories
+              <h1 className="text-md pt-5 font-semibold text-gray-900 sm:text-xl dark:text-white py-2">
+                All Payments
               </h1>
             </div>
             <div className="items-center justify-between flex flex-col gap-2 sm:flex-row sm:flex-wrap md:divide-x md:divide-gray-100 pb-3">
@@ -128,7 +129,7 @@ export default function Categories() {
                   action="#"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    filterStock({ filterBy: "search", search: search });
+                    filterPay({ filterBy: "search", search: search });
                   }}
                   method="GET"
                 >
@@ -142,10 +143,10 @@ export default function Categories() {
                       id="products-search"
                       value={search}
                       className="bg-gray-50 outline-none border border-gray-100 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 w-full py-1.5 px-2.5"
-                      placeholder="Search category by name"
+                      placeholder="Search users by name"
                       onChange={(e) => {
                         setSearch(e.target.value);
-                        filterStock({ filterBy: "search", search: search });
+                        filterPay({ filterBy: "search", search: search });
                       }}
                     />
                   </div>
@@ -154,11 +155,11 @@ export default function Categories() {
               <div className="flex border-none flex-wrap gap-2">
                 <div className="group">
                   <Link
-                    href={"#"}
+                    href={"/add-product"}
                     className=" border text-green-500 font-semibold border-green-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-green-300 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-center"
                     type="button"
                   >
-                    <Button title="Filter" btnType="button" />{" "}
+                    <Button title="Status" btnType="button" />{" "}
                     <svg
                       className="fill-current text-green-500 h-4 w-4"
                       xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +171,7 @@ export default function Categories() {
 
                   <div
                     id="dropdown"
-                    className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-fit -ml-3 dark:bg-gray-700"
+                    className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700"
                   >
                     <ul
                       className="py-2 text-sm text-gray-700 dark:text-gray-200"
@@ -180,7 +181,7 @@ export default function Categories() {
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          onClick={() => filterStock("all")}
+                          onClick={() => filterPay("all")}
                         >
                           All
                         </a>
@@ -189,28 +190,33 @@ export default function Categories() {
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          onClick={() => filterPay("active")}
                         >
-                          Parent
+                          Payed
                         </a>
+                      </li>
+                      <li>
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          onClick={() => filterPay("blocked")}
                         >
-                          Not parent
+                          Pending
                         </a>
                       </li>
                     </ul>
                   </div>
                 </div>
 
-                <div className="group">
+
+                {/* <div className="group">
                   <Link
                     href={"#"}
                     className=" border text-gray-900 font-semibold border-orange-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-orange-300 rounded-lg text-sm px-4 gap-1 py-1.5 flex items-center"
                     type="button"
                   >
                     <Button
-                      title="Bulk actions"
+                      title="Actions"
                       btnType="button"
                       containerStyles="text-orange-500 group-hover:text-white"
                       isDisable={true}
@@ -226,144 +232,153 @@ export default function Categories() {
 
                   <div
                     id="dropdown"
-                    className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700"
+                    className="z-10 hidden mt-1 group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-[105px] dark:bg-gray-700"
                   >
                     <ul
                       className="py-2 text-sm text-red-500 dark:text-gray-200"
                       aria-labelledby="dropdownDefaultButton"
                     >
+
                       <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
                         <Button
-                          title="delete selected"
+                          title="Delete"
                           handleClick={(e) => {
-                            setisDelete(true);
+                            // setisDelete(true);
+                            deletePaymentsFn()
                           }}
+                        />
+                      </li>
+
+                      <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                        <Button
+                          title="Ordered"
+                          // handleClick={(e) => {
+                          //   setisDelete(true);
+                          // }}
+                        />
+                      </li>
+
+                      <li className="block px-4 py-2 hover:bg-green-100 text-green-500 dark:hover:bg-gray-600 dark:hover:text-white">
+                        <Button
+                          title="Pending"
+                          // handleClick={(e) => {
+                          //   setisDelete(true);
+                          // }}
                         />
                       </li>
                     </ul>
                   </div>
-                </div>
-                <Link
-                  href={"/add-category"}
-                  className="text-gray-900 border border-green-300 focus:ring-0 hover:text-white hover:border-none hover:bg-gray-900 font-semibold rounded-lg text-sm px-4 py-1.5"
-                  type="button"
-                >
-                  Add category
-                </Link>
+                </div> */}
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col mt-2 w-full overflow-x-scroll">
-            <div className="overflow-x-autdfo w-full rounded-lg">
-              <div className="inline-block min-w-full w-full align-middle">
+          <div className="flex flex-col mt-2 overflow-x-scroll">
+            <div className="overflow-x-autdfo rounded-lg">
+              <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
-                    <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
-                      <tr>
-                        <th className="pl-2"></th>
-                        {categoryAttributes.map(
-                          (item: string, index: number) => (
-                            <th
-                              key={index}
-                              scope="col"
-                              className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
-                            >
-                              {item}
-                            </th>
-                          ),
-                        )}
-                      </tr>
-                    </thead>
-
-                    {isLoading && (
-                      <div className="w-full h-[100px] text-blue-500 flex justify-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="32"
-                          height="32"
-                          viewBox="0 0 24 24"
-                          className="m-auto mx-auto"
+                  {isLoading ? (
+                    <div className="w-full h-[100px] text-blue-500 flex">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        className="m-auto mx-auto"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
                         >
-                          <path
-                            fill="currentColor"
-                            d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
-                          >
-                            <animateTransform
-                              attributeName="transform"
-                              dur="0.75s"
-                              repeatCount="indefinite"
-                              type="rotate"
-                              values="0 12 12;360 12 12"
-                            />
-                          </path>
-                        </svg>
-                      </div>
-                    )}
-
-                    {!isLoading && isCompleted && categories?.length == 0 && (
-                      <div className="w-full h-[100px] flex justify-center items-center">
-                        <p className="font-semibold m-auto">It's empty here</p>
-                      </div>
-                    )}
-                    <tbody className="">
-                      {categories?.map((category: any, index: number) => {
-                        return (
-                          <tr key={category.id} className="even:bg-gray-50">
-                            <th className="pl-3">
-                              {
-                                <input
-                                  type="checkbox"
-                                  className="bg-black"
-                                  value={category.id}
-                                  onChange={select}
-                                />
-                              }
+                          <animateTransform
+                            attributeName="transform"
+                            dur="0.75s"
+                            repeatCount="indefinite"
+                            type="rotate"
+                            values="0 12 12;360 12 12"
+                          />
+                        </path>
+                      </svg>
+                    </div>
+                  ) :
+                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
+                      <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
+                        <tr className="[&:nth-child(1)]:bg-blue-50d0">
+                          <th className="pl-2">
+                            {/* <input type="checkbox"  /> */}
+                          </th>
+                          {paymentAttributes.map((item: string, index: number) => (
+                            <th
+                              key={index}
+                              scope="col"
+                              className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap dark:text-white"
+                            >
+                              {item}
                             </th>
-                            <td className="w-20 p-4 flex flex-col justify-center">
-                              {category.categoryImageUrl ? (
-                                <img src={category.categoryImageUrl} />
-                              ) : (
-                                <div>Empty</div>
-                              )}
-                            </td>
-                            <td className="p-4 text-sm font-normal text-gray-900 text-center whitespace-nowrap dark:text-white">
-                              <span className="font-semibold text-left flex flex-col">
-                                <Link
-                                  href={{
-                                    pathname: `/update-category/${category.id}`,
-                                    query: category,
-                                  }}
-                                >
-                                  {category.name}
-                                </Link>
-                              </span>
-                            </td>
-                            <td className="p-4 text-sm font-normal text-left text-gray-500 overflow-y-auto dark:text-gray-400 h-fit w-fit">
-                              <div className="overflow-y-auto  max-h-md">
-                                {category.description}
-                              </div>
-                            </td>
-                            <td className="p-4 flex justify-start">
-                              {category.isParent ? (
-                                <p className="bg-green-100 whitespace-normal m-auto text-green-800 h-fit w-fit text-xs font-medium px-2.5 py-2 rounded-md -ml-1">
-                                  True
-                                </p>
-                              ) : (
-                                <p className="bg-orange-100 whitespace-normal m-auto text-orange-800 h-fit w-fit text-xs font-medium px-2.5 py-2 rounded-md -ml-1">
-                                  false
-                                </p>
-                              )}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                    <tfoot className="bg-gray-100 dark:bg-blue-900 sticky top-0">
-                      <tr>
-                        <th className="w-4 pl-2"></th>
-                        {categoryAttributes.map(
-                          (item: string, index: number) => (
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody className="">
+                        {payments?.map((payment: any, index: number) => {
+                          return (
+                            <tr
+                              key={payment.id}
+                              className="even:bg-gray-50 text-black hover:cursor-pointer group"
+                            >
+                              <td className="px-2 ">
+                                {
+                                  <input
+                                    type="checkbox"
+                                    className="bg-black"
+                                    value={payment.id}
+                                    onChange={select}
+                                  />
+                                }
+                              </td>
+                              <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                                <span className="font-semibold text-left flex flex-col">
+                                  {/* <Link href={`/update-product/${order.id}`}> */}
+                                    {payment.id}
+                                  {/* </Link> */}
+                                </span>
+                              </td>
+                              <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                {payment.userID}
+                                  </td>
+                                  
+                            <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
+                                {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
+                                {payment.amount}
+                              </td>
+                              <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
+                                {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
+                                {payment.createdAt.split('T')[0]}
+                              </td>
+                              <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
+                                {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
+                                {payment.paymentIntentId}
+                              </td>
+
+                              <td className="flex justify-start items-center p-4 h-full">
+                                {payment.paymentStatus ? (
+                                  <div className="bg-green-100 rounded-md  text-green-800 h-full w-fit text-xs font-medium px-2 py-1">
+                                    Payed
+                                  </div>
+                                ) : (
+                                  <div className="bg-red-100 text-red-800 h-full w-fit text-xs font-medium px-2 py-1 rounded-md">
+                                    Pending
+                                  </div>
+                                )}
+                              </td>
+                            </tr>
+                            // </Link>
+                          );
+                        })}
+                      </tbody>
+                      <tfoot className="bg-gray-100 dark:bg-blue-900 sticky top-0">
+                        <tr>
+                          <th className="w-4 pl-2"></th>
+                          {paymentAttributes.map((item: string, index: number) => (
                             <th
                               key={index}
                               scope="col"
@@ -371,11 +386,11 @@ export default function Categories() {
                             >
                               {item}
                             </th>
-                          ),
-                        )}
-                      </tr>
-                    </tfoot>
-                  </table>
+                          ))}
+                        </tr>
+                      </tfoot>
+                    </table>}
+                  {/* )} */}
                 </div>
               </div>
             </div>
@@ -383,7 +398,7 @@ export default function Categories() {
         </div>
 
         <div className="sticky bottom-0 right-0 items-center w-full px-4 py-2 bg-white border-t border-gray-200 sm:flex sm:justify-between dark:bg-gray-800 dark:border-gray-700">
-          <div className="flex w-full items-center mb-4 sm:mb-0">
+          <div className="flex items-center mb-4 sm:mb-0">
             <a
               href="#"
               className="inline-flex justify-center p-1 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
@@ -421,11 +436,11 @@ export default function Categories() {
             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
               Showing{" "}
               <span className="font-semibold text-gray-900 dark:text-white">
-                1-{categories?.length}
+                1-{payments?.length}
               </span>{" "}
               of{" "}
               <span className="font-semibold text-gray-900 dark:text-white">
-                {categories?.length}
+                {payments?.length}
               </span>
             </span>
           </div>
