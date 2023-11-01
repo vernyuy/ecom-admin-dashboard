@@ -157,4 +157,4 @@ export const paymentAttributes = [
 ];
 
 export const S3BucketLink =
-  "https://commercef73546860c244a5692ccfb41a3c66c7893837-staging.s3.amazonaws.com/public/";
+  "https://commerce4f57f623543047fc87b7ef20e805713093837-staging.s3.amazonaws.com/public/";
