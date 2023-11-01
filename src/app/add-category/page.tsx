@@ -4,13 +4,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Feedback } from "@/src/components";
 import categoryService from "@/src/redux-store/feature/category/categoryService";
-import awsExports from "@/src/aws-exports";
-import { Amplify, Storage } from "aws-amplify";
-if (typeof window !== "undefined") {
-  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
-  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
-}
-Amplify.configure({ ...awsExports, ssr: true });
+import { S3BucketLink } from "@/src/constants";
+import { Storage } from "aws-amplify";
 export default function AddCategory() {
   const [isComplete, setIsComplete] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -101,9 +96,7 @@ export default function AddCategory() {
       contentType: "image/png",
     });
     if (key) {
-      const newKey =
-        "https://commerceb8039144d9044463a5cf2714cc51248d193514-staging.s3.us-east-2.amazonaws.com/public/" +
-        key.key;
+      const newKey = S3BucketLink + key.key;
       setValues({ ...values, [event.target.name]: newKey });
     }
     setStates({ ...states, ["catMsg"]: false });

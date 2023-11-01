@@ -594,6 +594,46 @@ export type DeleteStoreInput = {
   _version?: number | null,
 };
 
+export type CreateEmailNotificationInput = {
+  id?: string | null,
+  subject: string,
+  body: string,
+  _version?: number | null,
+};
+
+export type ModelEmailNotificationConditionInput = {
+  subject?: ModelStringInput | null,
+  body?: ModelStringInput | null,
+  and?: Array< ModelEmailNotificationConditionInput | null > | null,
+  or?: Array< ModelEmailNotificationConditionInput | null > | null,
+  not?: ModelEmailNotificationConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type EmailNotification = {
+  __typename: "EmailNotification",
+  id: string,
+  subject: string,
+  body: string,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateEmailNotificationInput = {
+  id: string,
+  subject?: string | null,
+  body?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteEmailNotificationInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type ModelReviewsRatingFilterInput = {
   id?: ModelIDInput | null,
   review?: ModelStringInput | null,
@@ -754,6 +794,23 @@ export type ModelStoreConnection = {
   startedAt?: number | null,
 };
 
+export type ModelEmailNotificationFilterInput = {
+  id?: ModelIDInput | null,
+  subject?: ModelStringInput | null,
+  body?: ModelStringInput | null,
+  and?: Array< ModelEmailNotificationFilterInput | null > | null,
+  or?: Array< ModelEmailNotificationFilterInput | null > | null,
+  not?: ModelEmailNotificationFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelEmailNotificationConnection = {
+  __typename: "ModelEmailNotificationConnection",
+  items:  Array<EmailNotification | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
 export type ModelSubscriptionReviewsRatingFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   review?: ModelSubscriptionStringInput | null,
@@ -903,6 +960,15 @@ export type ModelSubscriptionStoreFilterInput = {
   ownerAddress?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionStoreFilterInput | null > | null,
   or?: Array< ModelSubscriptionStoreFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionEmailNotificationFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  subject?: ModelSubscriptionStringInput | null,
+  body?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionEmailNotificationFilterInput | null > | null,
+  or?: Array< ModelSubscriptionEmailNotificationFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -1800,6 +1866,63 @@ export type DeleteStoreMutation = {
   } | null,
 };
 
+export type CreateEmailNotificationMutationVariables = {
+  input: CreateEmailNotificationInput,
+  condition?: ModelEmailNotificationConditionInput | null,
+};
+
+export type CreateEmailNotificationMutation = {
+  createEmailNotification?:  {
+    __typename: "EmailNotification",
+    id: string,
+    subject: string,
+    body: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateEmailNotificationMutationVariables = {
+  input: UpdateEmailNotificationInput,
+  condition?: ModelEmailNotificationConditionInput | null,
+};
+
+export type UpdateEmailNotificationMutation = {
+  updateEmailNotification?:  {
+    __typename: "EmailNotification",
+    id: string,
+    subject: string,
+    body: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteEmailNotificationMutationVariables = {
+  input: DeleteEmailNotificationInput,
+  condition?: ModelEmailNotificationConditionInput | null,
+};
+
+export type DeleteEmailNotificationMutation = {
+  deleteEmailNotification?:  {
+    __typename: "EmailNotification",
+    id: string,
+    subject: string,
+    body: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
 export type GetReviewsRatingQueryVariables = {
   id: string,
 };
@@ -2674,6 +2797,75 @@ export type SyncStoresQuery = {
   } | null,
 };
 
+export type GetEmailNotificationQueryVariables = {
+  id: string,
+};
+
+export type GetEmailNotificationQuery = {
+  getEmailNotification?:  {
+    __typename: "EmailNotification",
+    id: string,
+    subject: string,
+    body: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListEmailNotificationsQueryVariables = {
+  filter?: ModelEmailNotificationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListEmailNotificationsQuery = {
+  listEmailNotifications?:  {
+    __typename: "ModelEmailNotificationConnection",
+    items:  Array< {
+      __typename: "EmailNotification",
+      id: string,
+      subject: string,
+      body: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncEmailNotificationsQueryVariables = {
+  filter?: ModelEmailNotificationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncEmailNotificationsQuery = {
+  syncEmailNotifications?:  {
+    __typename: "ModelEmailNotificationConnection",
+    items:  Array< {
+      __typename: "EmailNotification",
+      id: string,
+      subject: string,
+      body: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateReviewsRatingSubscriptionVariables = {
   filter?: ModelSubscriptionReviewsRatingFilterInput | null,
 };
@@ -3536,6 +3728,60 @@ export type OnDeleteStoreSubscription = {
     description?: string | null,
     ownerEmail?: string | null,
     ownerAddress?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateEmailNotificationSubscriptionVariables = {
+  filter?: ModelSubscriptionEmailNotificationFilterInput | null,
+};
+
+export type OnCreateEmailNotificationSubscription = {
+  onCreateEmailNotification?:  {
+    __typename: "EmailNotification",
+    id: string,
+    subject: string,
+    body: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateEmailNotificationSubscriptionVariables = {
+  filter?: ModelSubscriptionEmailNotificationFilterInput | null,
+};
+
+export type OnUpdateEmailNotificationSubscription = {
+  onUpdateEmailNotification?:  {
+    __typename: "EmailNotification",
+    id: string,
+    subject: string,
+    body: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteEmailNotificationSubscriptionVariables = {
+  filter?: ModelSubscriptionEmailNotificationFilterInput | null,
+};
+
+export type OnDeleteEmailNotificationSubscription = {
+  onDeleteEmailNotification?:  {
+    __typename: "EmailNotification",
+    id: string,
+    subject: string,
+    body: string,
     createdAt: string,
     updatedAt: string,
     _version: number,

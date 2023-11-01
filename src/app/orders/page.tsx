@@ -1,22 +1,17 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteOrders, filterOrders, listOrders } from "@/src/redux-store/feature/orders/orderSlice";
+import {
+  deleteOrders,
+  filterOrders,
+  listOrders,
+} from "@/src/redux-store/feature/orders/orderSlice";
 import DashboardLayout from "@/src/app/dashboardLayout";
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { orderAttributes } from "@/src/constants";
 import { Button, CustomModal, Delete } from "@/src/components";
-import awsExports from "@/src/aws-exports";
-import { Amplify } from "aws-amplify";
 import { CountryDropdown } from "react-country-region-selector";
-
-
-if (typeof window !== "undefined") {
-  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
-  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
-}
-Amplify.configure({ ...awsExports, ssr: true });
 
 export default function Page() {
   const [search, setSearch] = useState("");
@@ -30,7 +25,7 @@ export default function Page() {
   );
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    dispatch(listOrders(null))
+    dispatch(listOrders(null));
   }, [dispatch]);
 
   const filterOrder = (filterBy: any) => {
@@ -49,14 +44,13 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (isDelete)
-    {
-      deleteUsersFn()
+    if (isDelete) {
+      deleteUsersFn();
     }
-    filterOrder({ filterBy: "category"})
+    filterOrder({ filterBy: "category" });
   }, [isDelete]);
   const deleteUsersFn = (orderId?: string) => {
-    console.log("Users>>>>>: ",selectedOrders)
+    console.log("Users>>>>>: ", selectedOrders);
     if (selectedOrders.length > 0) {
       dispatch(deleteOrders(selectedOrders));
       return "deleted";
@@ -123,7 +117,6 @@ export default function Page() {
               </h1>
             </div>
             <div className="items-center justify-between flex flex-col gap-2 sm:flex-row sm:flex-wrap md:divide-x md:divide-gray-100 pb-3">
-              
               <div className="flex border-none flex-wrap gap-2">
                 <div className="group">
                   <Link
@@ -180,7 +173,6 @@ export default function Page() {
                   </div>
                 </div>
 
-
                 <div className="group">
                   <Link
                     href={"#"}
@@ -210,13 +202,12 @@ export default function Page() {
                       className="py-2 text-sm text-red-500 dark:text-gray-200"
                       aria-labelledby="dropdownDefaultButton"
                     >
-
                       <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
                         <Button
                           title="Delete"
                           handleClick={(e) => {
                             // setisDelete(true);
-                            deleteUsersFn()
+                            deleteUsersFn();
                           }}
                         />
                       </li>
@@ -250,7 +241,7 @@ export default function Page() {
               <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
                   {/* {!isLoading && isCompleted && products?.length == 0 && ( */}
-                    {/* <div className="w-full h-[100px] flex justify-center items-center">
+                  {/* <div className="w-full h-[100px] flex justify-center items-center">
                       <p className="font-semibold m-auto">It's empty here</p>
                     </div> */}
                   {/* )} */}
@@ -277,22 +268,24 @@ export default function Page() {
                         </path>
                       </svg>
                     </div>
-                  ) :
+                  ) : (
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
                       <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
                         <tr className="[&:nth-child(1)]:bg-blue-50d0">
                           <th className="pl-2">
                             {/* <input type="checkbox"  /> */}
                           </th>
-                          {orderAttributes.map((item: string, index: number) => (
-                            <th
-                              key={index}
-                              scope="col"
-                              className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap dark:text-white"
-                            >
-                              {item}
-                            </th>
-                          ))}
+                          {orderAttributes.map(
+                            (item: string, index: number) => (
+                              <th
+                                key={index}
+                                scope="col"
+                                className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap dark:text-white"
+                              >
+                                {item}
+                              </th>
+                            ),
+                          )}
                         </tr>
                       </thead>
                       <tbody className="">
@@ -346,18 +339,21 @@ export default function Page() {
                       <tfoot className="bg-gray-100 dark:bg-blue-900 sticky top-0">
                         <tr>
                           <th className="w-4 pl-2"></th>
-                          {orderAttributes.map((item: string, index: number) => (
-                            <th
-                              key={index}
-                              scope="col"
-                              className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
-                            >
-                              {item}
-                            </th>
-                          ))}
+                          {orderAttributes.map(
+                            (item: string, index: number) => (
+                              <th
+                                key={index}
+                                scope="col"
+                                className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
+                              >
+                                {item}
+                              </th>
+                            ),
+                          )}
                         </tr>
                       </tfoot>
-                    </table>}
+                    </table>
+                  )}
                   {/* )} */}
                 </div>
               </div>

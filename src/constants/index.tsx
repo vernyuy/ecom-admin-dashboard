@@ -144,7 +144,7 @@ export const orderAttributes = [
   "ORDER ID",
   "USER ID",
   "ORDER DATE",
-  "ORDER STATUS"
+  "ORDER STATUS",
 ];
 
 export const paymentAttributes = [
@@ -153,5 +153,8 @@ export const paymentAttributes = [
   "AMOUNT",
   "PAYMENT DATE",
   "PAYMENT INTENT ID",
-  "PAYMENT STATUS"
+  "PAYMENT STATUS",
 ];
+
+export const S3BucketLink =
+  "https://commercef73546860c244a5692ccfb41a3c66c7893837-staging.s3.amazonaws.com/public/";

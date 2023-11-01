@@ -6,13 +6,9 @@ import { useState, useEffect } from "react";
 import { Feedback, ColorPicker } from "@/src/components";
 import productService from "@/src/redux-store/feature/products/productService";
 import categoryService from "@/src/redux-store/feature/category/categoryService";
-import awsExports from "@/src/aws-exports";
-import { Amplify, Storage } from "aws-amplify";
-if (typeof window !== "undefined") {
-  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
-  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
-}
-Amplify.configure({ ...awsExports, ssr: true });
+import { Storage } from "aws-amplify";
+import { S3BucketLink } from "@/src/constants";
+
 export default function App() {
   const params = useParams();
   const productId = params.productId;
@@ -157,10 +153,7 @@ export default function App() {
       });
 
       if (key) {
-        const newKey =
-          "https://commerceb8039144d9044463a5cf2714cc51248d193514-staging.s3.us-east-2.amazonaws.com/public/" +
-          key.key;
-        setValues({ ...values, [event.target.name]: newKey });
+        setValues({ ...values, [event.target.name]: S3BucketLink + key.key });
       }
     } catch (error) {
       console.log(error);

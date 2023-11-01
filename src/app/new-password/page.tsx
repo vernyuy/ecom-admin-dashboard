@@ -1,51 +1,53 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
-import {useDispatch, useSelector} from "react-redux";
-import { forgotPasswordSubmit, googleSignIn, reset, signOut, signin } from "@/src/redux-store/feature/user/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  forgotPasswordSubmit,
+  googleSignIn,
+  reset,
+  signOut,
+  signin,
+} from "@/src/redux-store/feature/user/authSlice";
 import { signinUserData } from "@/src/types/types";
-import React, {useState, useEffect, useLayoutEffect} from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
-import awsExports from "@/src/aws-exports";
-import { Amplify, Auth } from "aws-amplify";
+import { Auth } from "aws-amplify";
 import { Button } from "@/src/components";
 import Link from "next/link";
-if (typeof window !== "undefined") {
-  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
-  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
-}
-Amplify.configure({ ...awsExports, ssr: true });
-
 
 export default function Login() {
   const dispatch = useDispatch<AppDispatch>();
-  const [email, setEmail] = useState('')
-  const [code, setCode] = useState('')
-  const [password, setPassword] = useState('')
-  const [cpassword, setcPassword] = useState('')
-  const [error, setError] = useState('')
-  const router = useRouter()
-  const [friends, setFriends] = useState()
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [password, setPassword] = useState("");
+  const [cpassword, setcPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+  const [friends, setFriends] = useState();
 
-  const {user, errorMsg, isLoading, isSuccess, isError, isGoogle}: any = useSelector((state: RootState)=> state.auth)
-  
-  console.log(isGoogle, isLoading)
-  useEffect(()=>{
-    const test = Auth.currentAuthenticatedUser()
-    if(isSuccess && !isGoogle){
-      console.log(user)
-      router.replace('/login')
-      dispatch(reset())
-    }
-  },[isError, isSuccess, errorMsg, dispatch])
+  const { user, errorMsg, isLoading, isSuccess, isError, isGoogle }: any =
+    useSelector((state: RootState) => state.auth);
 
-  const forgotPwdSubmit = ()=>{
-    if(cpassword !== password){
-        setError("Password do not match")
-        return
-    }else{
-    dispatch(forgotPasswordSubmit({email:email, code:code, password: password}))
+  console.log(isGoogle, isLoading);
+  useEffect(() => {
+    const test = Auth.currentAuthenticatedUser();
+    if (isSuccess && !isGoogle) {
+      console.log(user);
+      router.replace("/login");
+      dispatch(reset());
     }
-  }
+  }, [isError, isSuccess, errorMsg, dispatch]);
+
+  const forgotPwdSubmit = () => {
+    if (cpassword !== password) {
+      setError("Password do not match");
+      return;
+    } else {
+      dispatch(
+        forgotPasswordSubmit({ email: email, code: code, password: password }),
+      );
+    }
+  };
   return (
     <>
       <main className="h-screen w-full bg-white flex justify-center items-center px-36">
@@ -334,14 +336,19 @@ export default function Login() {
           </div>
           <div className="h-full w-full max-w-md">
             <div className="shadow-lg rounded-md h-fit w-full p-10 min-[1100px]:p-16">
-              <h2 className="border-t-[2px] w-fit text-black border-green-700 font-bold mb-8" onClick={()=>{dispatch(signOut(null))}}>
+              <h2
+                className="border-t-[2px] w-fit text-black border-green-700 font-bold mb-8"
+                onClick={() => {
+                  dispatch(signOut(null));
+                }}
+              >
                 Create Password
               </h2>
               <form className="pb-[80px]">
-              <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
-                    {errorMsg} {error}
-                  </h5>
-                  <div className="mb-2">
+                <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
+                  {errorMsg} {error}
+                </h5>
+                <div className="mb-2">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
                     email
                   </label>
@@ -349,7 +356,7 @@ export default function Login() {
                     type="email"
                     id="email"
                     value={email}
-                    onChange={e=>setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
                     placeholder="example@email.com"
                   />
@@ -363,7 +370,7 @@ export default function Login() {
                     type="text"
                     id="code"
                     value={code}
-                    onChange={e=>setCode(e.target.value)}
+                    onChange={(e) => setCode(e.target.value)}
                     className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
                     placeholder=""
                   />
@@ -377,7 +384,7 @@ export default function Login() {
                     type="password"
                     id="password"
                     value={password}
-                    onChange={e=>setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
                     placeholder=""
                   />
@@ -391,17 +398,188 @@ export default function Login() {
                     type="password"
                     id="password"
                     value={cpassword}
-                    onChange={e=>setcPassword(e.target.value)}
+                    onChange={(e) => setcPassword(e.target.value)}
                     className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
                     placeholder=""
                   />
                 </div>
 
-                <button className="text-white mb-5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " onClick={(e)=>{e.preventDefault(); forgotPwdSubmit()}} type="submit" disabled={isLoading? true: false}>
-                {isLoading? <div className="flex justify-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" className="" width="20" height="20" viewBox="0 0 24 24"><g><circle cx="12" cy="3" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate0" attributeName="r" begin="0;svgSpinners12DotsScaleRotate2.end-0.5s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="16.5" cy="4.21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate1" attributeName="r" begin="svgSpinners12DotsScaleRotate0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="7.5" cy="4.21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate2" attributeName="r" begin="svgSpinners12DotsScaleRotate4.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="19.79" cy="7.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate3" attributeName="r" begin="svgSpinners12DotsScaleRotate1.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="4.21" cy="7.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate4" attributeName="r" begin="svgSpinners12DotsScaleRotate6.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="21" cy="12" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate5" attributeName="r" begin="svgSpinners12DotsScaleRotate3.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="3" cy="12" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate6" attributeName="r" begin="svgSpinners12DotsScaleRotate8.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="19.79" cy="16.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate7" attributeName="r" begin="svgSpinners12DotsScaleRotate5.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="4.21" cy="16.5" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate8" attributeName="r" begin="svgSpinners12DotsScaleRotatea.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="16.5" cy="19.79" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotate9" attributeName="r" begin="svgSpinners12DotsScaleRotate7.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="7.5" cy="19.79" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotatea" attributeName="r" begin="svgSpinners12DotsScaleRotateb.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><circle cx="12" cy="21" r="1" fill="currentColor"><animate id="svgSpinners12DotsScaleRotateb" attributeName="r" begin="svgSpinners12DotsScaleRotate9.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".27,.42,.37,.99;.53,0,.61,.73" values="1;2;1"/></circle><animateTransform attributeName="transform" dur="6s" repeatCount="indefinite" type="rotate" values="360 12 12;0 12 12"/></g></svg> Loading </div>: "Confirm"}
-                  
+                <button
+                  className="text-white mb-5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
+                  onClick={(e) => {
+                    e.preventDefault();
+                    forgotPwdSubmit();
+                  }}
+                  type="submit"
+                  disabled={isLoading ? true : false}
+                >
+                  {isLoading ? (
+                    <div className="flex justify-center gap-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className=""
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                      >
+                        <g>
+                          <circle cx="12" cy="3" r="1" fill="currentColor">
+                            <animate
+                              id="svgSpinners12DotsScaleRotate0"
+                              attributeName="r"
+                              begin="0;svgSpinners12DotsScaleRotate2.end-0.5s"
+                              calcMode="spline"
+                              dur="0.6s"
+                              keySplines=".27,.42,.37,.99;.53,0,.61,.73"
+                              values="1;2;1"
+                            />
+                          </circle>
+                          <circle cx="16.5" cy="4.21" r="1" fill="currentColor">
+                            <animate
+                              id="svgSpinners12DotsScaleRotate1"
+                              attributeName="r"
+                              begin="svgSpinners12DotsScaleRotate0.begin+0.1s"
+                              calcMode="spline"
+                              dur="0.6s"
+                              keySplines=".27,.42,.37,.99;.53,0,.61,.73"
+                              values="1;2;1"
+                            />
+                          </circle>
+                          <circle cx="7.5" cy="4.21" r="1" fill="currentColor">
+                            <animate
+                              id="svgSpinners12DotsScaleRotate2"
+                              attributeName="r"
+                              begin="svgSpinners12DotsScaleRotate4.begin+0.1s"
+                              calcMode="spline"
+                              dur="0.6s"
+                              keySplines=".27,.42,.37,.99;.53,0,.61,.73"
+                              values="1;2;1"
+                            />
+                          </circle>
+                          <circle cx="19.79" cy="7.5" r="1" fill="currentColor">
+                            <animate
+                              id="svgSpinners12DotsScaleRotate3"
+                              attributeName="r"
+                              begin="svgSpinners12DotsScaleRotate1.begin+0.1s"
+                              calcMode="spline"
+                              dur="0.6s"
+                              keySplines=".27,.42,.37,.99;.53,0,.61,.73"
+                              values="1;2;1"
+                            />
+                          </circle>
+                          <circle cx="4.21" cy="7.5" r="1" fill="currentColor">
+                            <animate
+                              id="svgSpinners12DotsScaleRotate4"
+                              attributeName="r"
+                              begin="svgSpinners12DotsScaleRotate6.begin+0.1s"
+                              calcMode="spline"
+                              dur="0.6s"
+                              keySplines=".27,.42,.37,.99;.53,0,.61,.73"
+                              values="1;2;1"
+                            />
+                          </circle>
+                          <circle cx="21" cy="12" r="1" fill="currentColor">
+                            <animate
+                              id="svgSpinners12DotsScaleRotate5"
+                              attributeName="r"
+                              begin="svgSpinners12DotsScaleRotate3.begin+0.1s"
+                              calcMode="spline"
+                              dur="0.6s"
+                              keySplines=".27,.42,.37,.99;.53,0,.61,.73"
+                              values="1;2;1"
+                            />
+                          </circle>
+                          <circle cx="3" cy="12" r="1" fill="currentColor">
+                            <animate
+                              id="svgSpinners12DotsScaleRotate6"
+                              attributeName="r"
+                              begin="svgSpinners12DotsScaleRotate8.begin+0.1s"
+                              calcMode="spline"
+                              dur="0.6s"
+                              keySplines=".27,.42,.37,.99;.53,0,.61,.73"
+                              values="1;2;1"
+                            />
+                          </circle>
+                          <circle
+                            cx="19.79"
+                            cy="16.5"
+                            r="1"
+                            fill="currentColor"
+                          >
+                            <animate
+                              id="svgSpinners12DotsScaleRotate7"
+                              attributeName="r"
+                              begin="svgSpinners12DotsScaleRotate5.begin+0.1s"
+                              calcMode="spline"
+                              dur="0.6s"
+                              keySplines=".27,.42,.37,.99;.53,0,.61,.73"
+                              values="1;2;1"
+                            />
+                          </circle>
+                          <circle cx="4.21" cy="16.5" r="1" fill="currentColor">
+                            <animate
+                              id="svgSpinners12DotsScaleRotate8"
+                              attributeName="r"
+                              begin="svgSpinners12DotsScaleRotatea.begin+0.1s"
+                              calcMode="spline"
+                              dur="0.6s"
+                              keySplines=".27,.42,.37,.99;.53,0,.61,.73"
+                              values="1;2;1"
+                            />
+                          </circle>
+                          <circle
+                            cx="16.5"
+                            cy="19.79"
+                            r="1"
+                            fill="currentColor"
+                          >
+                            <animate
+                              id="svgSpinners12DotsScaleRotate9"
+                              attributeName="r"
+                              begin="svgSpinners12DotsScaleRotate7.begin+0.1s"
+                              calcMode="spline"
+                              dur="0.6s"
+                              keySplines=".27,.42,.37,.99;.53,0,.61,.73"
+                              values="1;2;1"
+                            />
+                          </circle>
+                          <circle cx="7.5" cy="19.79" r="1" fill="currentColor">
+                            <animate
+                              id="svgSpinners12DotsScaleRotatea"
+                              attributeName="r"
+                              begin="svgSpinners12DotsScaleRotateb.begin+0.1s"
+                              calcMode="spline"
+                              dur="0.6s"
+                              keySplines=".27,.42,.37,.99;.53,0,.61,.73"
+                              values="1;2;1"
+                            />
+                          </circle>
+                          <circle cx="12" cy="21" r="1" fill="currentColor">
+                            <animate
+                              id="svgSpinners12DotsScaleRotateb"
+                              attributeName="r"
+                              begin="svgSpinners12DotsScaleRotate9.begin+0.1s"
+                              calcMode="spline"
+                              dur="0.6s"
+                              keySplines=".27,.42,.37,.99;.53,0,.61,.73"
+                              values="1;2;1"
+                            />
+                          </circle>
+                          <animateTransform
+                            attributeName="transform"
+                            dur="6s"
+                            repeatCount="indefinite"
+                            type="rotate"
+                            values="360 12 12;0 12 12"
+                          />
+                        </g>
+                      </svg>{" "}
+                      Loading{" "}
+                    </div>
+                  ) : (
+                    "Confirm"
+                  )}
                 </button>
-
               </form>
             </div>
           </div>

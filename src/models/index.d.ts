@@ -344,3 +344,33 @@ export declare type Store = LazyLoading extends LazyLoadingDisabled ? EagerStore
 export declare const Store: (new (init: ModelInit<Store>) => Store) & {
   copyOf(source: Store, mutator: (draft: MutableModel<Store>) => MutableModel<Store> | void): Store;
 }
+
+type EagerEmailNotification = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<EmailNotification, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly subject: string;
+  readonly body: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyEmailNotification = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<EmailNotification, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly subject: string;
+  readonly body: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type EmailNotification = LazyLoading extends LazyLoadingDisabled ? EagerEmailNotification : LazyEmailNotification
+
+export declare const EmailNotification: (new (init: ModelInit<EmailNotification>) => EmailNotification) & {
+  copyOf(source: EmailNotification, mutator: (draft: MutableModel<EmailNotification>) => MutableModel<EmailNotification> | void): EmailNotification;
+}
