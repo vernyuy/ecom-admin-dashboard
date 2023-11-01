@@ -96,8 +96,7 @@ export default function AddCategory() {
       contentType: "image/png",
     });
     if (key) {
-      const newKey = S3BucketLink + key.key;
-      setValues({ ...values, [event.target.name]: newKey });
+      setValues({ ...values, [event.target.name]: S3BucketLink + key.key });
     }
     setStates({ ...states, ["catMsg"]: false });
   };

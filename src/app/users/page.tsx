@@ -1,22 +1,25 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteUsers,
-  filterUsers,
-  listUsers,
-} from "@/src/redux-store/feature/user/userSlice";
+import { blockUsers, deleteUsers, filterUsers, listUsers, unBlockUsers } from "@/src/redux-store/feature/user/userSlice";
 import DashboardLayout from "@/src/app/dashboardLayout";
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { userAttributes, users } from "@/src/constants";
 import { Button, CustomModal, Delete } from "@/src/components";
+import awsExports from "@/src/aws-exports";
+import { Amplify } from "aws-amplify";
 import { CountryDropdown } from "react-country-region-selector";
+
+
+if (typeof window !== "undefined") {
+  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
+  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
+}
+Amplify.configure({ ...awsExports, ssr: true });
 
 export default function App() {
   const [search, setSearch] = useState("");
-  const [city, setCity] = useState("");
-  const [del, setDel] = useState(false);
   const [country, setCountry] = useState("");
 
   const [isDelete, setisDelete] = useState(false);
@@ -27,7 +30,7 @@ export default function App() {
   );
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    dispatch(listUsers(null));
+    dispatch(listUsers(null))
   }, [dispatch]);
 
   const filterCustomers = (filterBy: any) => {
@@ -47,13 +50,15 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (isDelete) {
-      deleteUsersFn();
+    if (isDelete)
+    {
+      deleteUsersFn()
     }
-    filterCustomers({ filterBy: "category", country: country });
+    filterCustomers({ filterBy: "category", country: country })
   }, [isDelete, country]);
+
   const deleteUsersFn = (userId?: string) => {
-    console.log("Users>>>>>: ", selectedUsers);
+    console.log("Users>>>>>: ",selectedUsers)
     if (selectedUsers.length > 0) {
       dispatch(deleteUsers(selectedUsers));
       return "deleted";
@@ -62,6 +67,34 @@ export default function App() {
       return "deleted";
     } else {
       console.log("Please select product(s) to delete");
+      return "deleted";
+    }
+  };
+
+  const blockUser = (userId?: string) => {
+    console.log("Users>>>>>: ",selectedUsers)
+    if (selectedUsers.length > 0) {
+      dispatch(blockUsers(selectedUsers));
+      return "deleted";
+    } else if (userId) {
+      dispatch(blockUsers(userId));
+      return "deleted";
+    } else {
+      console.log("Please select user(s) to block");
+      return "deleted";
+    }
+  };
+
+    const unBlockUser = (userId?: string) => {
+    console.log("Users>>>>>: ",selectedUsers)
+    if (selectedUsers.length > 0) {
+      dispatch(unBlockUsers(selectedUsers));
+      return "deleted";
+    } else if (userId) {
+      dispatch(unBlockUsers(userId));
+      return "deleted";
+    } else {
+      console.log("Please select user(s) to unblock");
       return "deleted";
     }
   };
@@ -247,12 +280,13 @@ export default function App() {
                       className="py-2 text-sm text-red-500 dark:text-gray-200"
                       aria-labelledby="dropdownDefaultButton"
                     >
+
                       <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
                         <Button
                           title="Delete"
                           handleClick={(e) => {
                             // setisDelete(true);
-                            deleteUsersFn();
+                            deleteUsersFn()
                           }}
                         />
                       </li>
@@ -260,18 +294,18 @@ export default function App() {
                       <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
                         <Button
                           title="Block"
-                          // handleClick={(e) => {
-                          //   setisDelete(true);
-                          // }}
+                          handleClick={(e) => {
+                            blockUser();
+                          }}
                         />
                       </li>
 
                       <li className="block px-4 py-2 hover:bg-green-100 text-green-500 dark:hover:bg-gray-600 dark:hover:text-white">
                         <Button
                           title="Unblock"
-                          // handleClick={(e) => {
-                          //   setisDelete(true);
-                          // }}
+                          handleClick={(e) => {
+                            unBlockUser();
+                          }}
                         />
                       </li>
                     </ul>
@@ -286,7 +320,7 @@ export default function App() {
               <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
                   {/* {!isLoading && isCompleted && products?.length == 0 && ( */}
-                  {/* <div className="w-full h-[100px] flex justify-center items-center">
+                    {/* <div className="w-full h-[100px] flex justify-center items-center">
                       <p className="font-semibold m-auto">It's empty here</p>
                     </div> */}
                   {/* )} */}
@@ -313,7 +347,7 @@ export default function App() {
                         </path>
                       </svg>
                     </div>
-                  ) : (
+                  ) :
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
                       <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
                         <tr className="[&:nth-child(1)]:bg-blue-50d0">
@@ -349,9 +383,8 @@ export default function App() {
                                 }
                               </td>
                               <td
-                                className={`flex p-4 flex-col justify-center sticky left-0 h-full py-2 ${
-                                  index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                }`}
+                                className={`flex p-4 flex-col justify-center sticky left-0 h-full py-2 ${index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                  }`}
                               >
                                 {user.firstName}
                               </td>
@@ -417,8 +450,7 @@ export default function App() {
                           ))}
                         </tr>
                       </tfoot>
-                    </table>
-                  )}
+                    </table>}
                   {/* )} */}
                 </div>
               </div>

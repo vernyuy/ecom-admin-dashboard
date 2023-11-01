@@ -2,7 +2,7 @@
 
 import { Auth, DataStore } from "aws-amplify";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import Router, { useSearchParams, useRouter } from "next/navigation";
 import { User } from "@/src/models";
 import React from "react";
 import Link from "next/link";
@@ -51,11 +51,14 @@ export default function Page() {
                 console.log(data);
                 if (data.length === 0) {
                   await DataStore.save(new User(userData)).then((data) => {
-                    router.replace("/products");
+                    console.log(data)
+                    return router.replace(`/external-auth/${data.id}`)
                   });
-                } else {
-                  router.replace("/");
                 }
+                // else
+                // {
+                //   router.replace("/external-auth/?error=email_exists");
+                // }
               });
             }
           });

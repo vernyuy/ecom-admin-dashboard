@@ -173,7 +173,7 @@ export default function App() {
         });
         if (key) {
           const newKey =
-            "https://commerceb8039144d9044463a5cf2714cc51248d193514-staging.s3.us-east-2.amazonaws.com/public/" +
+            "https://commercec72e1f673c8b45b48278d2905451b8c693837-staging.s3.us-east-1.amazonaws.com/public/" +
             key.key;
           arrLinks = [...arrLinks, newKey];
         }

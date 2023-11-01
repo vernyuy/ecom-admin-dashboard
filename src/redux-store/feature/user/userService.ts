@@ -69,8 +69,8 @@ const deleteUsers = async (user: any) => {
   try {
     console.log(user);
     typeof user !== "string"
-      ? user?.map(async (p: string) => {
-          await DataStore.delete(user, p);
+      ? user?.map(async (u: string) => {
+          await DataStore.delete(User, u);
         })
       : await DataStore.delete(User, user);
     const userResult = await DataStore.query(User, Predicates.ALL);
@@ -80,11 +80,59 @@ const deleteUsers = async (user: any) => {
     throw error;
   }
 };
+
+const blockUser = async (user: any) => {
+  console.log(user)
+  try
+  {
+    user?.map(async (uId: string) => {
+          await DataStore.query(User, uId).then(async (original: any) => {
+        await DataStore.save(
+          User.copyOf(original, updated => {
+            updated.isActive = false;
+          })
+        );
+      });
+        })
+    const userResult = await DataStore.query(User, Predicates.ALL);
+    return { success: true, result: userResult };
+    
+  } catch (error)
+  {
+    console.log(error);
+    throw error;
+  }
+}
+
+const unBlockUser = async (user: any) => {
+  try
+  {
+   user?.map(async (uId: string) => {
+          await DataStore.query(User, uId).then(async (original: any) => {
+          await DataStore.save(
+          User.copyOf(original, updated => {
+            updated.isActive = true;
+          })
+        );
+      });
+        })
+
+    const userResult = await DataStore.query(User, Predicates.ALL);
+    return { success: true, result: userResult };
+
+  } catch (error)
+  {
+    console.log(error);
+    throw error;
+  }
+}
   
 const userService = {
     getAllUsers,
     filterUsers,
-    deleteUsers
+  deleteUsers,
+  blockUser,
+    unBlockUser
 }
 
 export default userService
