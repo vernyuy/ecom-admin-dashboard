@@ -1,35 +1,38 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
-import {useDispatch, useSelector} from "react-redux";
-import { confirmUser, forgotPassword, resendCode, reset, signup } from "@/src/redux-store/feature/user/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  confirmUser,
+  forgotPassword,
+  resendCode,
+  reset,
+  signup,
+} from "@/src/redux-store/feature/user/authSlice";
 import { signinUserData, userData } from "@/src/types/types";
-import React, {useState, useEffect} from "react";
-import awsExports from "@/src/aws-exports";
+import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Amplify } from "aws-amplify";
 import { Button } from "@/src/components";
-Amplify.configure({ ...awsExports, ssr: true });
-
-
 
 export default function Register() {
-  const [email, setEmail] = useState('');
-  const [codeSent, setCodeSent] = useState(false)
+  const [email, setEmail] = useState("");
+  const [codeSent, setCodeSent] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter()
-               const params = useParams()
-  const {user, errorMsg, isLoading, isSuccess, issentCode}: any = useSelector((state: RootState)=> state.auth)
+  const router = useRouter();
+  const params = useParams();
+  const { user, errorMsg, isLoading, isSuccess, issentCode }: any = useSelector(
+    (state: RootState) => state.auth,
+  );
 
-  useEffect(()=>{
-    if(isSuccess){
-        router.replace('/new-password')
-        dispatch(reset())
+  useEffect(() => {
+    if (isSuccess) {
+      router.replace("/new-password");
+      dispatch(reset());
     }
-  }, [isSuccess, isLoading, errorMsg, dispatch])
+  }, [isSuccess, isLoading, errorMsg, dispatch]);
 
-  const sendForgotPasswordCode = ()=>{
-      dispatch(forgotPassword(email))
-    }
+  const sendForgotPasswordCode = () => {
+    dispatch(forgotPassword(email));
+  };
   return (
     <>
       <main className="h-screen w-full bg-white flex justify-center items-center px-36">
@@ -322,29 +325,34 @@ export default function Register() {
                 Please enter your email
               </h2>
               <form className="pb-[80px]">
-              <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
-                    {errorMsg}
-                  </h5>
+                <h5 className="text-red-600 text-[14px] pl-1 pt-[6px] font-medium">
+                  {errorMsg.replace("Username", "Email")}
+                </h5>
 
-                  <h5 className="text-green-600 text-[14px] font-medium">
-                    {codeSent?'Check your email for confirmation code':''}
-                  </h5>
-
+                <h5 className="text-green-600 text-[14px] font-medium">
+                  {codeSent ? "Check your email for confirmation code" : ""}
+                </h5>
 
                 <div className="mb-2">
                   <input
                     type="email"
                     id="email"
                     value={email}
-                    onChange={e=>setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-xl outline-none w-full p-2.5"
                     placeholder="example@email.com"
                   />
                 </div>
-                <div className="flex justify-end">
-                  
-                </div>
-                <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading? 'Loading': "Send Code"} handleClick={(e)=>{e.preventDefault(); sendForgotPasswordCode()}} btnType="submit"/>
+                <div className="flex justify-end"></div>
+                <Button
+                  containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
+                  title={isLoading ? "Loading" : "Send Code"}
+                  handleClick={(e) => {
+                    e.preventDefault();
+                    sendForgotPasswordCode();
+                  }}
+                  btnType="submit"
+                />
               </form>
             </div>
           </div>

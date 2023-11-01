@@ -1,17 +1,8 @@
-// "use client";
-
 import "./globals.css";
 import type { Metadata } from "next";
-// import { Inter } from "next/font/google";
-import { Amplify, withSSRContext } from "aws-amplify";
-import awsExports from "../aws-exports";
 import { Providers } from "../redux-store/providers";
-import { store } from "../redux-store/store";
-
-Amplify.configure({ ...awsExports, ssr: true });
-
+// import { Inter } from "next/font/google";
 // const inter = Inter({ subsets: ["latin", "greek"] });
-
 export const metadata: Metadata = {
   title: "Commerce",
   description: "ro-groups",
@@ -26,7 +17,9 @@ export default function RootLayout({
     <html lang="en">
       {/* className={inter.className} */}
       <body className="fon font-sans">
-        <Providers store={store}>{children}</Providers>
+        <>
+          <Providers>{children}</Providers>
+        </>
       </body>
     </html>
   );

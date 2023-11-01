@@ -9,19 +9,14 @@ import {
 } from "@/src/redux-store/feature/products/productSlice";
 import { listCategories } from "@/src/redux-store/feature/category/categorySlice";
 import DashboardLayout from "@/src/app/dashboardLayout";
-import { useEffect, useLayoutEffect, useState } from "react";
-import awsExports from "@/src/aws-exports";
-import { Amplify } from "aws-amplify";
+import { useState, useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
 import { productAttributes } from "@/src/constants";
 import { Button, CustomModal } from "@/src/components";
-Amplify.configure({ ...awsExports, ssr: true });
-
 export default function App() {
   const [search, setSearch] = useState("");
   const [isDelete, setisDelete] = useState(false);
   let selectedProducts: string[] = [];
-
   const { products, isCompleted, errorMsg, isLoading }: any = useSelector(
     (state: RootState) => state.product,
   );
@@ -32,13 +27,16 @@ export default function App() {
     dispatch(listCategories());
     dispatch(listProducts());
   }, [dispatch]);
+  useEffect(() => {
+    if (isDelete) {
+      deleteProducts();
+    }
+  }, [isDelete]);
   console.log(categories);
-
   const filterStock = (filterBy: any) => {
     dispatch(filterProduct(filterBy));
     console.log(products);
   };
-
   const select = (e: any) => {
     if (e.target.checked) {
       selectedProducts.push(e.target.value);
@@ -49,8 +47,7 @@ export default function App() {
     }
     console.log(selectedProducts);
   };
-
-  const deleteProducts = (e: any, productId?: string) => {
+  const deleteProducts = (e?: any, productId?: string) => {
     e.preventDefault();
     if (selectedProducts.length > 0) {
       dispatch(deleteProductsFn(selectedProducts));

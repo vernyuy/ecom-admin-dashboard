@@ -7,7 +7,7 @@ const UserType = {
   "CUSTOMER": "CUSTOMER"
 };
 
-const { ReviewsRating, Payment, Order, Cart, Product, Category, User, Store } = initSchema(schema);
+const { ReviewsRating, Payment, Order, Cart, Product, Category, User, Store, EmailNotification } = initSchema(schema);
 
 export {
   ReviewsRating,
@@ -18,5 +18,6 @@ export {
   Category,
   User,
   Store,
+  EmailNotification,
   UserType
 };

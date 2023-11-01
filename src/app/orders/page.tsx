@@ -2,63 +2,60 @@
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  deleteUsers,
-  filterUsers,
-  listUsers,
-} from "@/src/redux-store/feature/user/userSlice";
+  deleteOrders,
+  filterOrders,
+  listOrders,
+} from "@/src/redux-store/feature/orders/orderSlice";
 import DashboardLayout from "@/src/app/dashboardLayout";
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
-import { userAttributes, users } from "@/src/constants";
+import { orderAttributes } from "@/src/constants";
 import { Button, CustomModal, Delete } from "@/src/components";
 import { CountryDropdown } from "react-country-region-selector";
 
-export default function App() {
+export default function Page() {
   const [search, setSearch] = useState("");
-  const [city, setCity] = useState("");
   const [del, setDel] = useState(false);
-  const [country, setCountry] = useState("");
 
   const [isDelete, setisDelete] = useState(false);
-  let selectedUsers: string[] = [];
+  let selectedOrders: string[] = [];
 
-  const { users, errorMsg, isLoading }: any = useSelector(
-    (state: RootState) => state.user,
+  const { orders, errorMsg, isLoading }: any = useSelector(
+    (state: RootState) => state.order,
   );
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    dispatch(listUsers(null));
+    dispatch(listOrders(null));
   }, [dispatch]);
 
-  const filterCustomers = (filterBy: any) => {
-    dispatch(filterUsers(filterBy));
-    console.log(users);
+  const filterOrder = (filterBy: any) => {
+    dispatch(filterOrders(filterBy));
   };
 
   const select = (e: any) => {
     if (e.target.checked) {
-      selectedUsers.push(e.target.value);
+      selectedOrders.push(e.target.value);
     } else {
-      selectedUsers = selectedUsers.filter((u) => {
-        return u !== e.target.value;
+      selectedOrders = selectedOrders.filter((o) => {
+        return o !== e.target.value;
       });
     }
-    console.log(selectedUsers);
+    console.log(selectedOrders);
   };
 
   useEffect(() => {
     if (isDelete) {
       deleteUsersFn();
     }
-    filterCustomers({ filterBy: "category", country: country });
-  }, [isDelete, country]);
-  const deleteUsersFn = (userId?: string) => {
-    console.log("Users>>>>>: ", selectedUsers);
-    if (selectedUsers.length > 0) {
-      dispatch(deleteUsers(selectedUsers));
+    filterOrder({ filterBy: "category" });
+  }, [isDelete]);
+  const deleteUsersFn = (orderId?: string) => {
+    console.log("Users>>>>>: ", selectedOrders);
+    if (selectedOrders.length > 0) {
+      dispatch(deleteOrders(selectedOrders));
       return "deleted";
-    } else if (userId) {
-      dispatch(deleteUsers(userId));
+    } else if (orderId) {
+      dispatch(deleteOrders(orderId));
       return "deleted";
     } else {
       console.log("Please select product(s) to delete");
@@ -116,43 +113,14 @@ export default function App() {
           <div className="w-full">
             <div className="mb-2">
               <h1 className="text-md pt-5 font-semibold text-gray-900 sm:text-xl dark:text-white py-2">
-                All Users
+                All Orders
               </h1>
             </div>
             <div className="items-center justify-between flex flex-col gap-2 sm:flex-row sm:flex-wrap md:divide-x md:divide-gray-100 pb-3">
-              <div className="flex items-center mb-4 sm:mb-0 w-full sm:w-fit">
-                <form
-                  className="sm:pr-3"
-                  action="#"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    filterCustomers({ filterBy: "search", search: search });
-                  }}
-                  method="GET"
-                >
-                  <label htmlFor="products-search" className="sr-only">
-                    Search
-                  </label>
-                  <div className="relative w-full sm:w-64  xl:w-96">
-                    <input
-                      type="text"
-                      name="text"
-                      id="products-search"
-                      value={search}
-                      className="bg-gray-50 outline-none border border-gray-100 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 w-full py-1.5 px-2.5"
-                      placeholder="Search users by name"
-                      onChange={(e) => {
-                        setSearch(e.target.value);
-                        filterCustomers({ filterBy: "search", search: search });
-                      }}
-                    />
-                  </div>
-                </form>
-              </div>
               <div className="flex border-none flex-wrap gap-2">
                 <div className="group">
                   <Link
-                    href={"/add-product"}
+                    href={"/#"}
                     className=" border text-green-500 font-semibold border-green-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-green-300 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-center"
                     type="button"
                   >
@@ -178,7 +146,7 @@ export default function App() {
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          onClick={() => filterCustomers("all")}
+                          onClick={() => filterOrder("all")}
                         >
                           All
                         </a>
@@ -187,35 +155,22 @@ export default function App() {
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          onClick={() => filterCustomers("active")}
+                          onClick={() => filterOrder("pending")}
                         >
-                          Active
+                          Pending
                         </a>
                       </li>
                       <li>
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          onClick={() => filterCustomers("blocked")}
+                          onClick={() => filterOrder("completed")}
                         >
-                          Blocked
+                          Completed
                         </a>
                       </li>
-                      {/* <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white">On promotion</a>
-                      </li> */}
                     </ul>
                   </div>
-                </div>
-
-                <div className="group">
-                  <CountryDropdown
-                    classes="border text-green-500 max-w-[152px] font-semibold border-green-300 hover:cursor-pointer rounded-lg text-sm px-3 py-1.5 flex gap-1 items-centersd "
-                    value={country}
-                    onChange={(val) => {
-                      setCountry(val);
-                    }}
-                  />
                 </div>
 
                 <div className="group">
@@ -259,7 +214,7 @@ export default function App() {
 
                       <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
                         <Button
-                          title="Block"
+                          title="Ordered"
                           // handleClick={(e) => {
                           //   setisDelete(true);
                           // }}
@@ -268,7 +223,7 @@ export default function App() {
 
                       <li className="block px-4 py-2 hover:bg-green-100 text-green-500 dark:hover:bg-gray-600 dark:hover:text-white">
                         <Button
-                          title="Unblock"
+                          title="Pending"
                           // handleClick={(e) => {
                           //   setisDelete(true);
                           // }}
@@ -320,22 +275,24 @@ export default function App() {
                           <th className="pl-2">
                             {/* <input type="checkbox"  /> */}
                           </th>
-                          {userAttributes.map((item: string, index: number) => (
-                            <th
-                              key={index}
-                              scope="col"
-                              className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap dark:text-white"
-                            >
-                              {item}
-                            </th>
-                          ))}
+                          {orderAttributes.map(
+                            (item: string, index: number) => (
+                              <th
+                                key={index}
+                                scope="col"
+                                className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap dark:text-white"
+                              >
+                                {item}
+                              </th>
+                            ),
+                          )}
                         </tr>
                       </thead>
                       <tbody className="">
-                        {users?.map((user: any, index: number) => {
+                        {orders?.map((order: any, index: number) => {
                           return (
                             <tr
-                              key={user.id}
+                              key={order.id}
                               className="even:bg-gray-50 text-black hover:cursor-pointer group"
                             >
                               <td className="px-2 ">
@@ -343,58 +300,34 @@ export default function App() {
                                   <input
                                     type="checkbox"
                                     className="bg-black"
-                                    value={user.id}
+                                    value={order.id}
                                     onChange={select}
                                   />
                                 }
                               </td>
-                              <td
-                                className={`flex p-4 flex-col justify-center sticky left-0 h-full py-2 ${
-                                  index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                }`}
-                              >
-                                {user.firstName}
-                              </td>
                               <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
                                 <span className="font-semibold text-left flex flex-col">
-                                  <Link href={`/update-product/${user.id}`}>
-                                    {user.lastName}
+                                  <Link href={`/update-product/${order.id}`}>
+                                    {order.id}
                                   </Link>
                                 </span>
                               </td>
                               <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {user.email}
+                                {order.userID}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
                                 {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
-                                {user.phone}
-                              </td>
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {`${user.address.coutry}`}
-                              </td>
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {user.address.region}
-                              </td>
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {user.address.city}
-                              </td>
-
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {user.address.zipcode}
-                              </td>
-
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {user.address.addressLine1}
+                                {order.createdAt.split("T")[0]}
                               </td>
 
                               <td className="flex justify-start items-center p-4 h-full">
-                                {user.isActive ? (
+                                {order.orderStatus ? (
                                   <div className="bg-green-100 rounded-md  text-green-800 h-full w-fit text-xs font-medium px-2 py-1">
-                                    Active
+                                    Ordered
                                   </div>
                                 ) : (
                                   <div className="bg-red-100 text-red-800 h-full w-fit text-xs font-medium px-2 py-1 rounded-md">
-                                    Blocked
+                                    Pending
                                   </div>
                                 )}
                               </td>
@@ -406,15 +339,17 @@ export default function App() {
                       <tfoot className="bg-gray-100 dark:bg-blue-900 sticky top-0">
                         <tr>
                           <th className="w-4 pl-2"></th>
-                          {userAttributes.map((item: string, index: number) => (
-                            <th
-                              key={index}
-                              scope="col"
-                              className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
-                            >
-                              {item}
-                            </th>
-                          ))}
+                          {orderAttributes.map(
+                            (item: string, index: number) => (
+                              <th
+                                key={index}
+                                scope="col"
+                                className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
+                              >
+                                {item}
+                              </th>
+                            ),
+                          )}
                         </tr>
                       </tfoot>
                     </table>
@@ -465,11 +400,11 @@ export default function App() {
             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
               Showing{" "}
               <span className="font-semibold text-gray-900 dark:text-white">
-                1-{users?.length}
+                1-{orders?.length}
               </span>{" "}
               of{" "}
               <span className="font-semibold text-gray-900 dark:text-white">
-                {users?.length}
+                {orders?.length}
               </span>
             </span>
           </div>

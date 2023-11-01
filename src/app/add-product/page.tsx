@@ -5,9 +5,9 @@ import { useState, useEffect } from "react";
 import { Feedback, ColorPicker } from "@/src/components";
 import productService from "@/src/redux-store/feature/products/productService";
 import categoryService from "@/src/redux-store/feature/category/categoryService";
-import awsExports from "@/src/aws-exports";
-import { Amplify, Storage } from "aws-amplify";
-Amplify.configure({ ...awsExports, ssr: true });
+import { S3BucketLink } from "@/src/constants";
+import { Storage } from "aws-amplify";
+
 export default function App() {
   const [isComplete, setIsComplete] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -140,10 +140,7 @@ export default function App() {
       });
 
       if (key) {
-        const newKey =
-          "https://commerceb8039144d9044463a5cf2714cc51248d193514-staging.s3.us-east-2.amazonaws.com/public/" +
-          key.key;
-        setValues({ ...values, [event.target.name]: newKey });
+        setValues({ ...values, [event.target.name]: S3BucketLink + key.key });
       }
     } catch (error) {
       console.log(error);

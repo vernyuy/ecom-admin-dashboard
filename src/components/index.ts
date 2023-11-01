@@ -4,7 +4,4 @@ import ColorPicker from "./ColorPicker";
 import CustomModal from "./CustomModal";
 import Delete from "./Delete";
 import PaymentForm from "./PaymentForm";
-// import MyChat from "./LineChat";
-// import { BarChart } from "./BarChat";
-// import PieChart from "./PieChat";
 export { Button, CustomModal, Feedback, ColorPicker, Delete, PaymentForm };

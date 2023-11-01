@@ -5,9 +5,8 @@ import { useParams, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Feedback } from "@/src/components";
 import categoryService from "@/src/redux-store/feature/category/categoryService";
-import awsExports from "@/src/aws-exports";
-import { Amplify, Storage } from "aws-amplify";
-Amplify.configure({ ...awsExports, ssr: true });
+import { Storage } from "aws-amplify";
+import { S3BucketLink } from "@/src/constants";
 export default function UpdateCategory(props: any) {
   const searchParams = useSearchParams();
   const [isComplete, setIsComplete] = useState(false);
@@ -113,10 +112,7 @@ export default function UpdateCategory(props: any) {
       contentType: "image/png",
     });
     if (key) {
-      const newKey =
-        "https://commerceb8039144d9044463a5cf2714cc51248d193514-staging.s3.us-east-2.amazonaws.com/public/" +
-        key.key;
-      setValues({ ...values, [event.target.name]: newKey });
+      setValues({ ...values, [event.target.name]: S3BucketLink + key.key });
     }
     setStates({ ...states, ["catMsg"]: false });
   };

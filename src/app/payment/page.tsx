@@ -1,64 +1,61 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteUsers,
-  filterUsers,
-  listUsers,
-} from "@/src/redux-store/feature/user/userSlice";
 import DashboardLayout from "@/src/app/dashboardLayout";
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
-import { userAttributes, users } from "@/src/constants";
+import { paymentAttributes } from "@/src/constants";
 import { Button, CustomModal, Delete } from "@/src/components";
 import { CountryDropdown } from "react-country-region-selector";
+import {
+  deletePayments,
+  filterPayment,
+  listPayments,
+} from "@/src/redux-store/feature/payment/paymentSlice";
 
-export default function App() {
+export default function Page() {
   const [search, setSearch] = useState("");
-  const [city, setCity] = useState("");
   const [del, setDel] = useState(false);
-  const [country, setCountry] = useState("");
 
   const [isDelete, setisDelete] = useState(false);
-  let selectedUsers: string[] = [];
+  let selectedPayments: string[] = [];
 
-  const { users, errorMsg, isLoading }: any = useSelector(
-    (state: RootState) => state.user,
+  const { payments, errorMsg, isLoading }: any = useSelector(
+    (state: RootState) => state.payment,
   );
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    dispatch(listUsers(null));
+    dispatch(listPayments(null));
   }, [dispatch]);
 
-  const filterCustomers = (filterBy: any) => {
-    dispatch(filterUsers(filterBy));
-    console.log(users);
+  const filterPay = (filterBy: any) => {
+    dispatch(filterPayment(filterBy));
   };
 
   const select = (e: any) => {
     if (e.target.checked) {
-      selectedUsers.push(e.target.value);
+      selectedPayments.push(e.target.value);
     } else {
-      selectedUsers = selectedUsers.filter((u) => {
-        return u !== e.target.value;
+      selectedPayments = selectedPayments.filter((o) => {
+        return o !== e.target.value;
       });
     }
-    console.log(selectedUsers);
+    console.log(selectedPayments);
   };
 
   useEffect(() => {
     if (isDelete) {
-      deleteUsersFn();
+      deletePaymentsFn();
     }
-    filterCustomers({ filterBy: "category", country: country });
-  }, [isDelete, country]);
-  const deleteUsersFn = (userId?: string) => {
-    console.log("Users>>>>>: ", selectedUsers);
-    if (selectedUsers.length > 0) {
-      dispatch(deleteUsers(selectedUsers));
+    filterPay({ filterBy: "category" });
+  }, [isDelete]);
+  const deletePaymentsFn = (payId?: string) => {
+    console.log("Users>>>>>: ", selectedPayments);
+    if (selectedPayments.length > 0) {
+      dispatch(deletePayments(selectedPayments));
       return "deleted";
-    } else if (userId) {
-      dispatch(deleteUsers(userId));
+    } else if (payId) {
+      dispatch(deletePayments(payId));
       return "deleted";
     } else {
       console.log("Please select product(s) to delete");
@@ -116,7 +113,7 @@ export default function App() {
           <div className="w-full">
             <div className="mb-2">
               <h1 className="text-md pt-5 font-semibold text-gray-900 sm:text-xl dark:text-white py-2">
-                All Users
+                All Payments
               </h1>
             </div>
             <div className="items-center justify-between flex flex-col gap-2 sm:flex-row sm:flex-wrap md:divide-x md:divide-gray-100 pb-3">
@@ -126,7 +123,7 @@ export default function App() {
                   action="#"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    filterCustomers({ filterBy: "search", search: search });
+                    filterPay({ filterBy: "search", search: search });
                   }}
                   method="GET"
                 >
@@ -143,7 +140,7 @@ export default function App() {
                       placeholder="Search users by name"
                       onChange={(e) => {
                         setSearch(e.target.value);
-                        filterCustomers({ filterBy: "search", search: search });
+                        filterPay({ filterBy: "search", search: search });
                       }}
                     />
                   </div>
@@ -178,7 +175,7 @@ export default function App() {
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          onClick={() => filterCustomers("all")}
+                          onClick={() => filterPay("all")}
                         >
                           All
                         </a>
@@ -187,38 +184,25 @@ export default function App() {
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          onClick={() => filterCustomers("active")}
+                          onClick={() => filterPay("active")}
                         >
-                          Active
+                          Payed
                         </a>
                       </li>
                       <li>
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          onClick={() => filterCustomers("blocked")}
+                          onClick={() => filterPay("blocked")}
                         >
-                          Blocked
+                          Pending
                         </a>
                       </li>
-                      {/* <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white">On promotion</a>
-                      </li> */}
                     </ul>
                   </div>
                 </div>
 
-                <div className="group">
-                  <CountryDropdown
-                    classes="border text-green-500 max-w-[152px] font-semibold border-green-300 hover:cursor-pointer rounded-lg text-sm px-3 py-1.5 flex gap-1 items-centersd "
-                    value={country}
-                    onChange={(val) => {
-                      setCountry(val);
-                    }}
-                  />
-                </div>
-
-                <div className="group">
+                {/* <div className="group">
                   <Link
                     href={"#"}
                     className=" border text-gray-900 font-semibold border-orange-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-orange-300 rounded-lg text-sm px-4 gap-1 py-1.5 flex items-center"
@@ -247,19 +231,20 @@ export default function App() {
                       className="py-2 text-sm text-red-500 dark:text-gray-200"
                       aria-labelledby="dropdownDefaultButton"
                     >
+
                       <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
                         <Button
                           title="Delete"
                           handleClick={(e) => {
                             // setisDelete(true);
-                            deleteUsersFn();
+                            deletePaymentsFn()
                           }}
                         />
                       </li>
 
                       <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
                         <Button
-                          title="Block"
+                          title="Ordered"
                           // handleClick={(e) => {
                           //   setisDelete(true);
                           // }}
@@ -268,7 +253,7 @@ export default function App() {
 
                       <li className="block px-4 py-2 hover:bg-green-100 text-green-500 dark:hover:bg-gray-600 dark:hover:text-white">
                         <Button
-                          title="Unblock"
+                          title="Pending"
                           // handleClick={(e) => {
                           //   setisDelete(true);
                           // }}
@@ -276,7 +261,7 @@ export default function App() {
                       </li>
                     </ul>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -285,11 +270,6 @@ export default function App() {
             <div className="overflow-x-autdfo rounded-lg">
               <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
-                  {/* {!isLoading && isCompleted && products?.length == 0 && ( */}
-                  {/* <div className="w-full h-[100px] flex justify-center items-center">
-                      <p className="font-semibold m-auto">It's empty here</p>
-                    </div> */}
-                  {/* )} */}
                   {isLoading ? (
                     <div className="w-full h-[100px] text-blue-500 flex">
                       <svg
@@ -320,22 +300,24 @@ export default function App() {
                           <th className="pl-2">
                             {/* <input type="checkbox"  /> */}
                           </th>
-                          {userAttributes.map((item: string, index: number) => (
-                            <th
-                              key={index}
-                              scope="col"
-                              className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap dark:text-white"
-                            >
-                              {item}
-                            </th>
-                          ))}
+                          {paymentAttributes.map(
+                            (item: string, index: number) => (
+                              <th
+                                key={index}
+                                scope="col"
+                                className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap dark:text-white"
+                              >
+                                {item}
+                              </th>
+                            ),
+                          )}
                         </tr>
                       </thead>
                       <tbody className="">
-                        {users?.map((user: any, index: number) => {
+                        {payments?.map((payment: any, index: number) => {
                           return (
                             <tr
-                              key={user.id}
+                              key={payment.id}
                               className="even:bg-gray-50 text-black hover:cursor-pointer group"
                             >
                               <td className="px-2 ">
@@ -343,58 +325,43 @@ export default function App() {
                                   <input
                                     type="checkbox"
                                     className="bg-black"
-                                    value={user.id}
+                                    value={payment.id}
                                     onChange={select}
                                   />
                                 }
                               </td>
-                              <td
-                                className={`flex p-4 flex-col justify-center sticky left-0 h-full py-2 ${
-                                  index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                }`}
-                              >
-                                {user.firstName}
-                              </td>
                               <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
                                 <span className="font-semibold text-left flex flex-col">
-                                  <Link href={`/update-product/${user.id}`}>
-                                    {user.lastName}
-                                  </Link>
+                                  {/* <Link href={`/update-product/${order.id}`}> */}
+                                  {payment.id}
+                                  {/* </Link> */}
                                 </span>
                               </td>
                               <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {user.email}
+                                {payment.userID}
+                              </td>
+
+                              <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
+                                {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
+                                {payment.amount}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
                                 {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
-                                {user.phone}
+                                {payment.createdAt.split("T")[0]}
                               </td>
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {`${user.address.coutry}`}
-                              </td>
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {user.address.region}
-                              </td>
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {user.address.city}
-                              </td>
-
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {user.address.zipcode}
-                              </td>
-
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {user.address.addressLine1}
+                              <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
+                                {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
+                                {payment.paymentIntentId}
                               </td>
 
                               <td className="flex justify-start items-center p-4 h-full">
-                                {user.isActive ? (
+                                {payment.paymentStatus ? (
                                   <div className="bg-green-100 rounded-md  text-green-800 h-full w-fit text-xs font-medium px-2 py-1">
-                                    Active
+                                    Payed
                                   </div>
                                 ) : (
                                   <div className="bg-red-100 text-red-800 h-full w-fit text-xs font-medium px-2 py-1 rounded-md">
-                                    Blocked
+                                    Pending
                                   </div>
                                 )}
                               </td>
@@ -406,15 +373,17 @@ export default function App() {
                       <tfoot className="bg-gray-100 dark:bg-blue-900 sticky top-0">
                         <tr>
                           <th className="w-4 pl-2"></th>
-                          {userAttributes.map((item: string, index: number) => (
-                            <th
-                              key={index}
-                              scope="col"
-                              className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
-                            >
-                              {item}
-                            </th>
-                          ))}
+                          {paymentAttributes.map(
+                            (item: string, index: number) => (
+                              <th
+                                key={index}
+                                scope="col"
+                                className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
+                              >
+                                {item}
+                              </th>
+                            ),
+                          )}
                         </tr>
                       </tfoot>
                     </table>
@@ -465,11 +434,11 @@ export default function App() {
             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
               Showing{" "}
               <span className="font-semibold text-gray-900 dark:text-white">
-                1-{users?.length}
+                1-{payments?.length}
               </span>{" "}
               of{" "}
               <span className="font-semibold text-gray-900 dark:text-white">
-                {users?.length}
+                {payments?.length}
               </span>
             </span>
           </div>
