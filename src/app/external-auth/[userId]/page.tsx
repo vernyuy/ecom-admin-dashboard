@@ -6,7 +6,7 @@ import {
   reset,
   signup,
 } from "@/src/redux-store/feature/user/authSlice";
-import { userData } from "@/src/types/types";
+import { googleUserForm } from "@/src/types/types";
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import PhoneInput from "react-phone-input-2";
@@ -19,6 +19,7 @@ import {
 import { User } from "@/src/models";
 import { DataStore } from "aws-amplify";import { Amplify } from "aws-amplify";
 import awsExports from "@/src/aws-exports";
+
 if (typeof window !== 'undefined')
 {
   awsExports.oauth["redirectSignIn"] = `${window.location.origin}/external-auth/`;
@@ -55,7 +56,7 @@ export default function Register() {
   }, [isLoading, isSuccess, errorMsg]);
 
 
-    const signupUser = async ( id: string, userLogin: userData) => {
+    const signupUser = async ( id: string, userLogin: googleUserForm) => {
     userLogin.address = `{
       \"coutry\":\"${country}\",
       \"region\":\"${region}\",

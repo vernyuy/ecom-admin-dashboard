@@ -16,6 +16,7 @@ import { Button, CustomModal } from "@/src/components";
 export default function App() {
   const [search, setSearch] = useState("");
   const [isDelete, setisDelete] = useState(false);
+  const [selectedItems, setSelecteditems]:any = useState([])
   let selectedProducts: string[] = [];
   const { products, isCompleted, errorMsg, isLoading }: any = useSelector(
     (state: RootState) => state.product,
@@ -41,20 +42,24 @@ export default function App() {
 
   const select = (e: any) => {
     if (e.target.checked) {
+      setSelecteditems([...selectedItems, e.target.value])
       selectedProducts.push(e.target.value);
     } else {
       selectedProducts = selectedProducts.filter((p) => {
         return p !== e.target.value;
       });
+      // setSelecteditems(selectedItems.filter((p:string) => {
+      //   return p !== e.target.value;
+      // }))
     }
-    console.log(selectedProducts);
+    console.log(selectedItems);
   };
 
   const deleteProducts = () => {
-      console.log("selectd:  ", selectedProducts)
-    if (selectedProducts.length > 0)
+      console.log("selectd:  ", selectedItems)
+    if (selectedItems.length > 0)
     {
-      dispatch(deleteProductsFn(selectedProducts));
+      dispatch(deleteProductsFn(selectedItems));
       return "deleted";
     }
     else

@@ -27,10 +27,17 @@ export interface categoryData {
 export interface userData {
   firstName: string;
   lastName: string;
-  email?: string;
+  email: string;
   address: string;
   phoneNumber: string;
-  password?: string;
+  password: string;
+}
+
+export interface googleUserForm {
+  firstName: string;
+  lastName: string;
+  address: string;
+  phoneNumber: string;
 }
 
 export interface signinUserData {
