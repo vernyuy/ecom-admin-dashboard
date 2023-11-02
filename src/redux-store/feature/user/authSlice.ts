@@ -54,7 +54,7 @@ export const confirmUser = createAsyncThunk(
 
 export const currentUser = createAsyncThunk(
   "auth/currentUser",
-  async (user: null, thunkApi) => {
+  async (user, thunkApi) => {
     try {
       return await authService.currentUser();
     } catch (err: any) {
@@ -73,6 +73,22 @@ export const googleSignIn = createAsyncThunk(
   async (user: any, thunkApi) => {
     try {
       return await authService.googleSignIn();
+    } catch (err: any) {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+      console.log(err);
+      return thunkApi.rejectWithValue(message);
+    }
+  },
+);
+
+export const updateGoogleUser = createAsyncThunk(
+  "auth/googleUpdate",
+  async (user: any, thunkApi) => {
+    try {
+      return await authService.updateGoogleUser(user.id, user.data);
     } catch (err: any) {
       const message =
         (err.response && err.response.data && err.response.data.message) ||
@@ -150,7 +166,7 @@ export const signOut = createAsyncThunk(
 );
 
 const initialState: any = {
-  user: null,
+  user: Map,
   isLoggedIn: false,
   errorMsg: "",
   isLoading: false,
@@ -158,6 +174,8 @@ const initialState: any = {
   isError: false,
   isGoogle: false,
   issentCode: false,
+  isLoadingGoogle: false,
+  userData:[]
 };
 
 export const authSlice: any = createSlice({
@@ -248,6 +266,7 @@ export const authSlice: any = createSlice({
         state.isLoading = true;
         state.isGoogle = true;
         state.isError = false;
+        state.isLoadingGoogle = true;
       })
       .addCase(googleSignIn.fulfilled, (state, action) => {
         state.user = action.payload;
@@ -273,13 +292,35 @@ export const authSlice: any = createSlice({
         state.isLoading = true;
       })
       .addCase(currentUser.fulfilled, (state, action) => {
+        state.userData = action.payload;
+        state.isLoggedIn = true;
+        state.errorMsg = "";
+        state.isLoading = false;
+        state.isSuccess = true;
+        console.log(state.user)
+      })
+      .addCase(currentUser.rejected, (state, action) => {
+        (state.user = null),
+          (state.isLoading = false),
+          (state.isLoggedIn = false),
+          (state.errorMsg = action.payload as string);
+      })
+
+      .addCase(updateGoogleUser.pending, (state, action) => {
+        state.user = null;
+        state.isLoggedIn = false;
+        state.errorMsg = "";
+        state.isLoading = true;
+      })
+      .addCase(updateGoogleUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.isLoggedIn = true;
         state.errorMsg = "";
         state.isLoading = false;
         state.isSuccess = true;
+        console.log(state.user)
       })
-      .addCase(currentUser.rejected, (state, action) => {
+      .addCase(updateGoogleUser.rejected, (state, action) => {
         (state.user = null),
           (state.isLoading = false),
           (state.isLoggedIn = false),

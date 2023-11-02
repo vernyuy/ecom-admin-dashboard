@@ -13,22 +13,18 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { userAttributes, users } from "@/src/constants";
 import { Button, CustomModal, Delete } from "@/src/components";
-import awsExports from "@/src/aws-exports";
-import { Amplify } from "aws-amplify";
 import { CountryDropdown } from "react-country-region-selector";
-
-if (typeof window !== "undefined") {
-  awsExports.oauth[
-    "redirectSignIn"
-  ] = `${window.location.origin}/external-auth`;
-  awsExports.oauth["redirectSignOut"] = `${window.location.origin}/`;
-}
-Amplify.configure({ ...awsExports, ssr: true });
+import { Auth } from "aws-amplify";
 
 export default function App() {
   const [search, setSearch] = useState("");
   const [country, setCountry] = useState("");
 
+  Auth.currentAuthenticatedUser().then(data => {
+    console.log(data)
+  })
+  console.log()
+  
   const [isDelete, setisDelete] = useState(false);
   let selectedUsers: string[] = [];
 

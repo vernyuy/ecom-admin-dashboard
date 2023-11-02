@@ -11,6 +11,7 @@ import { listCategories } from "@/src/redux-store/feature/category/categorySlice
 import DashboardLayout from "@/src/app/dashboardLayout";
 import { useState, useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
+import moment from "moment";
 import { productAttributes } from "@/src/constants";
 import { Button, CustomModal } from "@/src/components";
 export default function App() {
@@ -35,6 +36,10 @@ export default function App() {
   }
   // }, [isDelete]);
 
+  const computeDate =(date: any) => {
+      return moment(date).format("ll");
+  }
+  
   const filterStock = (filterBy: any) => {
     dispatch(filterProduct(filterBy));
     console.log(products);
@@ -373,7 +378,11 @@ export default function App() {
                               <th
                                 key={index}
                                 scope="col"
+<<<<<<< HEAD
                                 className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase "
+=======
+                                className="px-4 py-2 whitespace-nowrap text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
+>>>>>>> 0ff05f6 (more updates)
                               >
                                 {item}
                               </th>
@@ -433,8 +442,13 @@ export default function App() {
                                   </p>
                                 )}
                               </td>
+<<<<<<< HEAD
                               <td className="px-2 text-sm text-center font-normal text-gray-500 whitespace-nowrap ">
                                 {product.quantity}
+=======
+                              <td className="px-2 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                                {computeDate(product.createdAt)}
+>>>>>>> 0ff05f6 (more updates)
                               </td>
                             </tr>
                           );

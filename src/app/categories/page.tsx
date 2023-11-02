@@ -260,7 +260,11 @@ export default function Categories() {
                             <th
                               key={index}
                               scope="col"
+<<<<<<< HEAD
                               className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase "
+=======
+                              className="px-4 py-2 whitespace-nowrap text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
+>>>>>>> 0ff05f6 (more updates)
                             >
                               {item}
                             </th>

@@ -31,7 +31,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch<AppDispatch>();
 
-  const { user, errorMsg, isLoading, isSuccess, isGoogle }: any = useSelector(
+  const { user, errorMsg, isLoading, isSuccess, isGoogle, isLoadingGoogle }: any = useSelector(
     (state: RootState) => state.auth,
   );
   const router = useRouter();
@@ -279,7 +279,7 @@ export default function Register() {
                       });
                     }}
                     type="submit"
-                    disabled={isLoading ? true : false}
+                    disabled={isLoading}
                   >
                     {isLoading ? (
                       <div className="flex justify-center gap-2">
@@ -472,7 +472,7 @@ export default function Register() {
                             />
                           </g>
                         </svg>{" "}
-                        Loading{" "}
+                        Loading...
                       </div>
                     ) : (
                       "Register"
@@ -488,7 +488,7 @@ export default function Register() {
                     type="submit"
                     disabled={isLoading ? true : false}
                   >
-                    {isLoading && isGoogle ? (
+                    {isLoadingGoogle? (
                       <div className="flex justify-center gap-2">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -679,7 +679,7 @@ export default function Register() {
                             />
                           </g>
                         </svg>{" "}
-                        Loading{" "}
+                        Loading...
                       </div>
                     ) : (
                       "Google"
