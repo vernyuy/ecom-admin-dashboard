@@ -401,28 +401,28 @@ export default function App() {
                                   </Link>
                                 </span>
                               </td>
-                              <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap ">
                                 {user.email}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
                                 {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
                                 {user.phone}
                               </td>
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap ">
                                 {`${user.address.coutry}`}
                               </td>
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap ">
                                 {user.address.region}
                               </td>
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap ">
                                 {user.address.city}
                               </td>
 
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap ">
                                 {user.address.zipcode}
                               </td>
 
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap ">
                                 {user.address.addressLine1}
                               </td>
 

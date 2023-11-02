@@ -127,7 +127,7 @@ export default function DashboardLayout({ children }: any) {
                   className="text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 rounded-lg text-sm p-2.5"
                 >
                   <svg
-                    id="theme-toggle-dark-icon"
+                    id="theme-toggle--icon"
                     className="w-5 h-5"
                     fill="currentColor"
                     viewBox="0 0 20 20"
