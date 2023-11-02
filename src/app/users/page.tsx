@@ -19,11 +19,6 @@ import { Auth } from "aws-amplify";
 export default function App() {
   const [search, setSearch] = useState("");
   const [country, setCountry] = useState("");
-
-  Auth.currentAuthenticatedUser().then(data => {
-    console.log(data)
-  })
-  console.log()
   
   const [isDelete, setisDelete] = useState(false);
   let selectedUsers: string[] = [];

@@ -30,7 +30,6 @@ export default function Login() {
 
   console.log(isGoogle, isLoading);
   useEffect(() => {
-    const test = Auth.currentAuthenticatedUser();
     if (isSuccess && !isGoogle) {
       console.log(user);
       router.replace("/login");
