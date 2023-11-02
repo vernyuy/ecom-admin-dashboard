@@ -6,35 +6,35 @@ import Router, { useSearchParams, useRouter } from "next/navigation";
 import { User } from "@/src/models";
 import React from "react";
 import Link from "next/link";
-import { AppDispatch, RootState } from "@/src/redux-store/store";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  currentUser,
-  googleSignIn,
-  reset,
-  signOut,
-  signin,
-} from "@/src/redux-store/feature/user/authSlice";
+// import { AppDispatch, RootState } from "@/src/redux-store/store";
+// import { useDispatch, useSelector } from "react-redux";
+// import {
+//   currentUser,
+//   googleSignIn,
+//   reset,
+//   signOut,
+//   signin,
+// } from "@/src/redux-store/feature/user/authSlice";
 import authService from "@/src/redux-store/feature/user/authService";
-import { Amplify } from "aws-amplify";
-import awsExports from "@/src/aws-exports";
-if (typeof window !== 'undefined')
-{
-  awsExports.oauth["redirectSignIn"] = `${window.location.origin}/external-auth/`;
-  awsExports.oauth["redirectSignOut"] = `${window.location.origin}/`;
-  Amplify.configure({ ...awsExports, ssr: true });
-}
-if (typeof window === "undefined")
-{
-  Amplify.configure({ ...awsExports, ssr: true });
-}
+// import { Amplify } from "aws-amplify";
+// import awsExports from "@/src/aws-exports";
+// if (typeof window !== 'undefined')
+// {
+//   awsExports.oauth["redirectSignIn"] = `${window.location.origin}/external-auth/`;
+//   awsExports.oauth["redirectSignOut"] = `${window.location.origin}/`;
+//   Amplify.configure({ ...awsExports, ssr: true });
+// }
+// if (typeof window === "undefined")
+// {
+//   Amplify.configure({ ...awsExports, ssr: true });
+// }
 
 export default function Page() {
   const router = useRouter();
   const params = useSearchParams();
-  const dispatch = useDispatch<AppDispatch>();
-  const { user, errorMsg, isLoading, isSuccess, isError, isGoogle }: any =
-    useSelector((state: RootState) => state.auth);
+  // const dispatch = useDispatch<AppDispatch>();
+  // const { user, errorMsg, isLoading, isSuccess, isError, isGoogle }: any =
+  //   useSelector((state: RootState) => state.auth);
   
   if (params.has("error")) {
     console.log("email exists");
@@ -54,17 +54,14 @@ export default function Page() {
     );
   } else {
     useEffect(() => {
-      const currentUser = async () => {
-        await authService.currentUser().then((result) => {
-        console.log(result);
-      });
-      }
       getUser()
     }, []);
 
     const getUser = async () => {
-      await authService.currentUser().then((result) => {
-        const userData = {
+      try
+      {
+        await authService.currentUser().then((result) => {
+          const userData = {
             firstName: result.attributes.family_name
               ? result.attributes.family_name
               : "",
@@ -75,31 +72,36 @@ export default function Page() {
             phone: result.attributes.phone_number,
             sub: result.attributes.sub,
             isActive: true,
-            address: JSON.stringify({coutry: 'test'}),
-        };
+            address: JSON.stringify({ coutry: 'test' }),
+          };
 
-        DataStore.observeQuery(User).subscribe(async (event) => {
-          if (event.isSynced)
-          {
-              console.log(event.isSynced)
+          DataStore.observeQuery(User).subscribe(async (event) => {
+            if (event.isSynced)
+            {
+              console.log(event.isSynced);
               await DataStore.query(User, (user) =>
                 user.email.eq(result.attributes.email),
               ).then(async (data) => {
                 console.log(data);
-                if (data.length === 0) {
+                if (data.length === 0)
+                {
                   await DataStore.save(new User(userData)).then((data) => {
-                    console.log(data)
-                    router.replace(`/external-auth/${data.id}`)
+                    console.log(data);
+                    router.replace(`/external-auth/${data.id}`);
                   });
                 } else
                 {
-                  router.replace('/')
+                  router.replace('/');
                 }
               });
             }
           });
-        console.log(result);
-      });
+          console.log(result);
+        });
+      } catch (err)
+      {
+        console.log(err)
+      }
       };
     return (
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
