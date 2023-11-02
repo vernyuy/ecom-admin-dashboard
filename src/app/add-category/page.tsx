@@ -116,7 +116,7 @@ export default function AddCategory() {
           <li className="inline-flex items-center">
             <Link
               href="/"
-              className="inline-flex items-center text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-white"
+              className="inline-flex items-center text-gray-700 hover:text-primary-600"
             >
               <svg
                 className="w-5 h-5 mr-2.5"
@@ -143,10 +143,7 @@ export default function AddCategory() {
                   clipRule="evenodd"
                 ></path>
               </svg>
-              <span
-                className="ml-1 text-gray-400 md:ml-2 dark:text-gray-500"
-                aria-current="page"
-              >
+              <span className="ml-1 text-gray-400 md:ml-2" aria-current="page">
                 Add category
               </span>
             </div>
@@ -259,9 +256,9 @@ export default function AddCategory() {
               <button
                 type="submit"
                 disabled={states.isLoading}
-                className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+                className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200"
               >
-                <span className="relative flex items-center px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                <span className="relative flex items-center px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
                   {states.isLoading && (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

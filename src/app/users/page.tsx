@@ -1,7 +1,13 @@
 "use client";
 import { AppDispatch, RootState } from "@/src/redux-store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { blockUsers, deleteUsers, filterUsers, listUsers, unBlockUsers } from "@/src/redux-store/feature/user/userSlice";
+import {
+  blockUsers,
+  deleteUsers,
+  filterUsers,
+  listUsers,
+  unBlockUsers,
+} from "@/src/redux-store/feature/user/userSlice";
 import DashboardLayout from "@/src/app/dashboardLayout";
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
@@ -11,10 +17,11 @@ import awsExports from "@/src/aws-exports";
 import { Amplify } from "aws-amplify";
 import { CountryDropdown } from "react-country-region-selector";
 
-
 if (typeof window !== "undefined") {
-  awsExports.oauth['redirectSignIn'] = `${window.location.origin}/external-auth`
-  awsExports.oauth['redirectSignOut'] = `${window.location.origin}/`
+  awsExports.oauth[
+    "redirectSignIn"
+  ] = `${window.location.origin}/external-auth`;
+  awsExports.oauth["redirectSignOut"] = `${window.location.origin}/`;
 }
 Amplify.configure({ ...awsExports, ssr: true });
 
@@ -30,7 +37,7 @@ export default function App() {
   );
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
-    dispatch(listUsers(null))
+    dispatch(listUsers(null));
   }, [dispatch]);
 
   const filterCustomers = (filterBy: any) => {
@@ -50,15 +57,14 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (isDelete)
-    {
-      deleteUsersFn()
+    if (isDelete) {
+      deleteUsersFn();
     }
-    filterCustomers({ filterBy: "category", country: country })
+    filterCustomers({ filterBy: "category", country: country });
   }, [isDelete, country]);
 
   const deleteUsersFn = (userId?: string) => {
-    console.log("Users>>>>>: ",selectedUsers)
+    console.log("Users>>>>>: ", selectedUsers);
     if (selectedUsers.length > 0) {
       dispatch(deleteUsers(selectedUsers));
       return "deleted";
@@ -72,7 +78,7 @@ export default function App() {
   };
 
   const blockUser = (userId?: string) => {
-    console.log("Users>>>>>: ",selectedUsers)
+    console.log("Users>>>>>: ", selectedUsers);
     if (selectedUsers.length > 0) {
       dispatch(blockUsers(selectedUsers));
       return "deleted";
@@ -85,8 +91,8 @@ export default function App() {
     }
   };
 
-    const unBlockUser = (userId?: string) => {
-    console.log("Users>>>>>: ",selectedUsers)
+  const unBlockUser = (userId?: string) => {
+    console.log("Users>>>>>: ", selectedUsers);
     if (selectedUsers.length > 0) {
       dispatch(unBlockUsers(selectedUsers));
       return "deleted";
@@ -108,7 +114,7 @@ export default function App() {
             <li className="inline-flex items-center">
               <Link
                 href="/"
-                className="inline-flex items-center text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-white"
+                className="inline-flex items-center text-gray-700 hover:text-primary-600  "
               >
                 <svg
                   className="w-5 h-5 mr-2.5"
@@ -136,7 +142,7 @@ export default function App() {
                   ></path>
                 </svg>
                 <span
-                  className="ml-1 text-gray-400 md:ml-2 dark:text-gray-500"
+                  className="ml-1 text-gray-400 md:ml-2 "
                   aria-current="page"
                 >
                   Users
@@ -145,10 +151,10 @@ export default function App() {
             </li>
           </ol>
         </nav>
-        <div className="px-2 mt-5 pb-2d bg-white w-full  rounded-ss-lg rounded-se-lg shadow-sm dark:border-gray-700 sm:px-4 mt-f3 md:mt-5d">
+        <div className="px-2 mt-5 pb-2d bg-white w-full  rounded-ss-lg rounded-se-lg shadow-sm  sm:px-4 mt-f3 md:mt-5d">
           <div className="w-full">
             <div className="mb-2">
-              <h1 className="text-md pt-5 font-semibold text-gray-900 sm:text-xl dark:text-white py-2">
+              <h1 className="text-md pt-5 font-semibold text-gray-900 sm:text-xl  py-2">
                 All Users
               </h1>
             </div>
@@ -201,16 +207,16 @@ export default function App() {
 
                   <div
                     id="dropdown"
-                    className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700"
+                    className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 "
                   >
                     <ul
-                      className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                      className="py-2 text-sm text-gray-700 "
                       aria-labelledby="dropdownDefaultButton"
                     >
                       <li>
                         <a
                           href="#"
-                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          className="block px-4 py-2 hover:bg-green-100  "
                           onClick={() => filterCustomers("all")}
                         >
                           All
@@ -219,7 +225,7 @@ export default function App() {
                       <li>
                         <a
                           href="#"
-                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          className="block px-4 py-2 hover:bg-green-100  "
                           onClick={() => filterCustomers("active")}
                         >
                           Active
@@ -228,14 +234,14 @@ export default function App() {
                       <li>
                         <a
                           href="#"
-                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          className="block px-4 py-2 hover:bg-green-100  "
                           onClick={() => filterCustomers("blocked")}
                         >
                           Blocked
                         </a>
                       </li>
                       {/* <li>
-                        <a href="#" className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white">On promotion</a>
+                        <a href="#" className="block px-4 py-2 hover:bg-green-100  ">On promotion</a>
                       </li> */}
                     </ul>
                   </div>
@@ -274,24 +280,23 @@ export default function App() {
 
                   <div
                     id="dropdown"
-                    className="z-10 hidden mt-1 group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-[105px] dark:bg-gray-700"
+                    className="z-10 hidden mt-1 group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-[105px] "
                   >
                     <ul
-                      className="py-2 text-sm text-red-500 dark:text-gray-200"
+                      className="py-2 text-sm text-red-500 "
                       aria-labelledby="dropdownDefaultButton"
                     >
-
-                      <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                      <li className="block px-4 py-2 hover:bg-red-100  ">
                         <Button
                           title="Delete"
                           handleClick={(e) => {
                             // setisDelete(true);
-                            deleteUsersFn()
+                            deleteUsersFn();
                           }}
                         />
                       </li>
 
-                      <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                      <li className="block px-4 py-2 hover:bg-red-100  ">
                         <Button
                           title="Block"
                           handleClick={(e) => {
@@ -300,7 +305,7 @@ export default function App() {
                         />
                       </li>
 
-                      <li className="block px-4 py-2 hover:bg-green-100 text-green-500 dark:hover:bg-gray-600 dark:hover:text-white">
+                      <li className="block px-4 py-2 hover:bg-green-100 text-green-500  ">
                         <Button
                           title="Unblock"
                           handleClick={(e) => {
@@ -320,7 +325,7 @@ export default function App() {
               <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
                   {/* {!isLoading && isCompleted && products?.length == 0 && ( */}
-                    {/* <div className="w-full h-[100px] flex justify-center items-center">
+                  {/* <div className="w-full h-[100px] flex justify-center items-center">
                       <p className="font-semibold m-auto">It's empty here</p>
                     </div> */}
                   {/* )} */}
@@ -347,9 +352,9 @@ export default function App() {
                         </path>
                       </svg>
                     </div>
-                  ) :
-                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
-                      <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
+                  ) : (
+                    <table className="min-w-full divide-y divide-gray-200  mb-3">
+                      <thead className="bg-gray-100  sticky top-0">
                         <tr className="[&:nth-child(1)]:bg-blue-50d0">
                           <th className="pl-2">
                             {/* <input type="checkbox"  /> */}
@@ -358,7 +363,7 @@ export default function App() {
                             <th
                               key={index}
                               scope="col"
-                              className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap dark:text-white"
+                              className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap "
                             >
                               {item}
                             </th>
@@ -383,12 +388,13 @@ export default function App() {
                                 }
                               </td>
                               <td
-                                className={`flex p-4 flex-col justify-center sticky left-0 h-full py-2 ${index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                                  }`}
+                                className={`flex p-4 flex-col justify-center sticky left-0 h-full py-2 ${
+                                  index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                                }`}
                               >
                                 {user.firstName}
                               </td>
-                              <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap dark:text-white">
+                              <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap ">
                                 <span className="font-semibold text-left flex flex-col">
                                   <Link href={`/update-product/${user.id}`}>
                                     {user.lastName}
@@ -398,7 +404,7 @@ export default function App() {
                               <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap dark:text-gray-400">
                                 {user.email}
                               </td>
-                              <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
+                              <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
                                 {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
                                 {user.phone}
                               </td>
@@ -436,21 +442,22 @@ export default function App() {
                           );
                         })}
                       </tbody>
-                      <tfoot className="bg-gray-100 dark:bg-blue-900 sticky top-0">
+                      <tfoot className="bg-gray-100  sticky top-0">
                         <tr>
                           <th className="w-4 pl-2"></th>
                           {userAttributes.map((item: string, index: number) => (
                             <th
                               key={index}
                               scope="col"
-                              className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
+                              className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase "
                             >
                               {item}
                             </th>
                           ))}
                         </tr>
                       </tfoot>
-                    </table>}
+                    </table>
+                  )}
                   {/* )} */}
                 </div>
               </div>
@@ -458,11 +465,11 @@ export default function App() {
           </div>
         </div>
 
-        <div className="sticky bottom-0 right-0 items-center w-full px-4 py-2 bg-white border-t border-gray-200 sm:flex sm:justify-between dark:bg-gray-800 dark:border-gray-700">
+        <div className="sticky bottom-0 right-0 items-center w-full px-4 py-2 bg-white border-t border-gray-200 sm:flex sm:justify-between ">
           <div className="flex items-center mb-4 sm:mb-0">
             <a
               href="#"
-              className="inline-flex justify-center p-1 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+              className="inline-flex justify-center p-1 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100  "
             >
               <svg
                 className="w-7 h-7"
@@ -479,7 +486,7 @@ export default function App() {
             </a>
             <a
               href="#"
-              className="inline-flex justify-center p-1 mr-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+              className="inline-flex justify-center p-1 mr-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100  "
             >
               <svg
                 className="w-7 h-7"
@@ -494,13 +501,13 @@ export default function App() {
                 ></path>
               </svg>
             </a>
-            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+            <span className="text-sm font-normal text-gray-500">
               Showing{" "}
-              <span className="font-semibold text-gray-900 dark:text-white">
+              <span className="font-semibold text-gray-900 ">
                 1-{users?.length}
               </span>{" "}
               of{" "}
-              <span className="font-semibold text-gray-900 dark:text-white">
+              <span className="font-semibold text-gray-900 ">
                 {users?.length}
               </span>
             </span>
@@ -509,7 +516,7 @@ export default function App() {
           <div className="flex items-center space-x-3">
             <a
               href="#"
-              className="inline-flex items-center justify-center flex-1 px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              className="inline-flex items-center justify-center flex-1 px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 "
             >
               <svg
                 className="w-5 h-5 mr-1 -ml-1"
@@ -527,7 +534,7 @@ export default function App() {
             </a>
             <a
               href="#"
-              className="inline-flex items-center justify-center flex-1 px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              className="inline-flex items-center justify-center flex-1 px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 "
             >
               Next
               <svg
