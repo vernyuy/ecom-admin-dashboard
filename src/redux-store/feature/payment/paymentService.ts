@@ -52,7 +52,7 @@ const deletePayments = async (pay: any) => {
     console.log(pay);
     typeof pay !== "string"
       ? pay?.map(async (p: string) => {
-          await DataStore.delete(pay, p);
+          await DataStore.delete(Payment, p);
         })
       : await DataStore.delete(Payment, pay);
     const orderResult = await DataStore.query(Payment, Predicates.ALL);

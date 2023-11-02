@@ -52,7 +52,7 @@ const deleteOrders = async (order: any) => {
     console.log(order);
     typeof order !== "string"
       ? order?.map(async (p: string) => {
-          await DataStore.delete(order, p);
+          await DataStore.delete(Order, p);
         })
       : await DataStore.delete(Order, order);
     const orderResult = await DataStore.query(Order, Predicates.ALL);

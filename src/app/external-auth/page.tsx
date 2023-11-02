@@ -2,7 +2,7 @@
 
 import { Auth, DataStore } from "aws-amplify";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import Router, { useSearchParams, useRouter } from "next/navigation";
 import { User } from "@/src/models";
 import React from "react";
 import Link from "next/link";
@@ -16,11 +16,11 @@ export default function Page() {
       <main className="min-h-screen items-center justify-between p-24">
         <div className="mb-8">Email already in use</div>
         Please{" "}
-        <Link href={"/Login"} className="text-green-500">
+        <Link href={"/login"} className="text-green-500">
           login
         </Link>{" "}
         with email and password or{" "}
-        <Link href={"/Register"} className="text-green-500">
+        <Link href={"/register"} className="text-green-500">
           Create
         </Link>{" "}
         a new account with a different email
@@ -41,7 +41,7 @@ export default function Page() {
             phone: data.attributes.phone_number,
             sub: data.attributes.sub,
             isActive: true,
-            address: "",
+            address: JSON.stringify({coutry: 'test'}),
           };
           DataStore.observeQuery(User).subscribe(async (event) => {
             if (event.isSynced) {
@@ -51,11 +51,14 @@ export default function Page() {
                 console.log(data);
                 if (data.length === 0) {
                   await DataStore.save(new User(userData)).then((data) => {
-                    router.replace("/products");
+                    console.log(data)
+                    return router.replace(`/external-auth/${data.id}`)
                   });
-                } else {
-                  router.replace("/");
                 }
+                // else
+                // {
+                //   router.replace("/external-auth/?error=email_exists");
+                // }
               });
             }
           });

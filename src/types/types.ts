@@ -33,6 +33,13 @@ export interface userData {
   password: string;
 }
 
+export interface googleUserForm {
+  firstName: string;
+  lastName: string;
+  address: string;
+  phoneNumber: string;
+}
+
 export interface signinUserData {
   email: string;
   password: string;

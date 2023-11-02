@@ -8,7 +8,9 @@ export const listUsers = createAsyncThunk(
   "user/listUsers",
   async (user: null, thunkApi) => {
     try {
-      return await userService.getAllUsers();
+      const res = await userService.getAllUsers();
+      console.log(res)
+      return res
     } catch (err: any) {
       const message =
         (err.response && err.response.data && err.response.data.message) ||
@@ -53,6 +55,39 @@ export const deleteUsers = createAsyncThunk(
     }
   },
 );
+
+export const blockUsers = createAsyncThunk(
+  "user/blockUsers",
+  async (user: any) => {
+    try {
+      const res = await userService.blockUser(user);
+      return res?.result;
+    } catch (err: any) {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+      console.log(err);
+    }
+  },
+);
+
+export const unBlockUsers = createAsyncThunk(
+  "user/unBlockUsers",
+  async (user: any) => {
+    try {
+      const res = await userService.unBlockUser(user);
+      return res?.result;
+    } catch (err: any) {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+      console.log(err);
+    }
+  },
+);
+
 const initialState: any = {
     users: [],
   errorMsg: "",
@@ -105,8 +140,19 @@ export const userSlice: any = createSlice({
         state.users = action.payload;
         state.errorMsg = "";
         state.isLoading = false;
+    })
+    
+    .addCase(blockUsers.fulfilled, (state, action) => {
+        state.users = action.payload;
+        state.errorMsg = "";
+        state.isLoading = false;
       })
 
+    .addCase(unBlockUsers.fulfilled, (state, action) => {
+        state.users = action.payload;
+        state.errorMsg = "";
+        state.isLoading = false;
+      })
   },
 });
 

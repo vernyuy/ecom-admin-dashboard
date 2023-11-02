@@ -159,10 +159,7 @@ export default function App() {
           contentType: "image/png",
         });
         if (key) {
-          const newKey =
-            "https://commerceb8039144d9044463a5cf2714cc51248d193514-staging.s3.us-east-2.amazonaws.com/public/" +
-            key.key;
-          arrLinks = [...arrLinks, newKey];
+          arrLinks = [...arrLinks, S3BucketLink + key.key];
         }
       }
       if (arrLinks.length != 0) {
@@ -327,7 +324,7 @@ export default function App() {
                   errors?.price && "border-red-500"
                 }`}
                 placeholder="Enter product price"
-                value={values.price}
+                value={values.price as number}
                 onChange={onChange}
                 onBlur={(e) => setErrors(handleFocus(e.target, {}))}
               />
