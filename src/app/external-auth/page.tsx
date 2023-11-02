@@ -6,10 +6,24 @@ import Router, { useSearchParams, useRouter } from "next/navigation";
 import { User } from "@/src/models";
 import React from "react";
 import Link from "next/link";
+import { AppDispatch, RootState } from "@/src/redux-store/store";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  currentUser,
+  googleSignIn,
+  reset,
+  signOut,
+  signin,
+} from "@/src/redux-store/feature/user/authSlice";
+import authService from "@/src/redux-store/feature/user/authService";
 
 export default function Page() {
   const router = useRouter();
   const params = useSearchParams();
+  const dispatch = useDispatch<AppDispatch>();
+  const { user, errorMsg, isLoading, isSuccess, isError, isGoogle }: any =
+    useSelector((state: RootState) => state.auth);
+  
   if (params.has("error")) {
     console.log("email exists");
     return (
@@ -28,45 +42,53 @@ export default function Page() {
     );
   } else {
     useEffect(() => {
-      const getUser = () => {
-        Auth.currentAuthenticatedUser().then(async (data) => {
-          const userData = {
-            firstName: data.attributes.family_name
-              ? data.attributes.family_name
+      const currentUser = async () => {
+        await authService.currentUser().then((result) => {
+        console.log(result);
+      });
+      }
+      getUser()
+    }, []);
+
+    const getUser = async () => {
+      await authService.currentUser().then((result) => {
+        const userData = {
+            firstName: result.attributes.family_name
+              ? result.attributes.family_name
               : "",
-            lastName: data.attributes.given_name
-              ? data.attributes.given_name
+            lastName: result.attributes.given_name
+              ? result.attributes.given_name
               : "",
-            email: data.attributes.email,
-            phone: data.attributes.phone_number,
-            sub: data.attributes.sub,
+            email: result.attributes.email,
+            phone: result.attributes.phone_number,
+            sub: result.attributes.sub,
             isActive: true,
             address: JSON.stringify({coutry: 'test'}),
-          };
-          DataStore.observeQuery(User).subscribe(async (event) => {
-            if (event.isSynced) {
+        };
+
+        DataStore.observeQuery(User).subscribe(async (event) => {
+          if (event.isSynced)
+          {
+              console.log(event.isSynced)
               await DataStore.query(User, (user) =>
-                user.email.eq(data.attributes.email),
+                user.email.eq(result.attributes.email),
               ).then(async (data) => {
                 console.log(data);
                 if (data.length === 0) {
                   await DataStore.save(new User(userData)).then((data) => {
                     console.log(data)
-                    return router.replace(`/external-auth/${data.id}`)
+                    router.replace(`/external-auth/${data.id}`)
                   });
+                } else
+                {
+                  router.replace('/')
                 }
-                // else
-                // {
-                //   router.replace("/external-auth/?error=email_exists");
-                // }
               });
             }
           });
-        });
+        console.log(result);
+      });
       };
-      return () => getUser();
-    }, []);
-
     return (
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
         Collecting your data. Please be patient

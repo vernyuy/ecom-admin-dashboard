@@ -6,8 +6,8 @@ import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 const signup = async (user: userData)=>{
     try{
          await Auth.signUp({
-          username: user.email,
-            password: user.password,
+          username: user?.email,
+            password: user?.password,
             attributes:{
               email: user.email,
               address: user.address
@@ -60,6 +60,28 @@ const confirmUser = async (user: confirmUserData) => {
     try{
         const res = await Auth.currentAuthenticatedUser()
         return res
+    }catch(err){
+      console.log(`Error geting current user: ${err}`)
+        throw err
+    }
+  }
+
+    const updateGoogleUser = async (id: string, userLogin: any) =>{
+    try{
+        const res = await DataStore.query(User, id).then(async (original: any) => {
+        const user = await DataStore.save(
+          User.copyOf(original, updated => {
+            updated.firstName = userLogin.firstName,
+              updated.lastName = userLogin.lastName,
+              updated.address = userLogin.address;
+            updated.phone = userLogin.phoneNumber;
+            updated.userType = 'CUSTOMER'
+          })
+        ).then((data) => {
+          return data
+        });
+      })
+        
     }catch(err){
       console.log(`Error geting current user: ${err}`)
         throw err
@@ -131,7 +153,7 @@ const authService = {
     resendCode,
     logOut,
     forgotPassword,
-    forgotPasswordSubmit
+    forgotPasswordSubmit, updateGoogleUser
 }
 
 export default authService
