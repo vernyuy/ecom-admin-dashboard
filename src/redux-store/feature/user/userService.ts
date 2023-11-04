@@ -7,7 +7,7 @@ import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 const getAllUsers = async () => {
     try
     {
-        const data = await DataStore.query(User)
+        const data = await DataStore.query(User, Predicates.ALL)
         return data
     } catch (err)
     {

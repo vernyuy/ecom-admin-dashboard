@@ -141,10 +141,21 @@ export const productSlice: any = createSlice({
         state.isLoading = false;
       })
 
+
+      .addCase(deleteProductsFn.pending, (state) => {
+        state.products = null;
+        state.isLoading = true;
+        state.errorMsg = "";
+      })
       .addCase(deleteProductsFn.fulfilled, (state, action) => {
         state.products = action.payload;
         state.errorMsg = "";
         state.isLoading = false;
+      })
+      .addCase(deleteProductsFn.rejected, (state, action) => {
+        state.products = null;
+        state.isLoading = false;
+        state.errorMsg = action.payload as string;
       })
 
       .addCase(getProduct.pending, (state) => {

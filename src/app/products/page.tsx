@@ -16,9 +16,10 @@ import { productAttributes } from "@/src/constants";
 import { Button, CustomModal } from "@/src/components";
 export default function App() {
   const [search, setSearch] = useState("");
-  const [isDelete, setisDelete] = useState(false);
+  const [open, setOpen] = useState(false);
+
   const [selectedItems, setSelecteditems]:any = useState([])
-  let selectedProducts: string[] = [];
+  // let selectedProducts: string[] = [];
   const { products, isCompleted, errorMsg, isLoading }: any = useSelector(
     (state: RootState) => state.product,
   );
@@ -30,11 +31,6 @@ export default function App() {
     dispatch(listCategories());
     dispatch(listProducts());
   }, [dispatch]);
-  // useEffect(() => {
-    if (isDelete) {
-      console.log(selectedProducts)
-    }
-  // }, [isDelete]);
 
   const computeDate =(date: any) => {
       return moment(date).format("ll");
@@ -46,22 +42,20 @@ export default function App() {
   };
 
   const select = (e: any) => {
+      console.log(e.target)
     if (e.target.checked) {
       setSelecteditems([...selectedItems, e.target.value])
-      selectedProducts.push(e.target.value);
-    } else {
-      selectedProducts = selectedProducts.filter((p) => {
+      // selectedProducts.push(e.target.value);
+    } else
+    {
+      setSelecteditems(selectedItems.filter((p:string) => {
         return p !== e.target.value;
-      });
-      // setSelecteditems(selectedItems.filter((p:string) => {
-      //   return p !== e.target.value;
-      // }))
+      }))
     }
     console.log(selectedItems);
   };
 
   const deleteProducts = () => {
-      console.log("selectd:  ", selectedItems)
     if (selectedItems.length > 0)
     {
       dispatch(deleteProductsFn(selectedItems));
@@ -307,7 +301,7 @@ export default function App() {
                         <button
                           onClick={(e) => {
                             e.preventDefault();
-                            setisDelete(true)
+                            setOpen(true)
                           }}
                         >delete selected</button>
                       </li>
@@ -329,41 +323,11 @@ export default function App() {
             <div className="overflow-x-autdfo rounded-lg">
               <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
-                  {!isLoading && isCompleted && products?.length == 0 && (
-                    <div className="w-full h-[100px] flex justify-center items-center">
-                      <p className="font-semibold m-auto">It's empty here</p>
-                    </div>
-                  )}
-                  {isLoading && (
-                    <div className="w-full h-[100px] text-blue-500 flex">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        className="m-auto mx-auto"
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
-                        >
-                          <animateTransform
-                            attributeName="transform"
-                            dur="0.75s"
-                            repeatCount="indefinite"
-                            type="rotate"
-                            values="0 12 12;360 12 12"
-                          />
-                        </path>
-                      </svg>
-                    </div>
-                  )}
-                  {isDelete ? <CustomModal isSuccess={true} msg={errorMsg} handleClick={deleteProducts} errorMsg="Are you sure you want to delete" resetIsComplete={()=>{}} /> : <></>}
-                  {products && (
+                  
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
                       <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
                         <tr>
-                          <th className="pl-2">{ selectedProducts.length}</th>
+                          <th className="pl-2 text-left  ">{ selectedItems.length}</th>
                           {productAttributes.map(
                             (item: string, index: number) => (
                               <th
@@ -377,7 +341,37 @@ export default function App() {
                           )}
                         </tr>
                       </thead>
+                      {isLoading && (
+                      <div className="w-full h-[100px] text-blue-500 flex justify-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          className="m-auto mx-auto"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                          >
+                            <animateTransform
+                              attributeName="transform"
+                              dur="0.75s"
+                              repeatCount="indefinite"
+                              type="rotate"
+                              values="0 12 12;360 12 12"
+                            />
+                          </path>
+                        </svg>
+                      </div>
+                      )}
+                      {!isLoading && isCompleted && categories?.length == 0 && (
+                      <div className="w-full h-[100px] flex justify-center items-center">
+                        <p className="font-semibold m-auto">It's empty here</p>
+                      </div>
+                    )}
                       <tbody className="">
+                        
                         {products?.map((product: any, index: number) => {
                           return (
                             <tr key={product.id} className="even:bg-gray-50">
@@ -394,27 +388,27 @@ export default function App() {
                               <td className="w-20 p-4 flex flex-col justify-center">
                                 <img src={product.productImage} />
                               </td>
-                              <td className="px-2 text-sm font-normal text-gray-900 text-center whitespace-nowrap dark:text-white">
+                              <td className="px-4 text-sm font-normal text-gray-900 text-center whitespace-nowrap dark:text-white">
                                 <span className="font-semibold text-left flex flex-col">
                                   <Link href={`/update-product/${product.id}`}>
                                     {product.name}
                                   </Link>
                                 </span>
                               </td>
-                              <td className="px-2 p-4 text-sm font-normal text-left text-gray-500 overflow-y-auto dark:text-gray-400 h-fit w-fit">
+                              <td className="px-4 text-sm font-normal text-left text-gray-500 overflow-y-auto dark:text-gray-400 h-fit w-fit">
                                 <div className="overflow-y-auto  max-h-md">
                                   {product.description}
                                 </div>
                               </td>
-                              <td className="px-2 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
+                              <td className="px-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
                                 {categories?.map((cat: any) =>
                                   cat.id == product.categoryID ? cat.name : "",
                                 )}
                               </td>
-                              <td className="px-2 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              <td className="px-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                                 {`$ ${product.price}`}
                               </td>
-                              <td className="px-2 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              <td className="px-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                                 {product.quantity}
                               </td>
 
@@ -429,7 +423,7 @@ export default function App() {
                                   </p>
                                 )}
                               </td>
-                              <td className="px-2 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              <td className="px-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                                 {computeDate(product.createdAt)}
                               </td>
                             </tr>
@@ -453,7 +447,6 @@ export default function App() {
                         </tr>
                       </tfoot>
                     </table>
-                  )}
                 </div>
               </div>
             </div>
@@ -547,6 +540,43 @@ export default function App() {
           </div>
         </div>
       </main>
+
+      <CustomModal open={open} onClose={() => setOpen(false)}>
+            <div className="text-center w-64">
+          {selectedItems.length === 0 ? <div>
+            <p>Please select data to delete</p>
+            <div className="flex justify-center mt-6">
+              <button
+                type="button"
+                onClick={(e)=>setOpen(false)}
+                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                Ok
+              </button>
+            </div>
+          </div> : <div>
+            
+              <p>Are you sure you want to delete?</p>
+              <div className="flex justify-end mt-6">
+              <button
+                type="button"
+                onClick={deleteProducts}
+                className="text-white bg-red-500  hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                Delete
+                </button>
+                
+                <button
+                type="button"
+                onClick={e=>setOpen(false)}
+                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                Cancel
+              </button>
+            </div> </div> }
+            </div>
+          </CustomModal>
+                  
     </DashboardLayout>
   );
 }

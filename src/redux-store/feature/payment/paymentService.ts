@@ -5,7 +5,7 @@ import { Payment } from "../../../models";
 const getAllPayments = async () => {
     try
     {
-        const data = await DataStore.query(Payment)
+        const data = await DataStore.query(Payment, Predicates.ALL)
         return data
     } catch (err)
     {

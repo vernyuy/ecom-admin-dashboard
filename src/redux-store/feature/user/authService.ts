@@ -108,6 +108,34 @@ const confirmUser = async (user: confirmUserData) => {
      }
   }
 
+  const saveGoogleUser = async (userData: any)=>{
+    try {
+      const data = await DataStore.save(new User(userData));
+        return data
+    }catch(err){
+      console.log(`Error logging user with google: ${err}`)
+      throw err
+     }
+  }
+
+    const getUserByEmail = async (userEmail: string)=>{
+    try {
+      const data = await DataStore.query(User, (user) =>
+                user.email.eq(userEmail),
+      )
+      if (data.length > 0)
+      {
+        return data[0];
+      } else
+      {
+        throw {message: "no user with this email"}
+      }
+    }catch(err){
+      console.log(`Error logging user with google: ${err}`)
+      throw err
+     }
+  }
+
   const changePaswsword = (user: any, oldPassword: string, newPassord: string) =>{
     try {
       const response = Auth.changePassword(user, oldPassword, newPassord)
@@ -153,7 +181,7 @@ const authService = {
     resendCode,
     logOut,
     forgotPassword,
-    forgotPasswordSubmit, updateGoogleUser
+    forgotPasswordSubmit, updateGoogleUser, saveGoogleUser,getUserByEmail
 }
 
 export default authService

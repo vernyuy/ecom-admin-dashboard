@@ -6,35 +6,11 @@ import Router, { useSearchParams, useRouter } from "next/navigation";
 import { User } from "@/src/models";
 import React from "react";
 import Link from "next/link";
-// import { AppDispatch, RootState } from "@/src/redux-store/store";
-// import { useDispatch, useSelector } from "react-redux";
-// import {
-//   currentUser,
-//   googleSignIn,
-//   reset,
-//   signOut,
-//   signin,
-// } from "@/src/redux-store/feature/user/authSlice";
 import authService from "@/src/redux-store/feature/user/authService";
-// import { Amplify } from "aws-amplify";
-// import awsExports from "@/src/aws-exports";
-// if (typeof window !== 'undefined')
-// {
-//   awsExports.oauth["redirectSignIn"] = `${window.location.origin}/external-auth/`;
-//   awsExports.oauth["redirectSignOut"] = `${window.location.origin}/`;
-//   Amplify.configure({ ...awsExports, ssr: true });
-// }
-// if (typeof window === "undefined")
-// {
-//   Amplify.configure({ ...awsExports, ssr: true });
-// }
 
 export default function Page() {
   const router = useRouter();
   const params = useSearchParams();
-  // const dispatch = useDispatch<AppDispatch>();
-  // const { user, errorMsg, isLoading, isSuccess, isError, isGoogle }: any =
-  //   useSelector((state: RootState) => state.auth);
   
   if (params.has("error")) {
     console.log("email exists");

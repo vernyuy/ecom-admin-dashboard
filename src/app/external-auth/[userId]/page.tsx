@@ -58,6 +58,7 @@ export default function Register() {
   const { user, errorMsg, isLoading, isSuccess, isGoogle }: any = useSelector(
     (state: RootState) => state.auth,
   );
+  console.log("update me")
   const router = useRouter();
   useEffect(() => {
     if (isSuccess) {

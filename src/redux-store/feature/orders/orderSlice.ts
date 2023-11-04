@@ -20,6 +20,22 @@ export const listOrders = createAsyncThunk(
   },
 );
 
+export const placeOrder = createAsyncThunk(
+  "user/placeOrder",
+  async (item: any, thunkApi) => {
+    try {
+      return await orderService.placeOrder(item);
+    } catch (err: any) {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+      console.log(err);
+      return thunkApi.rejectWithValue(message);
+    }
+  },
+);
+
 
 export const filterOrders = createAsyncThunk(
   "store/filter",
@@ -76,6 +92,7 @@ export const orderSlice: any = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(listOrders.pending, (state, action) => {
+        console.log("helloe");
         state.orders = [];
         state.isLoggedIn = false;
         state.errorMsg = "";
@@ -89,6 +106,7 @@ export const orderSlice: any = createSlice({
         state.isSuccess = true;
       })
       .addCase(listOrders.rejected, (state, action) => {
+        console.log("hrrrrr");
         (state.orders = []),
           (state.isLoading = false),
             (state.errorMsg = action.payload as string);
@@ -105,6 +123,26 @@ export const orderSlice: any = createSlice({
         state.orders = action.payload;
         state.errorMsg = "";
         state.isLoading = false;
+    })
+    
+    .addCase(placeOrder.pending, (state, action) => {
+        state.orders = [];
+        state.isLoggedIn = false;
+        state.errorMsg = "";
+        state.isLoading = true;
+      })
+        .addCase(placeOrder.fulfilled, (state, action) => {
+            console.log(action.payload);
+        state.orders = action.payload;
+        state.errorMsg = "";
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(placeOrder.rejected, (state, action) => {
+        (state.orders = []),
+          (state.isLoading = false),
+            (state.errorMsg = action.payload as string);
+          state.isSuccess = false
       })
 
   },

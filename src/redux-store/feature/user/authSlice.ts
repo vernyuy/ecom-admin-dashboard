@@ -165,6 +165,38 @@ export const signOut = createAsyncThunk(
   },
 );
 
+export const savegoogleUse = createAsyncThunk(
+  "auth/savegoogleUse",
+  async (user: any, thunkApi) => {
+    try {
+      return await authService.saveGoogleUser(user);
+    } catch (err: any) {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+      console.log(err);
+      return thunkApi.rejectWithValue(message);
+    }
+  },
+);
+
+export const getUserbyMail = createAsyncThunk(
+  "auth/getUserbyEmail",
+  async (userEmail: string, thunkApi) => {
+    try {
+      return await authService.getUserByEmail(userEmail);
+    } catch (err: any) {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+      console.log(err);
+      return thunkApi.rejectWithValue(message);
+    }
+  },
+);
+
 const initialState: any = {
   user: Map,
   isLoggedIn: false,
@@ -175,7 +207,8 @@ const initialState: any = {
   isGoogle: false,
   issentCode: false,
   isLoadingGoogle: false,
-  userData:[]
+  userData:[],
+  userDetails:[]
 };
 
 export const authSlice: any = createSlice({
@@ -385,6 +418,48 @@ export const authSlice: any = createSlice({
           state.issentCode = false;
           console.log(action.payload);
           state.errorMsg = action.payload;
+      })
+
+      .addCase(savegoogleUse.rejected, (state, action) => {
+          (state.isLoading = false),
+          (state.isLoggedIn = false),
+          (state.errorMsg = action.payload as string);
+      })
+      .addCase(savegoogleUse.pending, (state, action) => {
+        state.isLoggedIn = false;
+        state.errorMsg = "";
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(savegoogleUse.fulfilled, (state, action) => {
+        state.user = null;
+        state.isSuccess = true;
+        state.errorMsg = "";
+        state.isLoading = false;
+        state.isLoggedIn = false;
+        state.isError = false;
+      })
+
+
+      .addCase(getUserbyMail.rejected, (state, action) => {
+          (state.isLoading = false),
+          (state.isLoggedIn = false),
+          (state.errorMsg = action.payload as string);
+      })
+      .addCase(getUserbyMail.pending, (state, action) => {
+        state.isLoggedIn = false;
+        state.errorMsg = "";
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(getUserbyMail.fulfilled, (state, action) => {
+        console.log(action.payload)
+        state.userDetails = action.payload
+        state.isSuccess = true;
+        state.errorMsg = "";
+        state.isLoading = false;
+        state.isLoggedIn = false;
+        state.isError = false;
       })
 
       .addCase(signOut.rejected, (state, action) => {

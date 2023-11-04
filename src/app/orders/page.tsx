@@ -11,7 +11,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { orderAttributes } from "@/src/constants";
 import { Button, CustomModal, Delete } from "@/src/components";
-import { CountryDropdown } from "react-country-region-selector";
+import moment  from "moment";
 
 export default function Page() {
   const [search, setSearch] = useState("");
@@ -26,11 +26,16 @@ export default function Page() {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     dispatch(listOrders(null));
+    console.log(orders)
   }, [dispatch]);
 
   const filterOrder = (filterBy: any) => {
     dispatch(filterOrders(filterBy));
   };
+
+  const computeDate =(date: any) => {
+      return moment(date).format("ll");
+  }
 
   const select = (e: any) => {
     if (e.target.checked) {
@@ -44,9 +49,9 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (isDelete) {
-      deleteUsersFn();
-    }
+    // if (isDelete) {
+    //   deleteUsersFn();
+    // }
     filterOrder({ filterBy: "category" });
   }, [isDelete]);
   const deleteUsersFn = (orderId?: string) => {
@@ -316,8 +321,7 @@ export default function Page() {
                                 {order.userID}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
-                                {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
-                                {order.createdAt.split("T")[0]}
+                                {computeDate(order.createdAt)}
                               </td>
 
                               <td className="flex justify-start items-center p-4 h-full">

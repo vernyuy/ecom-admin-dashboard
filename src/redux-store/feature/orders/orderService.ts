@@ -5,7 +5,7 @@ import { Order } from "../../../models";
 const getAllOrders = async () => {
     try
     {
-        const data = await DataStore.query(Order)
+      const data = await DataStore.query(Order, Predicates.ALL)
         return data
     } catch (err)
     {
@@ -14,10 +14,23 @@ const getAllOrders = async () => {
     }
 }
 
+const placeOrder = async (items:any) => {
+    try
+    {
+        const data = await DataStore.save(new Order(items))
+        return data
+    } catch (err)
+    {
+        console.log(err);
+        throw err
+    }
+}
+
+
 const filterOrders = async (filter: any) => {
   try {
     // const filter
-    console.log(filter);
+    // console.log(filter);
     const filterBy = filter.filterBy ? filter.filterBy : filter;
     let userResult;
     switch (filterBy) {
@@ -66,7 +79,8 @@ const deleteOrders = async (order: any) => {
 const orderService = {
     getAllOrders,
     filterOrders,
-    deleteOrders
+  deleteOrders,
+    placeOrder
 }
 
 export default orderService

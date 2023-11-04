@@ -44,9 +44,9 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (isDelete) {
-      deletePaymentsFn();
-    }
+    // if (isDelete) {
+    //   deletePaymentsFn();
+    // }
     filterPay({ filterBy: "category" });
   }, [isDelete]);
   const deletePaymentsFn = (payId?: string) => {
