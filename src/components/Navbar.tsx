@@ -32,8 +32,6 @@ const Navbar = () => {
     
     const loggedUser = async () => {
         dispatch(currentUser())
-        // const loguser = await authService.currentUser()
-        // setUser(loguser)
     }
     const logOut = () => {
         dispatch(signOut(null))
@@ -75,7 +73,7 @@ const Navbar = () => {
                 <Link href="/" className="flex ml-2 md:mr-24">
                   <img src="/ed.png" className="h-9 md:h-10 mr-3" />
                 </Link>
-                <form className="hidden lg:block lg:pl-3.5">
+                {/* <form className="hidden lg:block lg:pl-3.5">
                   <div className="relative mt-1 lg:w-96">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                       <svg
@@ -97,7 +95,7 @@ const Navbar = () => {
                       placeholder="Search"
                     />
                   </div>
-                </form>
+                </form> */}
               </div>
 
               <div className="flex items-center">
@@ -138,6 +136,7 @@ const Navbar = () => {
                     <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
                   </svg>
                 </button>
+                
 
                 <button
                   type="button"
@@ -228,9 +227,6 @@ const Navbar = () => {
                   </button>
             </div>
           </div>
-
-
-          {/* <LogOutSidebar isShow={ isShow} isLoading={isLoading} logOut={logOut()} /> */}
         </nav>
   )
 }

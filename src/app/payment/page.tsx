@@ -15,7 +15,6 @@ import {
 
 export default function Page() {
   const [search, setSearch] = useState("");
-  const [del, setDel] = useState(false);
 
   const [isDelete, setisDelete] = useState(false);
   let selectedPayments: string[] = [];
@@ -44,11 +43,9 @@ export default function Page() {
   };
 
   useEffect(() => {
-    // if (isDelete) {
-    //   deletePaymentsFn();
-    // }
     filterPay({ filterBy: "category" });
   }, [isDelete]);
+
   const deletePaymentsFn = (payId?: string) => {
     console.log("Users>>>>>: ", selectedPayments);
     if (selectedPayments.length > 0) {
@@ -65,7 +62,6 @@ export default function Page() {
 
   return (
     <DashboardLayout>
-      {/* <Delete item="User" /> */}
       <main className="w-full h-full sticky top-0 overflow-y-hidden">
         <nav className="flex sticky top-0 my-2" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
@@ -103,7 +99,7 @@ export default function Page() {
                   className="ml-1 text-gray-400 md:ml-2 "
                   aria-current="page"
                 >
-                  Users
+                  Payments
                 </span>
               </div>
             </li>
@@ -201,67 +197,6 @@ export default function Page() {
                     </ul>
                   </div>
                 </div>
-
-                {/* <div className="group">
-                  <Link
-                    href={"#"}
-                    className=" border text-gray-900 font-semibold border-orange-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-orange-300 rounded-lg text-sm px-4 gap-1 py-1.5 flex items-center"
-                    type="button"
-                  >
-                    <Button
-                      title="Actions"
-                      btnType="button"
-                      containerStyles="text-orange-500 group-hover:text-white"
-                      isDisable={true}
-                    />{" "}
-                    <svg
-                      className="fill-current text-red-500 h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />{" "}
-                    </svg>
-                  </Link>
-
-                  <div
-                    id="dropdown"
-                    className="z-10 hidden mt-1 group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-[105px] "
-                  >
-                    <ul
-                      className="py-2 text-sm text-red-500 "
-                      aria-labelledby="dropdownDefaultButton"
-                    >
-
-                      <li className="block px-4 py-2 hover:bg-red-100 ">
-                        <Button
-                          title="Delete"
-                          handleClick={(e) => {
-                            // setisDelete(true);
-                            deletePaymentsFn()
-                          }}
-                        />
-                      </li>
-
-                      <li className="block px-4 py-2 hover:bg-red-100 ">
-                        <Button
-                          title="Ordered"
-                          // handleClick={(e) => {
-                          //   setisDelete(true);
-                          // }}
-                        />
-                      </li>
-
-                      <li className="block px-4 py-2 hover:bg-green-100 text-green-500 ">
-                        <Button
-                          title="Pending"
-                          // handleClick={(e) => {
-                          //   setisDelete(true);
-                          // }}
-                        />
-                      </li>
-                    </ul>
-                  </div>
-                </div> */}
               </div>
             </div>
           </div>
@@ -270,7 +205,27 @@ export default function Page() {
             <div className="overflow-x-autdfo rounded-lg">
               <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
-                  {isLoading ? (
+                  
+                    <table className="min-w-full divide-y divide-gray-200  mb-3">
+                      <thead className="bg-gray-100  sticky top-0">
+                        <tr className="[&:nth-child(1)]:bg-blue-50d0">
+                          <th className="pl-2">
+                            {/* <input type="checkbox"  /> */}
+                          </th>
+                          {paymentAttributes.map(
+                            (item: string, index: number) => (
+                              <th
+                                key={index}
+                                scope="col"
+                                className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap "
+                              >
+                                {item}
+                              </th>
+                            ),
+                          )}
+                        </tr>
+                    </thead>
+                    {isLoading ? (
                     <div className="w-full h-[100px] text-blue-500 flex">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -294,25 +249,6 @@ export default function Page() {
                       </svg>
                     </div>
                   ) : (
-                    <table className="min-w-full divide-y divide-gray-200  mb-3">
-                      <thead className="bg-gray-100  sticky top-0">
-                        <tr className="[&:nth-child(1)]:bg-blue-50d0">
-                          <th className="pl-2">
-                            {/* <input type="checkbox"  /> */}
-                          </th>
-                          {paymentAttributes.map(
-                            (item: string, index: number) => (
-                              <th
-                                key={index}
-                                scope="col"
-                                className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap "
-                              >
-                                {item}
-                              </th>
-                            ),
-                          )}
-                        </tr>
-                      </thead>
                       <tbody className="">
                         {payments?.map((payment: any, index: number) => {
                           return (
@@ -330,27 +266,29 @@ export default function Page() {
                                   />
                                 }
                               </td>
-                              <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap ">
+                              <td className="p-4 text-sm w-10 overflow-x-hidden font-normal text-gray-900 whitespace-nowrap ">
                                 <span className="font-semibold text-left flex flex-col">
-                                  {/* <Link href={`/update-product/${order.id}`}> */}
                                   {payment.id}
-                                  {/* </Link> */}
                                 </span>
                               </td>
                               <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap ">
                                 {payment.userID}
                               </td>
+                              <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap ">
+                                {payment.orderId}
+                              </td>
+
+                              <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap ">
+                                {payment.username}
+                              </td>
 
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
-                                {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
                                 {payment.amount}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
-                                {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
                                 {payment.createdAt.split("T")[0]}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
-                                {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
                                 {payment.paymentIntentId}
                               </td>
 
@@ -366,10 +304,10 @@ export default function Page() {
                                 )}
                               </td>
                             </tr>
-                            // </Link>
                           );
                         })}
                       </tbody>
+                  )}
                       <tfoot className="bg-gray-100  sticky top-0">
                         <tr>
                           <th className="w-4 pl-2"></th>
@@ -387,8 +325,6 @@ export default function Page() {
                         </tr>
                       </tfoot>
                     </table>
-                  )}
-                  {/* )} */}
                 </div>
               </div>
             </div>

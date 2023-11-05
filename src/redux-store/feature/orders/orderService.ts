@@ -1,12 +1,34 @@
 
 import { Auth, DataStore, Predicates, withSSRContext } from "aws-amplify";
-import { Order } from "../../../models";
+import { Order, User } from "../../../models";
+import userService from "../user/userService";
+
+  
 
 const getAllOrders = async () => {
     try
     {
-      const data = await DataStore.query(Order, Predicates.ALL)
-        return data
+      const Users = []
+      const orderRes = await DataStore.query(Order, Predicates.ALL)
+      for (let user of orderRes)
+      {
+        Users.push(user.userID)
+      }
+
+      const usersWithOrders = await userService.getUsersById(Users)
+      
+      const res = orderRes.map((order: any) => {
+        let modOrder = {}
+        for (let user of usersWithOrders)
+        {
+          if (user.id === order.userID)
+          {
+            modOrder = { ...order, "username": user.firstName+" "+user.lastName }
+          }
+        }
+        return modOrder
+      })
+        return res
     } catch (err)
     {
         console.log(err);

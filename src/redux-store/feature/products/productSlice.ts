@@ -146,15 +146,18 @@ export const productSlice: any = createSlice({
         state.products = null;
         state.isLoading = true;
         state.errorMsg = "";
+        state.isCompleted = false;
       })
       .addCase(deleteProductsFn.fulfilled, (state, action) => {
         state.products = action.payload;
         state.errorMsg = "";
         state.isLoading = false;
+        state.isSuccess = true;
       })
       .addCase(deleteProductsFn.rejected, (state, action) => {
         state.products = null;
         state.isLoading = false;
+        state.isCompleted = true;
         state.errorMsg = action.payload as string;
       })
 

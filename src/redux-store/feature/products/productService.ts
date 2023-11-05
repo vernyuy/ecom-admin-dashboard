@@ -1,5 +1,5 @@
 import { DataStore, Predicates } from "aws-amplify";
-import { Product } from "../../../models";
+import { Category, Product } from "../../../models";
 import { productData } from "@/src/types/types";
 const createProduct = async (product: productData) => {
   try {
@@ -24,7 +24,6 @@ const listProduct = async (productId: any) => {
     return { success: true, result: product };
   } catch (error) {
     console.log(error);
-    // throw error;
     return { success: false, result: error };
   }
 };
@@ -55,6 +54,7 @@ const deleteProducts = async (product: any) => {
     throw error;
   }
 };
+
 const filterProducts = async (filter: any) => {
   try {
     // const filter
@@ -73,9 +73,36 @@ const filterProducts = async (filter: any) => {
         );
         break;
       case "category":
-        productResult = await DataStore.query(Product, (product) =>
-          product.categoryID.eq(filter.category),
-        );
+        if (filter.isParent)
+        {
+          let cats;
+          let categoryProducts; 
+          let prods: any[] = []
+
+          cats = await DataStore.query(Category, (cat) =>
+            cat.parentCategoryId.eq(filter.category),
+          );
+          categoryProducts = await DataStore.query(Product, (prod) => prod.categoryID.eq(filter.category)).then(data => data)
+          for (let p of categoryProducts)
+          {
+            prods.push(p)
+          }
+          
+          for (let cat of cats)
+          {
+            let test = await DataStore.query(Product, (prod) => prod.categoryID.eq(cat.id)).then(data => data)
+            for (let p of test)
+            {
+              prods.push(p)
+            }
+          }
+          productResult = prods
+        } else
+        {
+          productResult = await DataStore.query(Product, (product) =>
+            product.categoryID.eq(filter.category),
+          );
+        }
         break;
       case "search":
         productResult = await DataStore.query(Product, (product) =>

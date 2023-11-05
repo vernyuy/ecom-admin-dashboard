@@ -104,6 +104,35 @@ const blockUser = async (user: any) => {
   }
 }
 
+    const getUserById = async (userId: string)=>{
+    try {
+      const data = await DataStore.query(User, userId
+      )
+        return data;
+    }catch(err){
+      console.log(`Error logging user with google: ${err}`)
+      throw err
+     }
+  }
+
+
+const getUsersById = async (userIds: any) => {
+        console.log(userIds)
+        try
+        {
+          let data: any[] = [];
+      for (let userId of userIds)
+      {
+        let res = await DataStore.query(User, userId).then(data => data)
+        data.push(res)
+      }
+        return data;
+    }catch(err){
+      console.log(`No user with given Id: ${err}`)
+      throw err
+     }
+}
+      
 const unBlockUser = async (user: any) => {
   try
   {
@@ -132,7 +161,9 @@ const userService = {
     filterUsers,
   deleteUsers,
   blockUser,
-    unBlockUser
+  unBlockUser,
+  getUserById,
+    getUsersById
 }
 
 export default userService

@@ -7,8 +7,7 @@ import {
   filterProduct,
   deleteProductsFn,
 } from "@/src/redux-store/feature/products/productSlice";
-import categoryService from "@/src/redux-store/feature/category/categoryService";
-import { listCategories } from "@/src/redux-store/feature/category/categorySlice";
+import { deleteCategoriesFn, filterCategories, listCategories } from "@/src/redux-store/feature/category/categorySlice";
 import DashboardLayout from "@/src/app/dashboardLayout";
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
@@ -17,8 +16,9 @@ import { Button, CustomModal } from "@/src/components";
 
 export default function Categories() {
   const [search, setSearch] = useState("");
-  const [isDelete, setisDelete] = useState(false);
-  let selectedProducts: string[] = [];
+  const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [selectedItems, setSelecteditems]: any = useState([])
 
   const { products, isCompleted, errorMsg, isLoading }: any = useSelector(
     (state: RootState) => state.product,
@@ -30,37 +30,48 @@ export default function Categories() {
     dispatch(listCategories());
     dispatch(listProducts());
   }, [dispatch]);
-  console.log(categories);
 
-  const filterStock = (filterBy: any) => {
-    dispatch(filterProduct(filterBy));
+  useEffect(() => {
+    if (success)
+                    {
+                      
+                    setOpen(false)
+                    }
+  },[success])
+
+  const filterCat = (filterBy: any) => {
+    console.log("Hello")
+    dispatch(filterCategories(filterBy));
     console.log(products);
   };
 
   const select = (e: any) => {
-    if (e.target.checked) {
-      selectedProducts.push(e.target.value);
-    } else {
-      selectedProducts = selectedProducts.filter((p) => {
+    if (e.target.checked)
+    {
+      setSelecteditems([...selectedItems, e.target.value]);
+    } else
+    {
+      setSelecteditems(selectedItems.filter((p: string) => {
         return p !== e.target.value;
-      });
+      }))
     }
-    console.log(selectedProducts);
+    console.log(selectedItems);
   };
 
-  const deleteProducts = (e: any, productId?: string) => {
-    e.preventDefault();
-    if (selectedProducts.length > 0) {
-      dispatch(deleteProductsFn(selectedProducts));
+  const deleteCategory = () => {
+    if (selectedItems.length > 0)
+    {
+      dispatch(deleteCategoriesFn(selectedItems));
+      setSuccess(true)
       return "deleted";
-    } else if (productId) {
-      dispatch(deleteProductsFn(productId));
-      return "deleted";
-    } else {
+    }
+    else
+    {
       console.log("Please select product(s) to delete");
       return "deleted";
     }
   };
+
 
   return (
     <DashboardLayout>
@@ -121,7 +132,7 @@ export default function Categories() {
                   action="#"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    filterStock({ filterBy: "search", search: search });
+                    filterCat({ filterBy: "search", search: search });
                   }}
                   method="GET"
                 >
@@ -138,7 +149,7 @@ export default function Categories() {
                       placeholder="Search category by name"
                       onChange={(e) => {
                         setSearch(e.target.value);
-                        filterStock({ filterBy: "search", search: search });
+                        filterCat({ filterBy: "search", search: search });
                       }}
                     />
                   </div>
@@ -173,7 +184,7 @@ export default function Categories() {
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          onClick={() => filterStock("all")}
+                          onClick={() => filterCat("all")}
                         >
                           All
                         </a>
@@ -181,12 +192,14 @@ export default function Categories() {
                       <li>
                         <a
                           href="#"
+                          onClick={() => filterCat("parent")}
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
                         >
                           Parent
                         </a>
                         <a
                           href="#"
+                          onClick={() => filterCat("not-parent")}
                           className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
                         >
                           Not parent
@@ -226,12 +239,12 @@ export default function Categories() {
                       aria-labelledby="dropdownDefaultButton"
                     >
                       <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                        <Button
-                          title="delete selected"
-                          handleClick={(e) => {
-                            setisDelete(true);
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setOpen(true)
                           }}
-                        />
+                        >delete selected</button>
                       </li>
                     </ul>
                   </div>
@@ -463,6 +476,70 @@ export default function Categories() {
           </div>
         </div>
       </main>
+      <CustomModal open={open} onClose={() => setOpen(false)}>
+        <div className="text-center w-64">
+          <div className="flex justify-center -mt-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="fill-orange-500 h-[60px]"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 7c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1s-1-.45-1-1V8c0-.55.45-1 1-1zm-.01-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm1-3h-2v-2h2v2z" />
+                </svg>
+            </div>
+          {selectedItems.length === 0 ? <div>
+            <p>Please select data to delete</p>
+            <div className="flex justify-center mt-6">
+              <button
+                type="button"
+                onClick={(e)=>setOpen(false)}
+                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                Ok
+              </button>
+            </div>
+          </div> : <div>
+              <p>Deleting this category will also delete products under this category.</p>
+              <p>Are you sure you want to delete?</p>
+              <div className="flex justify-end mt-6">
+              <button
+                type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    deleteCategory()
+                }}
+                className="text-white bg-red-500  hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                {isLoading? "Deleting":"Delete"}
+                </button>
+                
+                <button
+                type="button"
+                onClick={e=>setOpen(false)}
+                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                Cancel
+              </button>
+            </div> </div> }
+            </div>
+          </CustomModal>
+                  
+      <CustomModal open={success} onClose={() => setSuccess(false)}>
+            <div className="text-center w-64">
+           <div>
+            <p>Delete Successful</p>
+            <div className="flex justify-center mt-6">
+              <button
+                type="button"
+                onClick={(e)=>setSuccess(false)}
+                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                Ok
+              </button>
+            </div>
+          </div> 
+            </div>
+          </CustomModal>
     </DashboardLayout>
   );
 }

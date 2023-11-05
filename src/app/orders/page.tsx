@@ -12,13 +12,18 @@ import Link from "next/link";
 import { orderAttributes } from "@/src/constants";
 import { Button, CustomModal, Delete } from "@/src/components";
 import moment  from "moment";
+import userService from "@/src/redux-store/feature/user/userService";
 
 export default function Page() {
   const [search, setSearch] = useState("");
-  const [del, setDel] = useState(false);
+  const [userIds, setuserIds]:any = useState([]);
 
   const [isDelete, setisDelete] = useState(false);
   let selectedOrders: string[] = [];
+
+  const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [selectedItems, setSelecteditems]: any = useState([])
 
   const { orders, errorMsg, isLoading }: any = useSelector(
     (state: RootState) => state.order,
@@ -26,9 +31,18 @@ export default function Page() {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     dispatch(listOrders(null));
-    console.log(orders)
   }, [dispatch]);
 
+
+
+  useEffect(() => {
+    if (success)
+                    {
+                      
+                    setOpen(false)
+                    }
+  }, [success])
+  
   const filterOrder = (filterBy: any) => {
     dispatch(filterOrders(filterBy));
   };
@@ -38,35 +52,44 @@ export default function Page() {
   }
 
   const select = (e: any) => {
-    if (e.target.checked) {
-      selectedOrders.push(e.target.value);
-    } else {
-      selectedOrders = selectedOrders.filter((o) => {
-        return o !== e.target.value;
-      });
+    if (e.target.checked)
+    {
+      setSelecteditems([...selectedItems, e.target.value]);
+    } else
+    {
+      setSelecteditems(selectedItems.filter((p: string) => {
+        return p !== e.target.value;
+      }))
     }
-    console.log(selectedOrders);
+    console.log(selectedItems);
   };
 
-  useEffect(() => {
-    // if (isDelete) {
-    //   deleteUsersFn();
-    // }
-    filterOrder({ filterBy: "category" });
-  }, [isDelete]);
-  const deleteUsersFn = (orderId?: string) => {
-    console.log("Users>>>>>: ", selectedOrders);
-    if (selectedOrders.length > 0) {
-      dispatch(deleteOrders(selectedOrders));
+  const deleteUsersFn = () => {
+    if (selectedItems.length > 0)
+    {
+      dispatch(deleteOrders(selectedItems));
+      setSuccess(true)
       return "deleted";
-    } else if (orderId) {
-      dispatch(deleteOrders(orderId));
-      return "deleted";
-    } else {
+    }
+    else
+    {
       console.log("Please select product(s) to delete");
       return "deleted";
     }
   };
+  // const deleteUsersFn = (orderId?: string) => {
+  //   console.log("Users>>>>>: ", selectedOrders);
+  //   if (selectedOrders.length > 0) {
+  //     dispatch(deleteOrders(selectedOrders));
+  //     return "deleted";
+  //   } else if (orderId) {
+  //     dispatch(deleteOrders(orderId));
+  //     return "deleted";
+  //   } else {
+  //     console.log("Please select product(s) to delete");
+  //     return "deleted";
+  //   }
+  // };
 
   return (
     <DashboardLayout>
@@ -108,7 +131,7 @@ export default function Page() {
                   className="ml-1 text-gray-400 md:ml-2 "
                   aria-current="page"
                 >
-                  Users
+                  Orders
                 </span>
               </div>
             </li>
@@ -207,14 +230,13 @@ export default function Page() {
                       className="py-2 text-sm text-red-500 "
                       aria-labelledby="dropdownDefaultButton"
                     >
-                      <li className="block px-4 py-2 hover:bg-red-100 ">
-                        <Button
-                          title="Delete"
-                          handleClick={(e) => {
-                            // setisDelete(true);
-                            deleteUsersFn();
+                      <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setOpen(true)
                           }}
-                        />
+                        >delete selected</button>
                       </li>
 
                       <li className="block px-4 py-2 hover:bg-red-100 ">
@@ -245,35 +267,7 @@ export default function Page() {
             <div className="overflow-x-autdfo rounded-lg">
               <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
-                  {/* {!isLoading && isCompleted && products?.length == 0 && ( */}
-                  {/* <div className="w-full h-[100px] flex justify-center items-center">
-                      <p className="font-semibold m-auto">It's empty here</p>
-                    </div> */}
-                  {/* )} */}
-                  {isLoading ? (
-                    <div className="w-full h-[100px] text-blue-500 flex">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        className="m-auto mx-auto"
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
-                        >
-                          <animateTransform
-                            attributeName="transform"
-                            dur="0.75s"
-                            repeatCount="indefinite"
-                            type="rotate"
-                            values="0 12 12;360 12 12"
-                          />
-                        </path>
-                      </svg>
-                    </div>
-                  ) : (
+                  
                     <table className="min-w-full divide-y divide-gray-200  mb-3">
                       <thead className="bg-gray-100 sticky top-0">
                         <tr className="[&:nth-child(1)]:bg-blue-50d0">
@@ -292,7 +286,31 @@ export default function Page() {
                             ),
                           )}
                         </tr>
-                      </thead>
+                    </thead>
+                    {isLoading ? (
+                      <div className="w-full h-[100px] text-blue-500 flex">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          className="m-auto mx-auto"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                          >
+                            <animateTransform
+                              attributeName="transform"
+                              dur="0.75s"
+                              repeatCount="indefinite"
+                              type="rotate"
+                              values="0 12 12;360 12 12"
+                            />
+                          </path>
+                        </svg>
+                      </div>
+                    ) : (
                       <tbody className="">
                         {orders?.map((order: any, index: number) => {
                           return (
@@ -310,15 +328,19 @@ export default function Page() {
                                   />
                                 }
                               </td>
-                              <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap ">
+                              <td className="p-4 text-sm font-normal text-gray-900 w-36 whitespace-nowrap ">
                                 <span className="font-semibold text-left flex flex-col">
-                                  <Link href={`/update-product/${order.id}`}>
+                                  <Link href={`/orders/${order.id}`}>
                                     {order.id}
                                   </Link>
                                 </span>
                               </td>
-                              <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap ">
+                              {/* <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap ">
                                 {order.userID}
+                              </td> */}
+
+                              <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap ">
+                                {order.username}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
                                 {computeDate(order.createdAt)}
@@ -339,7 +361,7 @@ export default function Page() {
                             // </Link>
                           );
                         })}
-                      </tbody>
+                      </tbody>)}
                       <tfoot className="bg-gray-100 sticky top-0">
                         <tr>
                           <th className="w-4 pl-2"></th>
@@ -357,7 +379,6 @@ export default function Page() {
                         </tr>
                       </tfoot>
                     </table>
-                  )}
                   {/* )} */}
                 </div>
               </div>
@@ -453,6 +474,70 @@ export default function Page() {
           </div>
         </div>
       </main>
+      <CustomModal open={open} onClose={() => setOpen(false)}>
+        <div className="text-center w-64">
+          <div className="flex justify-center -mt-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="fill-orange-500 h-[60px]"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 7c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1s-1-.45-1-1V8c0-.55.45-1 1-1zm-.01-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm1-3h-2v-2h2v2z" />
+                </svg>
+            </div>
+          {selectedItems.length === 0 ? <div>
+            <p>Please select data to delete</p>
+            <div className="flex justify-center mt-6">
+              <button
+                type="button"
+                onClick={(e)=>setOpen(false)}
+                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                Ok
+              </button>
+            </div>
+          </div> : <div>
+              <p>Deleting this order will delete its payments.</p>
+              <p>Are you sure you want to delete?</p>
+              <div className="flex justify-end mt-6">
+              <button
+                type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    deleteUsersFn()
+                }}
+                className="text-white bg-red-500  hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                {isLoading? "Deleting":"Delete"}
+                </button>
+                
+                <button
+                type="button"
+                onClick={e=>setOpen(false)}
+                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                Cancel
+              </button>
+            </div> </div> }
+            </div>
+          </CustomModal>
+                  
+      <CustomModal open={success} onClose={() => setSuccess(false)}>
+            <div className="text-center w-64">
+           <div>
+            <p>Delete Successful</p>
+            <div className="flex justify-center mt-6">
+              <button
+                type="button"
+                onClick={(e)=>setSuccess(false)}
+                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                Ok
+              </button>
+            </div>
+          </div> 
+            </div>
+          </CustomModal>
     </DashboardLayout>
   );
 }

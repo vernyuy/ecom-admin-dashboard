@@ -21,8 +21,41 @@ export const listCategories = createAsyncThunk("store/listCategories", async () 
         err.toString();
       console.log(err);
     }
-  });
+});
+  
 
+export const deleteCategoriesFn = createAsyncThunk(
+  "store/deleteCategories",
+  async (category: any) => {
+    try {
+      const res = await categoryService.deleteCategory(category);
+      return res.result;
+    } catch (err: any) {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+      console.log(err);
+    }
+  },
+);
+
+export const filterCategories = createAsyncThunk(
+  "store/filtercat",
+  async (filterby: any) => {
+    try {
+      const test = await categoryService.filterCategory(filterby);
+      console.log(test);
+      return test.result;
+    } catch (err: any) {
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+      console.log(err);
+    }
+  },
+);
 
   
 export const categorySlice: any = createSlice({
@@ -41,18 +74,39 @@ export const categorySlice: any = createSlice({
           state.errorMsg = "";
         })
         .addCase(listCategories.fulfilled, (state, action) => {
-          // console.log(action);
           state.categories = action.payload;
           state.errorMsg = "";
           state.isLoading = false;
-          // localStorage.setItem("products", JSON.stringify(action.payload))
         })
         .addCase(listCategories.rejected, (state, action) => {
           state.categories = null;
           state.isLoading = false;
           state.errorMsg = action.payload as string;
         })
+      
+      .addCase(deleteCategoriesFn.pending, (state) => {
+          state.categories = null;
+          state.isLoading = true;
+          state.errorMsg = "";
+        })
+        .addCase(deleteCategoriesFn.fulfilled, (state, action) => {
+          state.categories = action.payload;
+          state.errorMsg = "";
+          state.isLoading = false;
+          state.isCompleted = true;
+        })
+        .addCase(deleteCategoriesFn.rejected, (state, action) => {
+          state.categories = null;
+          state.isLoading = false;
+          state.errorMsg = action.payload as string;
+        })
         
+        .addCase(filterCategories.fulfilled, (state, action) => {
+        state.categories = action.payload;
+        state.errorMsg = "";
+        state.isLoading = false;
+      })
+
     },
   });
   

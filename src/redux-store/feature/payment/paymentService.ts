@@ -1,12 +1,32 @@
 
 import { Auth, DataStore, Predicates, withSSRContext } from "aws-amplify";
 import { Payment } from "../../../models";
+import userService from "../user/userService";
 
 const getAllPayments = async () => {
     try
     {
-        const data = await DataStore.query(Payment, Predicates.ALL)
-        return data
+      const Users = []
+      const paymentRes = await DataStore.query(Payment, Predicates.ALL)
+      for (let user of paymentRes)
+      {
+        Users.push(user.userID)
+      }
+
+      const usersWithPayments = await userService.getUsersById(Users)
+      
+      const res = paymentRes.map((pay: any) => {
+        let modPayment = {}
+        for (let user of usersWithPayments)
+        {
+          if (user.id === pay.userID)
+          {
+            modPayment = { ...pay, "username": user.firstName+" "+user.lastName }
+          }
+        }
+        return modPayment
+      })
+        return res
     } catch (err)
     {
         console.log(err);
@@ -33,10 +53,12 @@ const filterPayments = async (filter: any) => {
         break;
 
       default:
-        userResult = await DataStore.query(Payment, Predicates.ALL, {
-          page: 0,
-          limit: 10,
-        });
+        userResult = await DataStore.query(Payment, Predicates.ALL,
+          // {
+        //   page: 0,
+        //   limit: 10,
+        // }
+        );
         break;
     }
     return { success: true, result: userResult };

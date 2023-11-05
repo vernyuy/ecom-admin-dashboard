@@ -17,21 +17,29 @@ import { Button, CustomModal } from "@/src/components";
 export default function App() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  const [selectedItems, setSelecteditems]:any = useState([])
-  // let selectedProducts: string[] = [];
-  const { products, isCompleted, errorMsg, isLoading }: any = useSelector(
+  const [selectedItems, setSelecteditems]: any = useState([])
+  
+  const { products, isCompleted, errorMsg, isLoading, isSuccess }: any = useSelector(
     (state: RootState) => state.product,
   );
   const { categories }: any = useSelector((state: RootState) => state.category);
   const dispatch = useDispatch<AppDispatch>();
 
-  useLayoutEffect(() => {
-    console.log("mounted");
+  useEffect(() => {
     dispatch(listCategories());
     dispatch(listProducts());
+    dispatch(reset())
   }, [dispatch]);
 
+  useEffect(() => {
+    if (success)
+                    {
+                      
+                    setOpen(false)
+                    }
+  },[success])
   const computeDate =(date: any) => {
       return moment(date).format("ll");
   }
@@ -45,7 +53,6 @@ export default function App() {
       console.log(e.target)
     if (e.target.checked) {
       setSelecteditems([...selectedItems, e.target.value])
-      // selectedProducts.push(e.target.value);
     } else
     {
       setSelecteditems(selectedItems.filter((p:string) => {
@@ -59,6 +66,7 @@ export default function App() {
     if (selectedItems.length > 0)
     {
       dispatch(deleteProductsFn(selectedItems));
+      setSuccess(true)
       return "deleted";
     }
     else
@@ -153,7 +161,7 @@ export default function App() {
               <div className="flex border-none flex-wrap gap-2">
                 <div className="group">
                   <Link
-                    href={"/add-product"}
+                    href={"#"}
                     className=" border text-green-500 font-semibold border-green-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-green-300 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-center"
                     type="button"
                   >
@@ -248,6 +256,62 @@ export default function App() {
                         </a>
                       </li>
                       {categories?.map((cat: any, index: number) => (
+                        cat.parentCategoryId === ""?<li key={cat.parentCategoryId}>
+                          <a
+                            key={index}
+                            href="#"
+                            className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                            onClick={() =>
+                              filterStock({
+                                filterBy: "category",
+                                isParent: true,
+                                category: cat.id,
+                              })
+                            }
+                          >
+                            {cat.name}
+                          </a>
+                        </li>:<></>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="group">
+                  <Link
+                    href={"#"}
+                    className=" border text-green-500 font-semibold border-green-300 focus:ring-0 group-hover:text-white group-hover:border-none group-hover:bg-green-300 rounded-lg text-sm px-4 py-1.5 flex gap-1 items-center"
+                    type="button"
+                  >
+                    <Button title="Sub Category" btnType="button" />{" "}
+                    <svg
+                      className="fill-current text-green-500 h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />{" "}
+                    </svg>
+                  </Link>
+
+                  <div
+                    id="dropdown"
+                    className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700"
+                  >
+                    <ul
+                      className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                      aria-labelledby="dropdownDefaultButton"
+                    >
+                      <li>
+                        <a
+                          href="#"
+                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          onClick={() => filterStock("all")}
+                        >
+                          All
+                        </a>
+                      </li>
+                      {categories?.map((cat: any, index: number) => (
+                        cat.parentCategoryId !== ""?
                         <li key={index}>
                           <a
                             key={cat.id}
@@ -262,7 +326,7 @@ export default function App() {
                           >
                             {cat.name}
                           </a>
-                        </li>
+                        </li>:<></>
                       ))}
                     </ul>
                   </div>
@@ -400,6 +464,19 @@ export default function App() {
                                   {product.description}
                                 </div>
                               </td>
+                              {/* <td className="px-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
+                                {categories?.map((cat: any) =>
+                                  (cat.id == product.categoryID && cat.isParent) ?
+                                    // categories?.map((c: any) =>
+                                    //   (cat.id == c.parentCategoryId) ?
+                                        cat.name : "",
+                                    //   ):
+                                    // ""
+                                  categories?.filter((c:any) => {
+                                        c.id == categories.parentCategoryId
+                                      })
+                                )}
+                              </td> */}
                               <td className="px-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
                                 {categories?.map((cat: any) =>
                                   cat.id == product.categoryID ? cat.name : "",
@@ -542,7 +619,14 @@ export default function App() {
       </main>
 
       <CustomModal open={open} onClose={() => setOpen(false)}>
-            <div className="text-center w-64">
+        <div className="text-center w-64">
+          <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="fill-orange-500 h-[60px]"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 7c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1s-1-.45-1-1V8c0-.55.45-1 1-1zm-.01-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm1-3h-2v-2h2v2z" />
+                </svg>
           {selectedItems.length === 0 ? <div>
             <p>Please select data to delete</p>
             <div className="flex justify-center mt-6">
@@ -555,15 +639,26 @@ export default function App() {
               </button>
             </div>
           </div> : <div>
-            
+            <div className="flex justify-center -mt-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  className="fill-green-300 h-[60px]"
+                >
+                  <path d="M16.59 7.58L10 14.17l-3.59-3.58L5 12l5 5l8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8z" />
+                </svg>
+            </div>
               <p>Are you sure you want to delete?</p>
               <div className="flex justify-end mt-6">
               <button
                 type="button"
-                onClick={deleteProducts}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    deleteProducts()
+                }}
                 className="text-white bg-red-500  hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
               >
-                Delete
+                {isLoading? "Deleting":"Delete"}
                 </button>
                 
                 <button
@@ -577,6 +672,22 @@ export default function App() {
             </div>
           </CustomModal>
                   
+      <CustomModal open={success} onClose={() => setSuccess(false)}>
+            <div className="text-center w-64">
+           <div>
+            <p>Delete Successful</p>
+            <div className="flex justify-center mt-6">
+              <button
+                type="button"
+                onClick={(e)=>setSuccess(false)}
+                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              >
+                Ok
+              </button>
+            </div>
+          </div> 
+            </div>
+          </CustomModal>
     </DashboardLayout>
   );
 }
