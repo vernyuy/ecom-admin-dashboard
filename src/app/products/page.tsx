@@ -620,13 +620,15 @@ export default function App() {
 
       <CustomModal open={open} onClose={() => setOpen(false)}>
         <div className="text-center w-64">
-          <svg
+          <div className="flex justify-center -mt-4">
+                <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="fill-orange-500 h-[60px]"
                   viewBox="0 0 24 24"
                 >
                   <path d="M12 7c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1s-1-.45-1-1V8c0-.55.45-1 1-1zm-.01-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm1-3h-2v-2h2v2z" />
                 </svg>
+            </div>
           {selectedItems.length === 0 ? <div>
             <p>Please select data to delete</p>
             <div className="flex justify-center mt-6">
@@ -639,15 +641,6 @@ export default function App() {
               </button>
             </div>
           </div> : <div>
-            <div className="flex justify-center -mt-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  className="fill-green-300 h-[60px]"
-                >
-                  <path d="M16.59 7.58L10 14.17l-3.59-3.58L5 12l5 5l8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8z" />
-                </svg>
-            </div>
               <p>Are you sure you want to delete?</p>
               <div className="flex justify-end mt-6">
               <button
