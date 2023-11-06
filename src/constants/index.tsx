@@ -146,7 +146,7 @@ export const orderAttributes = [
   // "USER ID",
   "USER NAME",
   "ORDER DATE",
-  "STATUS",
+  // "STATUS",
 ];
 
 export const paymentAttributes = [

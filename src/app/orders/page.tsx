@@ -346,7 +346,7 @@ export default function Page() {
                                 {computeDate(order.createdAt)}
                               </td>
 
-                              <td className="flex justify-start items-center p-4 h-full">
+                              {/* <td className="flex justify-start items-center p-4 h-full">
                                 {order.orderStatus ? (
                                   <div className="bg-green-100 rounded-md  text-green-800 h-full w-fit text-xs font-medium px-2 py-1">
                                     Ordered
@@ -356,7 +356,7 @@ export default function Page() {
                                     Pending
                                   </div>
                                 )}
-                              </td>
+                              </td> */}
                             </tr>
                             // </Link>
                           );
