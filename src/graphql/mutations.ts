@@ -926,3 +926,72 @@ export const deleteEmailNotification = /* GraphQL */ `
     }
   }
 `;
+export const createAdvert = /* GraphQL */ `
+  mutation CreateAdvert(
+    $input: CreateAdvertInput!
+    $condition: ModelAdvertConditionInput
+  ) {
+    createAdvert(input: $input, condition: $condition) {
+      id
+      backgroundImageUrl
+      title
+      backgroundColor
+      bannerUrl
+      status
+      hasBg
+      textColor
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateAdvert = /* GraphQL */ `
+  mutation UpdateAdvert(
+    $input: UpdateAdvertInput!
+    $condition: ModelAdvertConditionInput
+  ) {
+    updateAdvert(input: $input, condition: $condition) {
+      id
+      backgroundImageUrl
+      title
+      backgroundColor
+      bannerUrl
+      status
+      hasBg
+      textColor
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteAdvert = /* GraphQL */ `
+  mutation DeleteAdvert(
+    $input: DeleteAdvertInput!
+    $condition: ModelAdvertConditionInput
+  ) {
+    deleteAdvert(input: $input, condition: $condition) {
+      id
+      backgroundImageUrl
+      title
+      backgroundColor
+      bannerUrl
+      status
+      hasBg
+      textColor
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;

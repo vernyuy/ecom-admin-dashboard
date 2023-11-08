@@ -44,9 +44,10 @@ const filterUsers = async (filter: any) => {
         case "search":
             userResult = await DataStore.query(User, (user) =>
                 user.or(user => [
-                    user.firstName.contains(filter.search.toLowerCase()),
-                    user.lastName.contains(filter.search.toLowerCase())
-  ]),
+                    user.firstName.contains(filter.search),
+                    user.lastName.contains(filter.search),
+                  user.email.contains(filter.search)
+                ]),
         );
         break;
 

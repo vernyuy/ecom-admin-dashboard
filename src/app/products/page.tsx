@@ -14,6 +14,11 @@ import Link from "next/link";
 import moment from "moment";
 import { productAttributes } from "@/src/constants";
 import { Button, CustomModal } from "@/src/components";
+import algoliasearch from 'algoliasearch/lite';
+import { InstantSearch } from 'react-instantsearch';
+
+const searchClient = algoliasearch('1H8TO0RHHP', '8d8d474170f8d306904c4675045b6f4e');
+
 export default function App() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
@@ -34,12 +39,13 @@ export default function App() {
   }, [dispatch]);
 
   useEffect(() => {
+    console.log(search);
+    filterStock({ filterBy: "search", search: search })
     if (success)
-                    {
-                      
-                    setOpen(false)
-                    }
-  },[success])
+    {
+      setOpen(false);
+    }
+  },[success, search])
   const computeDate =(date: any) => {
       return moment(date).format("ll");
   }
@@ -152,7 +158,6 @@ export default function App() {
                       placeholder="Search products by name"
                       onChange={(e) => {
                         setSearch(e.target.value);
-                        filterStock({ filterBy: "search", search: search });
                       }}
                     />
                   </div>
@@ -388,83 +393,87 @@ export default function App() {
               <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
                   
-                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
-                      <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
-                        <tr>
-                          <th className="pl-2 text-left  ">{ selectedItems.length}</th>
-                          {productAttributes.map(
-                            (item: string, index: number) => (
-                              <th
-                                key={index}
-                                scope="col"
-                                className="px-4 py-2 whitespace-nowrap text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
-                              >
-                                {item}
-                              </th>
-                            ),
-                          )}
-                        </tr>
-                      </thead>
-                      {isLoading && (
-                      <div className="w-full h-[100px] text-blue-500 flex justify-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="32"
-                          height="32"
-                          viewBox="0 0 24 24"
-                          className="m-auto mx-auto"
-                        >
-                          <path
-                            fill="currentColor"
-                            d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                  {products?.length !== 0 ? <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
+                    <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
+                      <tr>
+                        <th className="pl-2 text-left  ">{selectedItems.length}</th>
+                        {productAttributes.map(
+                          (item: string, index: number) => (
+                            <th
+                              key={index}
+                              scope="col"
+                              className="px-4 py-2 whitespace-nowrap text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
+                            >
+                              {item}
+                            </th>
+                          ),
+                        )}
+                      </tr>
+                    </thead>
+                    {isLoading && (
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <div className="w-full h-[100px] text-blue-500 flex justify-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="32"
+                            height="32"
+                            viewBox="0 0 24 24"
+                            className="my-auto"
                           >
-                            <animateTransform
-                              attributeName="transform"
-                              dur="0.75s"
-                              repeatCount="indefinite"
-                              type="rotate"
-                              values="0 12 12;360 12 12"
-                            />
-                          </path>
-                        </svg>
-                      </div>
-                      )}
-                      {!isLoading && isCompleted && categories?.length == 0 && (
-                      <div className="w-full h-[100px] flex justify-center items-center">
-                        <p className="font-semibold m-auto">It's empty here</p>
-                      </div>
+                            <path
+                              fill="currentColor"
+                              d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                            >
+                              <animateTransform
+                                attributeName="transform"
+                                dur="0.75s"
+                                repeatCount="indefinite"
+                                type="rotate"
+                                values="0 12 12;360 12 12"
+                              />
+                            </path>
+                          </svg>
+                        </div>
+                        <td></td>
+                        <td></td>
+                      </tr>
                     )}
-                      <tbody className="">
+                    <tbody className="">
                         
-                        {products?.map((product: any, index: number) => {
-                          return (
-                            <tr key={product.id} className="even:bg-gray-50">
-                              <th className="pl-2 ">
-                                {
-                                  <input
-                                    type="checkbox"
-                                    className="bg-black"
-                                    value={product.id}
-                                    onChange={select}
-                                  />
-                                }
-                              </th>
-                              <td className="w-20 p-4 flex flex-col justify-center">
-                                <img src={product.productImage} />
-                              </td>
-                              <td className="px-4 text-sm font-normal text-gray-900 text-center whitespace-nowrap dark:text-white">
-                                <span className="font-semibold text-left flex flex-col">
-                                  <Link href={`/update-product/${product.id}`}>
-                                    {product.name}
-                                  </Link>
-                                </span>
-                              </td>
-                              <td className="px-4 text-sm font-normal text-left text-gray-500 overflow-y-auto dark:text-gray-400 h-fit w-fit">
-                                <div className="overflow-y-auto  max-h-md">
-                                  {product.description}
-                                </div>
-                              </td>
-                              {/* <td className="px-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
+                      
+                      {products?.map((product: any, index: number) => {
+                        return (
+                          <tr key={product.id} className="even:bg-gray-50">
+                            <th className="pl-2 ">
+                              {
+                                <input
+                                  type="checkbox"
+                                  className="bg-black"
+                                  value={product.id}
+                                  onChange={select}
+                                />
+                              }
+                            </th>
+                            <td className="w-20 p-4 flex flex-col justify-center">
+                              <img src={product.productImage} />
+                            </td>
+                            <td className="px-4 text-sm font-normal text-gray-900 text-center whitespace-nowrap dark:text-white">
+                              <span className="font-semibold text-left flex flex-col">
+                                <Link href={`/update-product/${product.id}`}>
+                                  {product.name}
+                                </Link>
+                              </span>
+                            </td>
+                            <td className="px-4 text-sm font-normal text-left text-gray-500 overflow-y-auto dark:text-gray-400 h-fit w-fit">
+                              <div className="overflow-y-auto  max-h-md">
+                                {product.description}
+                              </div>
+                            </td>
+                            {/* <td className="px-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
                                 {categories?.map((cat: any) =>
                                   (cat.id == product.categoryID && cat.isParent) ?
                                     // categories?.map((c: any) =>
@@ -477,53 +486,55 @@ export default function App() {
                                       })
                                 )}
                               </td> */}
-                              <td className="px-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
-                                {categories?.map((cat: any) =>
-                                  cat.id == product.categoryID ? cat.name : "",
-                                )}
-                              </td>
-                              <td className="px-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {`$ ${product.price}`}
-                              </td>
-                              <td className="px-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {product.quantity}
-                              </td>
+                            <td className="px-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap dark:text-white truncate">
+                              {categories?.map((cat: any) =>
+                                cat.id == product.categoryID ? cat.name : "",
+                              )}
+                            </td>
+                            <td className="px-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              {`$ ${product.price}`}
+                            </td>
+                            <td className="px-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              {product.quantity}
+                            </td>
 
-                              <td className="text-center items-center h-full">
-                                {product.inStock ? (
-                                  <p className="bg-green-100 m-auto text-green-800 h-full w-fit text-xs font-medium mr-2 px-2 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">
-                                    In Stock
-                                  </p>
-                                ) : (
-                                  <p className="bg-red-100 m-auto text-red-800 h-full w-fit text-xs font-medium mr-2 px-2 py-0.5 rounded-md dark:bg-gray-700 dark:text-red-400 border border-red-100 dark:border-red-500">
-                                    Sold
-                                  </p>
-                                )}
-                              </td>
-                              <td className="px-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                {computeDate(product.createdAt)}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                      <tfoot className="bg-gray-100 dark:bg-blue-900 sticky top-0">
-                        <tr>
-                          <th className="w-4 pl-2"></th>
-                          {productAttributes.map(
-                            (item: string, index: number) => (
-                              <th
-                                key={index}
-                                scope="col"
-                                className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
-                              >
-                                {item}
-                              </th>
-                            ),
-                          )}
-                        </tr>
-                      </tfoot>
-                    </table>
+                            <td className="text-center items-center h-full">
+                              {product.inStock ? (
+                                <p className="bg-green-100 m-auto text-green-800 h-full w-fit text-xs font-medium mr-2 px-2 py-0.5 rounded-md dark:bg-gray-700 dark:text-green-400 border border-green-100 dark:border-green-500">
+                                  In Stock
+                                </p>
+                              ) : (
+                                <p className="bg-red-100 m-auto text-red-800 h-full w-fit text-xs font-medium mr-2 px-2 py-0.5 rounded-md dark:bg-gray-700 dark:text-red-400 border border-red-100 dark:border-red-500">
+                                  Sold
+                                </p>
+                              )}
+                            </td>
+                            <td className="px-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
+                              {computeDate(product.createdAt)}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                    <tfoot className="bg-gray-100 dark:bg-blue-900 sticky top-0">
+                      <tr>
+                        <th className="w-4 pl-2"></th>
+                        {productAttributes.map(
+                          (item: string, index: number) => (
+                            <th
+                              key={index}
+                              scope="col"
+                              className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase dark:text-white"
+                            >
+                              {item}
+                            </th>
+                          ),
+                        )}
+                      </tr>
+                    </tfoot>
+                  </table> : <div className="w-full h-[100px] flex justify-center items-center">
+                        <p className="font-semibold m-auto">It's empty here</p>
+                      </div>}
                 </div>
               </div>
             </div>

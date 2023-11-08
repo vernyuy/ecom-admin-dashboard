@@ -1,14 +1,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Providers } from "../redux-store/providers";
-import { Poppins } from "next/font/google";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-poppins",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-});
+import 'instantsearch.css/themes/satellite-min.css';
+
 
 export const metadata: Metadata = {
   title: "Commerce",
@@ -21,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={poppins.className}>
+    <html lang="en" className={''}>
       <body className="fon font-sans">
         <>
           <Providers>{children}</Providers>

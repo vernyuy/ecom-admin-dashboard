@@ -374,3 +374,43 @@ export declare type EmailNotification = LazyLoading extends LazyLoadingDisabled 
 export declare const EmailNotification: (new (init: ModelInit<EmailNotification>) => EmailNotification) & {
   copyOf(source: EmailNotification, mutator: (draft: MutableModel<EmailNotification>) => MutableModel<EmailNotification> | void): EmailNotification;
 }
+
+type EagerAdvert = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Advert, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly backgroundImageUrl?: string | null;
+  readonly title?: string | null;
+  readonly backgroundColor?: string | null;
+  readonly bannerUrl?: string | null;
+  readonly status: boolean;
+  readonly hasBg?: boolean | null;
+  readonly textColor?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyAdvert = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Advert, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly backgroundImageUrl?: string | null;
+  readonly title?: string | null;
+  readonly backgroundColor?: string | null;
+  readonly bannerUrl?: string | null;
+  readonly status: boolean;
+  readonly hasBg?: boolean | null;
+  readonly textColor?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Advert = LazyLoading extends LazyLoadingDisabled ? EagerAdvert : LazyAdvert
+
+export declare const Advert: (new (init: ModelInit<Advert>) => Advert) & {
+  copyOf(source: Advert, mutator: (draft: MutableModel<Advert>) => MutableModel<Advert> | void): Advert;
+}

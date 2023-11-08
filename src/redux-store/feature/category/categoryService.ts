@@ -74,7 +74,10 @@ const filterCategory = async (filter: any) => {
         break;
       case "search":
         catResult = await DataStore.query(Category, (cat) =>
-          cat.name.contains(filter.search.toLowerCase()),
+          cat.or(c => [
+            c.name.contains(filter.search),
+            c.description.contains(filter.search)
+          ]),
         );
         break;
 

@@ -210,7 +210,6 @@ export default function Page() {
                       <thead className="bg-gray-100  sticky top-0">
                         <tr className="[&:nth-child(1)]:bg-blue-50d0">
                           <th className="pl-2">
-                            {/* <input type="checkbox"  /> */}
                           </th>
                           {paymentAttributes.map(
                             (item: string, index: number) => (
@@ -226,28 +225,36 @@ export default function Page() {
                         </tr>
                     </thead>
                     {isLoading ? (
-                    <div className="w-full h-[100px] text-blue-500 flex">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="32"
-                        height="32"
-                        viewBox="0 0 24 24"
-                        className="m-auto mx-auto"
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <div className="w-full h-[100px] text-blue-500 flex">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          className="my-auto"
                         >
-                          <animateTransform
-                            attributeName="transform"
-                            dur="0.75s"
-                            repeatCount="indefinite"
-                            type="rotate"
-                            values="0 12 12;360 12 12"
-                          />
-                        </path>
-                      </svg>
-                    </div>
+                          <path
+                            fill="currentColor"
+                            d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                          >
+                            <animateTransform
+                              attributeName="transform"
+                              dur="0.75s"
+                              repeatCount="indefinite"
+                              type="rotate"
+                              values="0 12 12;360 12 12"
+                            />
+                          </path>
+                        </svg>
+                        </div>
+                        <td></td>
+                        <td></td>
+                      </tr>
                   ) : (
                       <tbody className="">
                         {payments?.map((payment: any, index: number) => {
@@ -266,15 +273,11 @@ export default function Page() {
                                   />
                                 }
                               </td>
-                              <td className="p-4 text-sm w-10 overflow-x-hidden font-normal text-gray-900 whitespace-nowrap ">
-                                <span className="font-semibold text-left flex flex-col">
+                              <td className="p-4 text-sm max-w-[200px] truncate font-semibold text-left text-gray-900 whitespace-nowrap ">
+                                
                                   {payment.id}
-                                </span>
                               </td>
-                              <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap ">
-                                {payment.userID}
-                              </td>
-                              <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap ">
+                              <td className="p-4 text-sm max-w-[200px] truncate font-normal text-left text-gray-500 whitespace-nowrap ">
                                 {payment.orderId}
                               </td>
 
@@ -288,7 +291,7 @@ export default function Page() {
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
                                 {payment.createdAt.split("T")[0]}
                               </td>
-                              <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
+                              <td className="p-4 text-sm max-w-[200px] truncate font-normal text-gray-900 text-left whitespace-nowrap">
                                 {payment.paymentIntentId}
                               </td>
 

@@ -251,9 +251,6 @@ export default function Page() {
                       <li className="block px-4 py-2 hover:bg-green-100 text-green-500 ">
                         <Button
                           title="Pending"
-                          // handleClick={(e) => {
-                          //   setisDelete(true);
-                          // }}
                         />
                       </li>
                     </ul>
@@ -272,7 +269,6 @@ export default function Page() {
                       <thead className="bg-gray-100 sticky top-0">
                         <tr className="[&:nth-child(1)]:bg-blue-50d0">
                           <th className="pl-2">
-                            {/* <input type="checkbox"  /> */}
                           </th>
                           {orderAttributes.map(
                             (item: string, index: number) => (
@@ -288,13 +284,16 @@ export default function Page() {
                         </tr>
                     </thead>
                     {isLoading ? (
-                      <div className="w-full h-[100px] text-blue-500 flex">
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <div className="w-full h-[100px] text-blue-500 flex justify-end">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="32"
                           height="32"
                           viewBox="0 0 24 24"
-                          className="m-auto mx-auto"
+                          className="my-auto"
                         >
                           <path
                             fill="currentColor"
@@ -309,7 +308,9 @@ export default function Page() {
                             />
                           </path>
                         </svg>
-                      </div>
+                        </div>
+                        <td></td>
+                      </tr>
                     ) : (
                       <tbody className="">
                         {orders?.map((order: any, index: number) => {
@@ -328,25 +329,24 @@ export default function Page() {
                                   />
                                 }
                               </td>
-                              <td className="p-4 text-sm font-normal text-gray-900 w-36 whitespace-nowrap ">
-                                <span className="font-semibold text-left flex flex-col">
-                                  <Link href={`/orders/${order.id}`}>
-                                    {order.id}
+                              <td className="p-4 text-sm  max-w-[200px] truncate font-semibold truncate text-left  text-gray-900 w-36 whitespace-nowrap ">
+                                
+                              <Link href={`/orders/${order.id}`} className="">
+                                  
+                                {order.id}
+                                
                                   </Link>
-                                </span>
                               </td>
-                              {/* <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap ">
-                                {order.userID}
-                              </td> */}
 
-                              <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap ">
+
+                              <td className="p-4 text-sm font-normal  text-left text-gray-500 whitespace-nowrap ">
                                 {order.username}
                               </td>
-                              <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
+                              <td className="p-4 text-sm font-normal text-left whitespace-nowrap  truncate">
                                 {computeDate(order.createdAt)}
                               </td>
 
-                              {/* <td className="flex justify-start items-center p-4 h-full">
+                              <td className="flex justify-start items-center p-4 h-full">
                                 {order.orderStatus ? (
                                   <div className="bg-green-100 rounded-md  text-green-800 h-full w-fit text-xs font-medium px-2 py-1">
                                     Ordered
@@ -356,9 +356,8 @@ export default function Page() {
                                     Pending
                                   </div>
                                 )}
-                              </td> */}
+                              </td>
                             </tr>
-                            // </Link>
                           );
                         })}
                       </tbody>)}
@@ -379,7 +378,6 @@ export default function Page() {
                         </tr>
                       </tfoot>
                     </table>
-                  {/* )} */}
                 </div>
               </div>
             </div>

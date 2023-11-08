@@ -6,6 +6,7 @@ import categorySlice from "./feature/category/categorySlice";
 import userSlice from "./feature/user/userSlice";
 import orderSlice from "./feature/orders/orderSlice";
 import paymentSlice from "./feature/payment/paymentSlice";
+import storeSlice from "./feature/store/storeSlice";
 export const store = configureStore({
   reducer: {
     auth: authSlice,
@@ -13,7 +14,8 @@ export const store = configureStore({
     category: categorySlice,
     user: userSlice,
     order: orderSlice,
-    payment: paymentSlice
+    payment: paymentSlice,
+    advert: storeSlice
     
   },
   middleware: getDefaultMiddleware =>

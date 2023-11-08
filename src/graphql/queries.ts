@@ -964,3 +964,87 @@ export const syncEmailNotifications = /* GraphQL */ `
     }
   }
 `;
+export const getAdvert = /* GraphQL */ `
+  query GetAdvert($id: ID!) {
+    getAdvert(id: $id) {
+      id
+      backgroundImageUrl
+      title
+      backgroundColor
+      bannerUrl
+      status
+      hasBg
+      textColor
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listAdverts = /* GraphQL */ `
+  query ListAdverts(
+    $filter: ModelAdvertFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAdverts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        backgroundImageUrl
+        title
+        backgroundColor
+        bannerUrl
+        status
+        hasBg
+        textColor
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncAdverts = /* GraphQL */ `
+  query SyncAdverts(
+    $filter: ModelAdvertFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncAdverts(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        backgroundImageUrl
+        title
+        backgroundColor
+        bannerUrl
+        status
+        hasBg
+        textColor
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;

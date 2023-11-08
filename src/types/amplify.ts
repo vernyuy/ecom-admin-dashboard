@@ -634,6 +634,66 @@ export type DeleteEmailNotificationInput = {
   _version?: number | null,
 };
 
+export type CreateAdvertInput = {
+  id?: string | null,
+  backgroundImageUrl?: string | null,
+  title?: string | null,
+  backgroundColor?: string | null,
+  bannerUrl?: string | null,
+  status: boolean,
+  hasBg?: boolean | null,
+  textColor?: string | null,
+  _version?: number | null,
+};
+
+export type ModelAdvertConditionInput = {
+  backgroundImageUrl?: ModelStringInput | null,
+  title?: ModelStringInput | null,
+  backgroundColor?: ModelStringInput | null,
+  bannerUrl?: ModelStringInput | null,
+  status?: ModelBooleanInput | null,
+  hasBg?: ModelBooleanInput | null,
+  textColor?: ModelStringInput | null,
+  and?: Array< ModelAdvertConditionInput | null > | null,
+  or?: Array< ModelAdvertConditionInput | null > | null,
+  not?: ModelAdvertConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type Advert = {
+  __typename: "Advert",
+  id: string,
+  backgroundImageUrl?: string | null,
+  title?: string | null,
+  backgroundColor?: string | null,
+  bannerUrl?: string | null,
+  status: boolean,
+  hasBg?: boolean | null,
+  textColor?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateAdvertInput = {
+  id: string,
+  backgroundImageUrl?: string | null,
+  title?: string | null,
+  backgroundColor?: string | null,
+  bannerUrl?: string | null,
+  status?: boolean | null,
+  hasBg?: boolean | null,
+  textColor?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteAdvertInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type ModelReviewsRatingFilterInput = {
   id?: ModelIDInput | null,
   review?: ModelStringInput | null,
@@ -811,6 +871,28 @@ export type ModelEmailNotificationConnection = {
   startedAt?: number | null,
 };
 
+export type ModelAdvertFilterInput = {
+  id?: ModelIDInput | null,
+  backgroundImageUrl?: ModelStringInput | null,
+  title?: ModelStringInput | null,
+  backgroundColor?: ModelStringInput | null,
+  bannerUrl?: ModelStringInput | null,
+  status?: ModelBooleanInput | null,
+  hasBg?: ModelBooleanInput | null,
+  textColor?: ModelStringInput | null,
+  and?: Array< ModelAdvertFilterInput | null > | null,
+  or?: Array< ModelAdvertFilterInput | null > | null,
+  not?: ModelAdvertFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelAdvertConnection = {
+  __typename: "ModelAdvertConnection",
+  items:  Array<Advert | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
 export type ModelSubscriptionReviewsRatingFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   review?: ModelSubscriptionStringInput | null,
@@ -969,6 +1051,20 @@ export type ModelSubscriptionEmailNotificationFilterInput = {
   body?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionEmailNotificationFilterInput | null > | null,
   or?: Array< ModelSubscriptionEmailNotificationFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionAdvertFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  backgroundImageUrl?: ModelSubscriptionStringInput | null,
+  title?: ModelSubscriptionStringInput | null,
+  backgroundColor?: ModelSubscriptionStringInput | null,
+  bannerUrl?: ModelSubscriptionStringInput | null,
+  status?: ModelSubscriptionBooleanInput | null,
+  hasBg?: ModelSubscriptionBooleanInput | null,
+  textColor?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionAdvertFilterInput | null > | null,
+  or?: Array< ModelSubscriptionAdvertFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -1923,6 +2019,78 @@ export type DeleteEmailNotificationMutation = {
   } | null,
 };
 
+export type CreateAdvertMutationVariables = {
+  input: CreateAdvertInput,
+  condition?: ModelAdvertConditionInput | null,
+};
+
+export type CreateAdvertMutation = {
+  createAdvert?:  {
+    __typename: "Advert",
+    id: string,
+    backgroundImageUrl?: string | null,
+    title?: string | null,
+    backgroundColor?: string | null,
+    bannerUrl?: string | null,
+    status: boolean,
+    hasBg?: boolean | null,
+    textColor?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateAdvertMutationVariables = {
+  input: UpdateAdvertInput,
+  condition?: ModelAdvertConditionInput | null,
+};
+
+export type UpdateAdvertMutation = {
+  updateAdvert?:  {
+    __typename: "Advert",
+    id: string,
+    backgroundImageUrl?: string | null,
+    title?: string | null,
+    backgroundColor?: string | null,
+    bannerUrl?: string | null,
+    status: boolean,
+    hasBg?: boolean | null,
+    textColor?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteAdvertMutationVariables = {
+  input: DeleteAdvertInput,
+  condition?: ModelAdvertConditionInput | null,
+};
+
+export type DeleteAdvertMutation = {
+  deleteAdvert?:  {
+    __typename: "Advert",
+    id: string,
+    backgroundImageUrl?: string | null,
+    title?: string | null,
+    backgroundColor?: string | null,
+    bannerUrl?: string | null,
+    status: boolean,
+    hasBg?: boolean | null,
+    textColor?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
 export type GetReviewsRatingQueryVariables = {
   id: string,
 };
@@ -2866,6 +3034,90 @@ export type SyncEmailNotificationsQuery = {
   } | null,
 };
 
+export type GetAdvertQueryVariables = {
+  id: string,
+};
+
+export type GetAdvertQuery = {
+  getAdvert?:  {
+    __typename: "Advert",
+    id: string,
+    backgroundImageUrl?: string | null,
+    title?: string | null,
+    backgroundColor?: string | null,
+    bannerUrl?: string | null,
+    status: boolean,
+    hasBg?: boolean | null,
+    textColor?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListAdvertsQueryVariables = {
+  filter?: ModelAdvertFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListAdvertsQuery = {
+  listAdverts?:  {
+    __typename: "ModelAdvertConnection",
+    items:  Array< {
+      __typename: "Advert",
+      id: string,
+      backgroundImageUrl?: string | null,
+      title?: string | null,
+      backgroundColor?: string | null,
+      bannerUrl?: string | null,
+      status: boolean,
+      hasBg?: boolean | null,
+      textColor?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncAdvertsQueryVariables = {
+  filter?: ModelAdvertFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncAdvertsQuery = {
+  syncAdverts?:  {
+    __typename: "ModelAdvertConnection",
+    items:  Array< {
+      __typename: "Advert",
+      id: string,
+      backgroundImageUrl?: string | null,
+      title?: string | null,
+      backgroundColor?: string | null,
+      bannerUrl?: string | null,
+      status: boolean,
+      hasBg?: boolean | null,
+      textColor?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type OnCreateReviewsRatingSubscriptionVariables = {
   filter?: ModelSubscriptionReviewsRatingFilterInput | null,
 };
@@ -3782,6 +4034,75 @@ export type OnDeleteEmailNotificationSubscription = {
     id: string,
     subject: string,
     body: string,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateAdvertSubscriptionVariables = {
+  filter?: ModelSubscriptionAdvertFilterInput | null,
+};
+
+export type OnCreateAdvertSubscription = {
+  onCreateAdvert?:  {
+    __typename: "Advert",
+    id: string,
+    backgroundImageUrl?: string | null,
+    title?: string | null,
+    backgroundColor?: string | null,
+    bannerUrl?: string | null,
+    status: boolean,
+    hasBg?: boolean | null,
+    textColor?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateAdvertSubscriptionVariables = {
+  filter?: ModelSubscriptionAdvertFilterInput | null,
+};
+
+export type OnUpdateAdvertSubscription = {
+  onUpdateAdvert?:  {
+    __typename: "Advert",
+    id: string,
+    backgroundImageUrl?: string | null,
+    title?: string | null,
+    backgroundColor?: string | null,
+    bannerUrl?: string | null,
+    status: boolean,
+    hasBg?: boolean | null,
+    textColor?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteAdvertSubscriptionVariables = {
+  filter?: ModelSubscriptionAdvertFilterInput | null,
+};
+
+export type OnDeleteAdvertSubscription = {
+  onDeleteAdvert?:  {
+    __typename: "Advert",
+    id: string,
+    backgroundImageUrl?: string | null,
+    title?: string | null,
+    backgroundColor?: string | null,
+    bannerUrl?: string | null,
+    status: boolean,
+    hasBg?: boolean | null,
+    textColor?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,

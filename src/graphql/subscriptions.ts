@@ -857,3 +857,63 @@ export const onDeleteEmailNotification = /* GraphQL */ `
     }
   }
 `;
+export const onCreateAdvert = /* GraphQL */ `
+  subscription OnCreateAdvert($filter: ModelSubscriptionAdvertFilterInput) {
+    onCreateAdvert(filter: $filter) {
+      id
+      backgroundImageUrl
+      title
+      backgroundColor
+      bannerUrl
+      status
+      hasBg
+      textColor
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateAdvert = /* GraphQL */ `
+  subscription OnUpdateAdvert($filter: ModelSubscriptionAdvertFilterInput) {
+    onUpdateAdvert(filter: $filter) {
+      id
+      backgroundImageUrl
+      title
+      backgroundColor
+      bannerUrl
+      status
+      hasBg
+      textColor
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteAdvert = /* GraphQL */ `
+  subscription OnDeleteAdvert($filter: ModelSubscriptionAdvertFilterInput) {
+    onDeleteAdvert(filter: $filter) {
+      id
+      backgroundImageUrl
+      title
+      backgroundColor
+      bannerUrl
+      status
+      hasBg
+      textColor
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;

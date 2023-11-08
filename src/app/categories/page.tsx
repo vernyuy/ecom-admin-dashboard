@@ -32,12 +32,12 @@ export default function Categories() {
   }, [dispatch]);
 
   useEffect(() => {
+    filterCat({ filterBy: "search", search: search });
     if (success)
-                    {
-                      
-                    setOpen(false)
-                    }
-  },[success])
+    {
+      setOpen(false);
+    }
+  },[success, search])
 
   const filterCat = (filterBy: any) => {
     console.log("Hello")
@@ -146,10 +146,9 @@ export default function Categories() {
                       id="products-search"
                       value={search}
                       className="bg-gray-50 outline-none border border-gray-100 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 w-full py-1.5 px-2.5"
-                      placeholder="Search category by name"
+                      placeholder="Search category by name or description"
                       onChange={(e) => {
                         setSearch(e.target.value);
-                        filterCat({ filterBy: "search", search: search });
                       }}
                     />
                   </div>
@@ -264,7 +263,7 @@ export default function Categories() {
             <div className="overflow-x-autdfo w-full rounded-lg">
               <div className="inline-block min-w-full w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
+                  {categories?.length !== 0 ? <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600 mb-3">
                     <thead className="bg-gray-100 dark:bg-blue-900 sticky top-0">
                       <tr>
                         <th className="pl-2"></th>
@@ -283,34 +282,35 @@ export default function Categories() {
                     </thead>
 
                     {isLoading && (
-                      <div className="w-full h-[100px] text-blue-500 flex justify-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="32"
-                          height="32"
-                          viewBox="0 0 24 24"
-                          className="m-auto mx-auto"
-                        >
-                          <path
-                            fill="currentColor"
-                            d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <div className="w-full h-[100px] text-blue-500 flex">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="32"
+                            height="32"
+                            viewBox="0 0 24 24"
+                            className="my-auto"
                           >
-                            <animateTransform
-                              attributeName="transform"
-                              dur="0.75s"
-                              repeatCount="indefinite"
-                              type="rotate"
-                              values="0 12 12;360 12 12"
-                            />
-                          </path>
-                        </svg>
-                      </div>
-                    )}
-
-                    {!isLoading && isCompleted && categories?.length == 0 && (
-                      <div className="w-full h-[100px] flex justify-center items-center">
-                        <p className="font-semibold m-auto">It's empty here</p>
-                      </div>
+                            <path
+                              fill="currentColor"
+                              d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                            >
+                              <animateTransform
+                                attributeName="transform"
+                                dur="0.75s"
+                                repeatCount="indefinite"
+                                type="rotate"
+                                values="0 12 12;360 12 12"
+                              />
+                            </path>
+                          </svg>
+                        </div>
+                        <td></td>
+                        <td></td>
+                      </tr>
                     )}
                     <tbody className="">
                       {categories?.map((category: any, index: number) => {
@@ -345,7 +345,7 @@ export default function Categories() {
                                 </Link>
                               </span>
                             </td>
-                            <td className="p-4 text-sm font-normal text-left text-gray-500 overflow-y-auto dark:text-gray-400 h-fit w-fit">
+                            <td className="p-4 text-sm font-normal text-left text-gray-500 overflow-y-auto dark:text-gray-400 h-fit w-[400px]">
                               <div className="overflow-y-auto  max-h-md">
                                 {category.description}
                               </div>
@@ -381,7 +381,9 @@ export default function Categories() {
                         )}
                       </tr>
                     </tfoot>
-                  </table>
+                  </table> : <div className="w-full h-[100px] flex justify-center items-center">
+                    <p className="font-semibold m-auto">It's empty here</p>
+                  </div>}
                 </div>
               </div>
             </div>

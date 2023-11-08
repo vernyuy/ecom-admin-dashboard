@@ -106,7 +106,10 @@ const filterProducts = async (filter: any) => {
         break;
       case "search":
         productResult = await DataStore.query(Product, (product) =>
-          product.name.contains(filter.search.toLowerCase()),
+          product.or(p => [
+            p.name.contains(filter.search),
+            p.description.contains(filter.search)
+          ]),
         );
         break;
 
