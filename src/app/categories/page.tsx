@@ -139,7 +139,7 @@ export default function Categories() {
                   <label htmlFor="products-search" className="sr-only">
                     Search
                   </label>
-                  <div className="relative w-full sm:w-64  xl:w-96">
+                  <div className="relative w-full sm:w-64  xl:w-84">
                     <input
                       type="text"
                       name="text"

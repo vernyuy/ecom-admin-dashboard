@@ -10,7 +10,7 @@ import DashboardLayout from "@/src/app/dashboardLayout";
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { orderAttributes } from "@/src/constants";
-import { Button, CustomModal, Delete } from "@/src/components";
+import { Button, CustomModal } from "@/src/components";
 import moment  from "moment";
 import userService from "@/src/redux-store/feature/user/userService";
 
@@ -236,22 +236,7 @@ export default function Page() {
                             e.preventDefault();
                             setOpen(true)
                           }}
-                        >delete selected</button>
-                      </li>
-
-                      <li className="block px-4 py-2 hover:bg-red-100 ">
-                        <Button
-                          title="Ordered"
-                          // handleClick={(e) => {
-                          //   setisDelete(true);
-                          // }}
-                        />
-                      </li>
-
-                      <li className="block px-4 py-2 hover:bg-green-100 text-green-500 ">
-                        <Button
-                          title="Pending"
-                        />
+                        >Delete </button>
                       </li>
                     </ul>
                   </div>
@@ -329,7 +314,7 @@ export default function Page() {
                                   />
                                 }
                               </td>
-                              <td className="p-4 text-sm  max-w-[200px] truncate font-semibold truncate text-left  text-gray-900 w-36 whitespace-nowrap ">
+                              <td className="p-4 text-sm  max-w-[200px] truncate font-semibold text-left  text-gray-900 w-36 whitespace-nowrap ">
                                 
                               <Link href={`/orders/${order.id}`} className="">
                                   

@@ -19,8 +19,6 @@ import {
   getServerState,
 } from 'react-instantsearch';
 import { createInstantSearchRouterNext } from 'react-instantsearch-router-nextjs';
-
-import {Panel} from '@/src/components/Panel';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -75,7 +73,7 @@ export default function HomePage({ serverState, url }: any) {
       >
         <div className="Container">
           <div>
-            <DynamicWidgets fallbackComponent={FallbackComponent} />
+            {/* <DynamicWidgets fallbackComponent={FallbackComponent} /> */}
           </div>
           <div className='h-screen'>
             <SearchBox className='text-black' style={{padding:'10px'}} />
@@ -87,13 +85,13 @@ export default function HomePage({ serverState, url }: any) {
   );
 }
 
-function FallbackComponent({ attribute }: { attribute: string }) {
-  return (
-    <Panel header={attribute}>
-      <RefinementList attribute={attribute} />
-    </Panel>
-  );
-}
+// function FallbackComponent({ attribute }: { attribute: string }) {
+//   return (
+//     <Panel header={attribute}>
+//       <RefinementList attribute={attribute} />
+//     </Panel>
+//   );
+// }
 
 // export const getServerSideProps: GetServerSideProps<HomePageProps> =
 //   async function getServerSideProps({ req }) {

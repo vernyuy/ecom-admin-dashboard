@@ -12,7 +12,7 @@ import DashboardLayout from "@/src/app/dashboardLayout";
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { userAttributes, users } from "@/src/constants";
-import { Button, CustomModal, Delete } from "@/src/components";
+import { Button, CustomModal } from "@/src/components";
 import { CountryDropdown } from "react-country-region-selector";
 
 export default function App() {

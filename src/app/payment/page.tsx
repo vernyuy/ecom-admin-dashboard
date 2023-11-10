@@ -5,7 +5,7 @@ import DashboardLayout from "@/src/app/dashboardLayout";
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { paymentAttributes } from "@/src/constants";
-import { Button, CustomModal, Delete } from "@/src/components";
+import { Button, CustomModal } from "@/src/components";
 import { CountryDropdown } from "react-country-region-selector";
 import {
   deletePayments,
@@ -286,7 +286,7 @@ export default function Page() {
                               </td>
 
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
-                                {payment.amount}
+                                {payment.amount/100}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
                                 {payment.createdAt.split("T")[0]}

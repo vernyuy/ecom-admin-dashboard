@@ -192,11 +192,11 @@ export default function Page() {
                         </div>:<div className="w-full">
             {res?.carousels.map((carousel: any) => carousel.bannerUrl !== null ?
               <></> :
-              <div className="flex w-full justify-between" key={carousel.id}>
-                <div className="w-9/12 ">
+              <div className="sm:flex w-full justify-between flex-wrap" key={carousel.id}>
+                <div className="sm:w-9/12 w-full ">
                   <Carousel key={carousel.id} textColor={carousel.textColor} title={carousel.title} hasBg={carousel.hasBg} image={carousel.backgroundImageUrl} bgcolor={carousel.backgroundColor} />  
                 </div>
-                <div className="w-1/6 my-auto">
+                <div className="w-1/6 my-auto hidden sm:block">
                   <div className="flex justify-center -mt-4">
               {!carousel.status ? (
                 <svg

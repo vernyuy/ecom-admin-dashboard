@@ -38,12 +38,11 @@ export async function POST(req: NextRequest) {
 
 
   const body =  await req.json()
-  console.log("items::", items)
   const extractedItems = body.items.map((p: any) => ({
       quantity: 1,
       price_data: {
         currency: "usd",
-        unit_amount: p.price * 100,
+        unit_amount: p.price *100,
         product_data: {
           name: p.name,
           description: p.description,
@@ -52,8 +51,6 @@ export async function POST(req: NextRequest) {
       },
   }))
   items = extractedItems
-
-  console.log(body.items[0])
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: items,
@@ -61,8 +58,6 @@ export async function POST(req: NextRequest) {
     success_url: "http://localhost:3000/payment-succeeded",
     customer_email: body.email,
   });
-
-  // console.log(session);
   if (session.url)
   {
     // NextResponse.redirect(session.url)
