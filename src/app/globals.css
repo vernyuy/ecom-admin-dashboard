@@ -26,3 +26,14 @@ body {
     rgb(var(--background-start-rgb));
   font-family: montserrat;
 }
+
+
+.truncate_text {
+  display: -webkit-box;
+  /* border: 2px solid red; */
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 10px;
+  text-overflow: ellipsis;
+}

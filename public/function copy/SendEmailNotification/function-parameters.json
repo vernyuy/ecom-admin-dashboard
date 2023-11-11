@@ -1,0 +1,20 @@
+{
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "sesEmail",
+      "environmentVariableName": "SES_EMAIL"
+    },
+    {
+      "cloudFormationParameterName": "userTable",
+      "environmentVariableName": "USER_TABLE"
+    }
+  ],
+  "permissions": {
+    "api": {
+      "commerce": [
+        "Query"
+      ]
+    }
+  }
+}

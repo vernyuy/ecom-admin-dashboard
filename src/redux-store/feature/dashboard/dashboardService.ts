@@ -28,58 +28,58 @@ const panelData = async () => {
     return {success: true, totOrders: orders.length, totProducts: products.result.length, totPayments: payment.length, totCustomers: users.length, totAmount: totAmout, todayOrders: todayOrder}
 }
 
-const chartData = async () => {
-    const payment = await paymentService.getAllPayments()
+// const chartData = async () => {
+//     const payment = await paymentService.getAllPayments()
 
-    let amountD0 = 0, amountD1 = 0, amountD2 = 0, amountD3 = 0, amountD4 = 0, amountD5 = 0, amountD6 = 0
+//     let amountD0 = 0, amountD1 = 0, amountD2 = 0, amountD3 = 0, amountD4 = 0, amountD5 = 0, amountD6 = 0
     
-    // amountD0 =100
-    payment.map((p: any) => {
-            const pDate = new Date(p.createdAt)
-        const date = new Date(Date.now())
-        console.log("panel",)
+//     // amountD0 =100
+//     payment.map((p: any) => {
+//             const pDate = new Date(p.createdAt)
+//         const date = new Date(Date.now())
+//         console.log("panel",)
 
-        // console.log("panel", date.getDate())
-        if (pDate.getDay() == date.getDay())
-        {
-            console.log("Hello world")
-            amountD0 += p.amount/100
-        }if (pDate.getDay() == date.getDay()-1)
-        {
-            console.log("Hello world")
-            amountD1 += p.amount/100
-        }if (pDate.getDay() == date.getDay()-2)
-        {
-            console.log("Hello world")
-            amountD2 += p.amount/100
-        }if (pDate.getDay() == date.getDay()-3)
-        {
-            console.log("Hello world")
-            amountD3 += p.amount/100
-        }if (pDate.getDay() == date.getDay()-4)
-        {
-            console.log("Hello world")
-            amountD4 += p.amount/100
-        }if (pDate.getDay() == date.getDay()-5)
-        {
-            console.log("Hello world")
-            amountD5 += p.amount/100
-        }if (pDate.getDay() == date.getDay()-6)
-        {
-            console.log("Hello world")
-            amountD6 += p.amount/100
-        }
-    })
+//         // console.log("panel", date.getDate())
+//         if (pDate.getDay() == date.getDay())
+//         {
+//             console.log("Hello world")
+//             amountD0 += p.amount/100
+//         }if (pDate.getDay() == date.getDay()-1)
+//         {
+//             console.log("Hello world")
+//             amountD1 += p.amount/100
+//         }if (pDate.getDay() == date.getDay()-2)
+//         {
+//             console.log("Hello world")
+//             amountD2 += p.amount/100
+//         }if (pDate.getDay() == date.getDay()-3)
+//         {
+//             console.log("Hello world")
+//             amountD3 += p.amount/100
+//         }if (pDate.getDay() == date.getDay()-4)
+//         {
+//             console.log("Hello world")
+//             amountD4 += p.amount/100
+//         }if (pDate.getDay() == date.getDay()-5)
+//         {
+//             console.log("Hello world")
+//             amountD5 += p.amount/100
+//         }if (pDate.getDay() == date.getDay()-6)
+//         {
+//             console.log("Hello world")
+//             amountD6 += p.amount/100
+//         }
+//     })
 
-    var dailyAmount: number[] = [amountD0, amountD1, amountD2, amountD3, amountD4, amountD5, amountD6]
-    console.log(dailyAmount)
-    return dailyAmount
-}
+//     var dailyAmount: number[] = [amountD0, amountD1, amountD2, amountD3, amountD4, amountD5, amountD6]
+//     console.log(dailyAmount)
+//     return dailyAmount
+// }
 
 
 const dashboardService = {
     panelData,
-    chartData
+    // chartData
 }
 
 export default dashboardService

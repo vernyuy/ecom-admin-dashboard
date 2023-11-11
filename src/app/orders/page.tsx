@@ -230,7 +230,7 @@ export default function Page() {
                       className="py-2 text-sm text-red-500 "
                       aria-labelledby="dropdownDefaultButton"
                     >
-                      <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                      <li className="block px-4 py-2 hover:bg-red-100">
                         <button
                           onClick={(e) => {
                             e.preventDefault();

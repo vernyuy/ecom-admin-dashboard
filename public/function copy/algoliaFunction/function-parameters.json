@@ -1,0 +1,17 @@
+{
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "tableName",
+      "environmentVariableName": "TABLE_NAME"
+    },
+    {
+      "cloudFormationParameterName": "algoliaApiKey",
+      "environmentVariableName": "ALGOLIA_API_KEY"
+    },
+    {
+      "cloudFormationParameterName": "algoliaAppId",
+      "environmentVariableName": "ALGOLIA_APP_ID"
+    }
+  ]
+}

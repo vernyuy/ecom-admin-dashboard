@@ -1,0 +1,25 @@
+{
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "apiCommerceGraphqlapiendpointoutput",
+      "environmentVariableName": "API_COMMERCE_GRAPHQLAPIENDPOINTOUTPUT"
+    },
+    {
+      "cloudFormationParameterName": "apiCommerceGraphqlapiidoutput",
+      "environmentVariableName": "API_COMMERCE_GRAPHQLAPIIDOUTPUT"
+    },
+    {
+      "cloudFormationParameterName": "apiCommerceGraphqlapikeyoutput",
+      "environmentVariableName": "API_COMMERCE_GRAPHQLAPIKEYOUTPUT"
+    }
+  ],
+  "permissions": {
+    "api": {
+      "commerce": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  }
+}

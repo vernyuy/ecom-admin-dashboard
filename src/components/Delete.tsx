@@ -45,8 +45,8 @@ export function BarChat() {
   const [data, setdata] = useState([])
   useEffect(() => {
     const dataset = async () => {
-      const result = await dashboardService.chartData()
-      setdata(result as never)
+      // const result = await dashboardService.chartData()
+      // setdata(result as never)
     }
     dataset()
     console.log(dataset())

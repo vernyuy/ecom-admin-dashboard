@@ -218,7 +218,7 @@ export default function Page() {
               )}
             </div>
                   <div className="flex mt-8 justify-evenly">
-                    <button className="py-1 px-2 dark:text-black rounded-md border border-orange-500 hover:bg-orange-500 hover:text-white" onClick={(e) => {
+                    <button className="py-1 px-2 rounded-md border border-orange-500 hover:bg-orange-500 hover:text-white" onClick={(e) => {
                       e.preventDefault()
                       disableCarousel(carousel)
                     }}>{ carousel.status?"Disable":"Enable"}</button>

@@ -1,0 +1,23 @@
+{
+  "trigger": true,
+  "modules": [
+    "custom"
+  ],
+  "parentResource": "commerce7f8e1472",
+  "functionName": "commerce7f8e1472PreSignup",
+  "resourceName": "commerce7f8e1472PreSignup",
+  "parentStack": "auth",
+  "triggerEnvs": "[]",
+  "triggerDir": "C:\\snapshot\\amplify-cli\\build\\node_modules\\@aws-amplify\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\PreSignup",
+  "triggerTemplate": "PreSignup.json.ejs",
+  "triggerEventPath": "PreSignup.event.json",
+  "roleName": "commerce7f8e1472PreSignup",
+  "skipEdit": true,
+  "permissions": {
+    "api": {
+      "commerce": [
+        "Query"
+      ]
+    }
+  }
+}
