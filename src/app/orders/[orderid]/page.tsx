@@ -81,7 +81,7 @@ export default function Page() {
                   <tr>
                     <td className="px-4">User Id</td>
                     <td className="px-4">
-                      <Link href={`/user/ ${order.userId}`}>
+                      <Link href={`/user/ ${order.userID}`}>
                         {order.userID}
                       </Link>
                     </td>
@@ -89,12 +89,20 @@ export default function Page() {
 
                   <tr>
                     <td className="px-4">Payment ID</td>
-                    <td className="px-4">{order.orderPaymentId}</td>
+                    <td className="px-4">
+                      <Link href={`/user/ ${order.orderPaymentId}`}>
+                        {order.orderPaymentId}
+                      </Link>
+                    </td>
                   </tr>
 
                   <tr>
                     <td className="px-4">User name</td>
-                    <td className="px-4">{order.username}</td>
+                    <td className="px-4">
+                      <Link href={`/user/ ${order.userID}`}>
+                        {order.username}
+                      </Link>
+                    </td>
                   </tr>
 
                   <tr>

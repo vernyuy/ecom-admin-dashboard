@@ -373,7 +373,7 @@ export default function App() {
                                   <input
                                     type="checkbox"
                                     className="bg-black"
-                                    value={user.id}
+                                    value={user?.id}
                                     onChange={select}
                                   />
                                 }
@@ -383,7 +383,7 @@ export default function App() {
                                   index % 2 === 0 ? "bg-white" : "bg-gray-50"
                                 }`}
                               >
-                                {user.firstName}
+                                {user?.firstName}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-900 whitespace-nowrap ">
                                 <span className="font-semibold text-left flex flex-col">
@@ -393,32 +393,32 @@ export default function App() {
                                 </span>
                               </td>
                               <td className="p-4 text-sm font-normal text-left text-gray-500 whitespace-nowrap ">
-                                {user.email}
+                                {user?.email}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
                                 {/* {categories?.map((cat: any)=>cat.id == .categoryID? cat.name:'' )} */}{" "}
-                                {user.phone}
+                                {user?.phone}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap ">
-                                {`${user.address.coutry}`}
+                                {`${user?.address?.coutry}`}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap ">
-                                {user.address.region}
+                                {user?.address?.region}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap ">
-                                {user.address.city}
-                              </td>
-
-                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap ">
-                                {user.address.zipcode}
+                                {user?.address?.city}
                               </td>
 
                               <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap ">
-                                {user.address.addressLine1}
+                                {user?.zipcode}
+                              </td>
+
+                              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap ">
+                                {user?.address?.addressLine1}
                               </td>
 
                               <td className="flex justify-start items-center p-4 h-full">
-                                {user.isActive ? (
+                                {user?.isActive ? (
                                   <div className="bg-green-100 rounded-md  text-green-800 h-full w-fit text-xs font-medium px-2 py-1">
                                     Active
                                   </div>
