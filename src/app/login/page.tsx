@@ -21,8 +21,15 @@ export default function Login() {
   const router = useRouter();
   const [friends, setFriends] = useState();
 
-  const { user, errorMsg, isLoading, isSuccess, isError, isGoogle, isLoadingGoogle }: any =
-    useSelector((state: RootState) => state.auth);
+  const {
+    user,
+    errorMsg,
+    isLoading,
+    isSuccess,
+    isError,
+    isGoogle,
+    isLoadingGoogle,
+  }: any = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     if (isSuccess && !isGoogle) {
@@ -564,7 +571,7 @@ export default function Login() {
                   type="submit"
                   disabled={isLoading}
                 >
-                  { isLoadingGoogle? (
+                  {isLoadingGoogle ? (
                     <div className="flex justify-center gap-2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

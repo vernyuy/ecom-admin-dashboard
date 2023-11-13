@@ -18,8 +18,8 @@ export function Panel({bg, children, title, figure, url}:any) {
                   </div>
                   
                   <Link href={url} className='group sticky bottom-0 h-fit'>
-                  <div className='bg-black/20 flex py-1'>
-                      <p className='text-[14px] mx-auto flex text-white group-hover:text-[16px]'>more info <svg xmlns="http://www.w3.org/2000/svg" className=' group-hover:w-5 group-hover:h-6 w-4 h-5' viewBox="0 0 20 20"><path fill="currentColor" d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg></p>
+                  <div className='bg-black/20 flex py-2.5'>
+                      {/* <p className='text-[14px] mx-auto flex text-white group-hover:text-[16px]'><svg xmlns="http://www.w3.org/2000/svg" className=' group-hover:w-5 group-hover:h-6 w-4 h-5' viewBox="0 0 20 20"><path fill="currentColor" d="M16.01 11H4v2h12.01v3L20 12l-3.99-4z"/></svg></p> */}
                   </div></Link>
               </div>
           </div>

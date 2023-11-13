@@ -1,6 +1,6 @@
 export const productAttributes = [
   "IMAGE",
-  "NAME",
+  "PRODUCT NAME",
   "DESCRIPTION",
   "CATEGORY",
   // "SUB-CATEGORY",

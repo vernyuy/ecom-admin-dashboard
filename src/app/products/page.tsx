@@ -14,69 +14,68 @@ import Link from "next/link";
 import moment from "moment";
 import { productAttributes } from "@/src/constants";
 import { Button, CustomModal } from "@/src/components";
-import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch } from 'react-instantsearch';
+import algoliasearch from "algoliasearch/lite";
+import { InstantSearch } from "react-instantsearch";
 
-const searchClient = algoliasearch('1H8TO0RHHP', '8d8d474170f8d306904c4675045b6f4e');
+const searchClient = algoliasearch(
+  "1H8TO0RHHP",
+  "8d8d474170f8d306904c4675045b6f4e",
+);
 
 export default function App() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const [selectedItems, setSelecteditems]: any = useState([])
-  
-  const { products, isCompleted, errorMsg, isLoading, isSuccess }: any = useSelector(
-    (state: RootState) => state.product,
-  );
+  const [selectedItems, setSelecteditems]: any = useState([]);
+
+  const { products, isCompleted, errorMsg, isLoading, isSuccess }: any =
+    useSelector((state: RootState) => state.product);
   const { categories }: any = useSelector((state: RootState) => state.category);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(listCategories());
     dispatch(listProducts());
-    dispatch(reset())
+    dispatch(reset());
   }, [dispatch]);
 
   useEffect(() => {
     console.log(search);
-    filterStock({ filterBy: "search", search: search })
-    if (success)
-    {
+    filterStock({ filterBy: "search", search: search });
+    if (success) {
       setOpen(false);
     }
-  },[success, search])
-  const computeDate =(date: any) => {
-      return moment(date).format("ll");
-  }
-  
+  }, [success, search]);
+  const computeDate = (date: any) => {
+    return moment(date).format("ll");
+  };
+
   const filterStock = (filterBy: any) => {
     dispatch(filterProduct(filterBy));
     console.log(products);
   };
 
   const select = (e: any) => {
-      console.log(e.target)
+    console.log(e.target);
     if (e.target.checked) {
-      setSelecteditems([...selectedItems, e.target.value])
-    } else
-    {
-      setSelecteditems(selectedItems.filter((p:string) => {
-        return p !== e.target.value;
-      }))
+      setSelecteditems([...selectedItems, e.target.value]);
+    } else {
+      setSelecteditems(
+        selectedItems.filter((p: string) => {
+          return p !== e.target.value;
+        }),
+      );
     }
     console.log(selectedItems);
   };
 
   const deleteProducts = () => {
-    if (selectedItems.length > 0)
-    {
+    if (selectedItems.length > 0) {
       dispatch(deleteProductsFn(selectedItems));
-      setSuccess(true)
+      setSuccess(true);
       return "deleted";
-    }
-    else
-    {
+    } else {
       console.log("Please select product(s) to delete");
       return "deleted";
     }
@@ -84,13 +83,13 @@ export default function App() {
 
   return (
     <DashboardLayout>
-      <main className="w-full h-full sticky top-0 overflow-y-hidden">
+      <main className="w-full min-h-screen sticky top-0">
         <nav className="flex sticky top-0 my-2" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
             <li className="inline-flex items-center">
               <Link
                 href="/"
-                className="inline-flex items-center text-gray-700 hover:text-primary-600 "
+                className="inline-flex items-center text-gray-700 dark:text-white hover:text-primary-600 "
               >
                 <svg
                   className="w-5 h-5 mr-2.5"
@@ -106,7 +105,7 @@ export default function App() {
             <li>
               <div className="flex items-center">
                 <svg
-                  className="w-6 h-6 text-gray-400"
+                  className="w-6 h-6 text-gray-400  dark:text-white"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +117,7 @@ export default function App() {
                   ></path>
                 </svg>
                 <span
-                  className="ml-1 text-gray-400 md:ml-2"
+                  className="ml-1 text-gray-400 dark:text-white md:ml-2"
                   aria-current="page"
                 >
                   Products
@@ -127,10 +126,10 @@ export default function App() {
             </li>
           </ol>
         </nav>
-        <div className="px-2 mt-5 pb-2d bg-white w-full  rounded-ss-lg rounded-se-lg shadow-sm  sm:px-4 mt-f3 md:mt-5d">
+        <div className="px-2 mt-5 pb-2d bg-white w-full  dark:text-white dark:bg-black rounded-ss-lg rounded-se-lg shadow-sm  sm:px-4 mt-f3 md:mt-5d">
           <div className="w-full">
             <div className="mb-2">
-              <h1 className="text-md font-semibold text-gray-900 sm:text-xl  py-2">
+              <h1 className="text-md font-semibold text-gray-900 dark:text-white sm:text-xl  py-2">
                 All products
               </h1>
             </div>
@@ -154,7 +153,7 @@ export default function App() {
                       name="text"
                       id="products-search"
                       value={search}
-                      className="bg-gray-50 outline-none border border-gray-100 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 w-full py-1.5 px-2.5"
+                      className="bg-gray-50 dark:bg-transparent  dark:text-white outline-none border border-gray-100 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 w-full py-1.5 px-2.5"
                       placeholder="Search products by name"
                       onChange={(e) => {
                         setSearch(e.target.value);
@@ -182,16 +181,16 @@ export default function App() {
 
                   <div
                     id="dropdown"
-                    className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 "
+                    className="z-10 hidden group-hover:block absolute bg-white  dark:text-white dark:bg-black divide-y divide-gray-100 rounded-lg shadow w-36 "
                   >
                     <ul
-                      className="py-2 text-sm text-gray-700 "
+                      className="py-2 text-sm text-gray-700  dark:text-white "
                       aria-labelledby="dropdownDefaultButton"
                     >
                       <li>
                         <a
                           href="#"
-                          className="block px-4 py-2 hover:bg-green-100 "
+                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-white/10"
                           onClick={() => filterStock("all")}
                         >
                           All
@@ -200,7 +199,7 @@ export default function App() {
                       <li>
                         <a
                           href="#"
-                          className="block px-4 py-2 hover:bg-green-100 "
+                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-white/10 "
                           onClick={() => filterStock("instock")}
                         >
                           In Stock
@@ -209,7 +208,7 @@ export default function App() {
                       <li>
                         <a
                           href="#"
-                          className="block px-4 py-2 hover:bg-green-100 "
+                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-white/10 "
                           onClick={() => filterStock("sold")}
                         >
                           Sold
@@ -218,7 +217,7 @@ export default function App() {
                       <li>
                         <a
                           href="#"
-                          className="block px-4 py-2 hover:bg-green-100 "
+                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-white/10"
                         >
                           On promotion
                         </a>
@@ -245,39 +244,44 @@ export default function App() {
 
                   <div
                     id="dropdown"
-                    className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 "
+                    className="z-10 hidden group-hover:block absolute bg-white dark:bg-black divide-y divide-gray-100 rounded-lg shadow w-fit "
                   >
                     <ul
-                      className="py-2 text-sm text-gray-700 "
+                      className="py-2 text-sm text-gray-700 dark:text-gray-100"
                       aria-labelledby="dropdownDefaultButton"
                     >
                       <li>
                         <a
                           href="#"
-                          className="block px-4 py-2 hover:bg-green-100 "
+                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-white/10"
                           onClick={() => filterStock("all")}
                         >
                           All
                         </a>
                       </li>
-                      {categories?.map((cat: any, index: number) => (
-                        (cat.parentCategoryId === null || cat.parentCategoryId === "")?<li key={cat.parentCategoryId}>
-                          <a
-                            key={index}
-                            href="#"
-                            className="block px-4 py-2 hover:bg-green-100 "
-                            onClick={() =>
-                              filterStock({
-                                filterBy: "category",
-                                isParent: true,
-                                category: cat.id,
-                              })
-                            }
-                          >
-                            {cat.name}
-                          </a>
-                        </li>:<></>
-                      ))}
+                      {categories?.map((cat: any, index: number) =>
+                        cat.parentCategoryId === null ||
+                        cat.parentCategoryId === "" ? (
+                          <li className=" z-50" key={cat.parentCategoryId}>
+                            <a
+                              key={index}
+                              href="#"
+                              className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-white/10 whitespace-nowrap"
+                              onClick={() =>
+                                filterStock({
+                                  filterBy: "category",
+                                  isParent: true,
+                                  category: cat.id,
+                                })
+                              }
+                            >
+                              {cat.name}
+                            </a>
+                          </li>
+                        ) : (
+                          <></>
+                        ),
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -300,39 +304,42 @@ export default function App() {
 
                   <div
                     id="dropdown"
-                    className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 "
+                    className="z-10 hidden group-hover:block absolute bg-white dark:bg-black divide-y divide-gray-100 rounded-lg shadow w-fit "
                   >
                     <ul
-                      className="py-2 text-sm text-gray-700 "
+                      className="py-2 text-sm text-gray-700 dark:text-white "
                       aria-labelledby="dropdownDefaultButton"
                     >
                       <li>
                         <a
                           href="#"
-                          className="block px-4 py-2 hover:bg-green-100 "
+                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-white/10 "
                           onClick={() => filterStock("all")}
                         >
                           All
                         </a>
                       </li>
-                      {categories?.map((cat: any, index: number) => (
-                        cat.parentCategoryId !== ""?
-                        <li key={index}>
-                          <a
-                            key={cat.id}
-                            href="#"
-                            className="block px-4 py-2 hover:bg-green-100 "
-                            onClick={() =>
-                              filterStock({
-                                filterBy: "category",
-                                category: cat.id,
-                              })
-                            }
-                          >
-                            {cat.name}
-                          </a>
-                        </li>:<></>
-                      ))}
+                      {categories?.map((cat: any, index: number) =>
+                        cat.parentCategoryId !== null ? (
+                          <li key={index}>
+                            <a
+                              key={cat.id}
+                              href="#"
+                              className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-white/10 "
+                              onClick={() =>
+                                filterStock({
+                                  filterBy: "category",
+                                  category: cat.id,
+                                })
+                              }
+                            >
+                              {cat.name}
+                            </a>
+                          </li>
+                        ) : (
+                          <></>
+                        ),
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -360,26 +367,28 @@ export default function App() {
 
                   <div
                     id="dropdown"
-                    className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 "
+                    className="z-10 hidden group-hover:block absolute bg-white dark:bg-black divide-y divide-gray-100 rounded-lg shadow w-36 "
                   >
                     <ul
                       className="py-2 text-sm text-red-500 "
                       aria-labelledby="dropdownDefaultButton"
                     >
-                      <li className="block px-4 py-2 hover:bg-red-100 ">
+                      <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-white/10">
                         <button
                           onClick={(e) => {
                             e.preventDefault();
-                            setOpen(true)
+                            setOpen(true);
                           }}
-                        >delete selected</button>
+                        >
+                          delete selected
+                        </button>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <Link
                   href={"/add-product"}
-                  className="text-gray-900 border border-green-300 focus:ring-0 hover:text-white hover:border-none hover:bg-gray-900 font-semibold rounded-lg text-sm px-4 py-1.5"
+                  className="text-gray-900 border border-green-300 focus:ring-0 hover:text-white hover:border-none hover:bg-gray-900 font-semibold rounded-lg text-sm px-4 py-1.5 dark:text-white"
                   type="button"
                 >
                   Add product
@@ -392,144 +401,154 @@ export default function App() {
             <div className="overflow-x-autdfo rounded-lg">
               <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
-                  
-                  {products?.length !== 0 ? <table className="min-w-full divide-y divide-gray-200 mb-3">
-                    <thead className="bg-gray-100  sticky top-0">
-                      <tr>
-                        <th className="pl-2">{selectedItems.length}</th>
-                        {productAttributes.map(
-                          (item: string, index: number) => (
-                            <th
-                              key={index}
-                              scope="col"
-                              className="px-4 py-2 whitespace-nowrap text-left text-xs tracking-wider text-gray-900 font-bold uppercase "
+                  {products?.length !== 0 ? (
+                    <table className="min-w-full divide-y divide-gray-200 mb-3">
+                      <thead className="bg-gray-100 dark:bg-white/10  sticky top-0">
+                        <tr>
+                          <th className="pl-2">{selectedItems.length}</th>
+                          {productAttributes.map(
+                            (item: string, index: number) => (
+                              <th
+                                key={index}
+                                scope="col"
+                                className="px-4 py-2 whitespace-nowrap text-left text-xs tracking-wider dark:text-white text-gray-900 font-bold uppercase "
+                              >
+                                {item}
+                              </th>
+                            ),
+                          )}
+                        </tr>
+                      </thead>
+                      {isLoading && (
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <div className="w-full h-[100px] text-blue-500 flex justify-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="32"
+                              height="32"
+                              viewBox="0 0 24 24"
+                              className="my-auto"
                             >
-                              {item}
-                            </th>
-                          ),
-                        )}
-                      </tr>
-                    </thead>
-                    {isLoading && (
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <div className="w-full h-[100px] text-blue-500 flex justify-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="32"
-                            height="32"
-                            viewBox="0 0 24 24"
-                            className="my-auto"
-                          >
-                            <path
-                              fill="currentColor"
-                              d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
-                            >
-                              <animateTransform
-                                attributeName="transform"
-                                dur="0.75s"
-                                repeatCount="indefinite"
-                                type="rotate"
-                                values="0 12 12;360 12 12"
-                              />
-                            </path>
-                          </svg>
-                        </div>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                    )}
-                    <tbody className="">
-                        
-                      
-                      {products?.map((product: any, index: number) => {
-                        return (
-                          <tr key={product.id} className="even:bg-gray-50">
-                            <th className="pl-3 ">
-                              {
-                                <input
-                                  type="checkbox"
-                                  className="bg-black"
-                                  value={product.id}
-                                  onChange={select}
+                              <path
+                                fill="currentColor"
+                                d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                              >
+                                <animateTransform
+                                  attributeName="transform"
+                                  dur="0.75s"
+                                  repeatCount="indefinite"
+                                  type="rotate"
+                                  values="0 12 12;360 12 12"
                                 />
-                              }
-                            </th>
-                            <td className="p-4">
-                              <img className=" h-full" src={product.productImage} />
-                            </td>
-                            <td className="p-4 text-sm font-normal text-gray-900  ">
-                                <Link className=" truncate_text" href={`/update-product/${product.id}`}>
+                              </path>
+                            </svg>
+                          </div>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      )}
+                      <tbody className="">
+                        {products?.map((product: any, index: number) => {
+                          return (
+                            <tr
+                              key={product.id}
+                              className="even:bg-gray-50 dark:even:bg-white/5"
+                            >
+                              <th className="pl-3 ">
+                                {
+                                  <input
+                                    type="checkbox"
+                                    className="bg-black"
+                                    value={product.id}
+                                    onChange={select}
+                                  />
+                                }
+                              </th>
+                              <td className="p-4">
+                                <img
+                                  className=" h-full"
+                                  src={product.productImage}
+                                />
+                              </td>
+                              <td className="p-4 text-sm font-normal text-gray-900 dark:text-white ">
+                                <Link
+                                  className=" truncate_text"
+                                  href={`/update-product/${product.id}`}
+                                >
                                   {product.name}
                                 </Link>
-                            </td>
-                            <td className="p-4 text-sm font-normal w-1/2 text-gray-500">
-                              <div className="truncate_text">
-                                {product.description}
-                              </div>
-                            </td> 
-                            <td className="px-4 text-sm font-normal text-gray-900 text-left">
-                              {categories?.map((cat: any) =>
-                                cat.id == product.categoryID ? cat.name : "",
-                              )}
-                            </td>
-                            <td className="px-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap ">
-                              {`$ ${product.price}`}
-                            </td>
-                            <td className="px-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap ">
-                              {product.quantity}
-                            </td>
+                              </td>
+                              <td className="p-4 text-sm font-normal w-1/2 text-gray-500 dark:text-white/70">
+                                <div className="truncate_text">
+                                  {product.description}
+                                </div>
+                              </td>
+                              <td className="px-4 text-sm font-normal text-gray-900 dark:text-white text-left">
+                                {categories?.map((cat: any) =>
+                                  cat.id == product.categoryID ? cat.name : "",
+                                )}
+                              </td>
+                              <td className="px-4 text-sm text-center font-normal dark:text-white text-gray-500 whitespace-nowrap ">
+                                {`$ ${product.price}`}
+                              </td>
+                              <td className="px-4 text-sm text-center font-normal dark:text-white text-gray-500 whitespace-nowrap ">
+                                {product.quantity}
+                              </td>
 
-                            <td className="text-center items-center h-full">
-                              {product.inStock ? (
-                                <p className="bg-green-100 m-auto text-green-800 h-full w-fit text-xs font-medium mr-2 px-2 py-0.5 rounded-md  border border-green-100 ">
-                                  In Stock
-                                </p>
-                              ) : (
-                                <p className="bg-red-100 m-auto text-red-800 h-full w-fit text-xs font-medium mr-2 px-2 py-0.5 rounded-md  border border-red-100 ">
-                                  Sold
-                                </p>
-                              )}
-                            </td>
-                            <td className="px-4 text-sm text-center font-normal text-gray-500 whitespace-nowrap ">
-                              {computeDate(product.createdAt)}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                    <tfoot className="bg-gray-100  sticky top-0">
-                      <tr>
-                        <th className="w-4 pl-2"></th>
-                        {productAttributes.map(
-                          (item: string, index: number) => (
-                            <th
-                              key={index}
-                              scope="col"
-                              className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase "
-                            >
-                              {item}
-                            </th>
-                          ),
-                        )}
-                      </tr>
-                    </tfoot>
-                  </table> : <div className="w-full h-[100px] flex justify-center items-center">
-                        <p className="font-semibold m-auto">It's empty here</p>
-                      </div>}
+                              <td className="text-center items-center h-full">
+                                {product.inStock ? (
+                                  <p className="bg-green-100 m-auto text-green-800 h-full w-fit text-xs font-medium mr-2 px-2 py-0.5 rounded-md  border border-green-100 ">
+                                    In Stock
+                                  </p>
+                                ) : (
+                                  <p className="bg-red-100 m-auto text-red-800 h-full w-fit text-xs font-medium mr-2 px-2 py-0.5 rounded-md  border border-red-100 ">
+                                    Sold
+                                  </p>
+                                )}
+                              </td>
+                              <td className="px-4 text-sm text-center dark:text-white font-normal text-gray-500 whitespace-nowrap ">
+                                {computeDate(product.createdAt)}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                      <tfoot className="bg-gray-100 dark:bg-white/10  sticky top-0">
+                        <tr>
+                          <th className="w-4 pl-2"></th>
+                          {productAttributes.map(
+                            (item: string, index: number) => (
+                              <th
+                                key={index}
+                                scope="col"
+                                className="px-4 py-2 text-left text-xs dark:text-white tracking-wider text-gray-900 font-bold uppercase "
+                              >
+                                {item}
+                              </th>
+                            ),
+                          )}
+                        </tr>
+                      </tfoot>
+                    </table>
+                  ) : (
+                    <div className="w-full h-[100px] flex justify-center items-center">
+                      <p className="font-semibold m-auto">It's empty here</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="sticky bottom-0 right-0 items-center w-full px-4 py-2 bg-white border-t border-gray-200 sm:flex sm:justify-between">
+        <div className="sticky bottom-0 right-0 items-center w-full px-4 py-2 bg-white dark:bg-black border-t border-gray-200 sm:flex sm:justify-between">
           <div className="flex items-center mb-4 sm:mb-0">
             <a
               href="#"
-              className="inline-flex justify-center p-1 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 "
+              className="inline-flex justify-center p-1 text-gray-500 dark:text-white rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 "
             >
               <svg
                 className="w-7 h-7"
@@ -546,7 +565,7 @@ export default function App() {
             </a>
             <a
               href="#"
-              className="inline-flex justify-center p-1 mr-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 "
+              className="inline-flex justify-center p-1 mr-2 text-gray-500 dark:text-white rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 "
             >
               <svg
                 className="w-7 h-7"
@@ -561,13 +580,13 @@ export default function App() {
                 ></path>
               </svg>
             </a>
-            <span className="text-sm font-normal text-gray-500 ">
+            <span className="text-sm font-normal text-gray-500 dark:text-white/80">
               Showing{" "}
-              <span className="font-semibold text-gray-900">
+              <span className="font-semibold text-gray-900 dark:text-white">
                 1-{products?.length}
               </span>{" "}
               of{" "}
-              <span className="font-semibold text-gray-900 ">
+              <span className="font-semibold text-gray-900 dark:text-white">
                 {products?.length}
               </span>
             </span>
@@ -617,66 +636,71 @@ export default function App() {
       <CustomModal open={open} onClose={() => setOpen(false)}>
         <div className="text-center w-64">
           <div className="flex justify-center -mt-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="fill-orange-500 h-[60px]"
-                  viewBox="0 0 24 24"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="fill-orange-500 h-[60px]"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 7c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1s-1-.45-1-1V8c0-.55.45-1 1-1zm-.01-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm1-3h-2v-2h2v2z" />
+            </svg>
+          </div>
+          {selectedItems.length === 0 ? (
+            <div>
+              <p>Please select data to delete</p>
+              <div className="flex justify-center mt-6">
+                <button
+                  type="button"
+                  onClick={(e) => setOpen(false)}
+                  className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                 >
-                  <path d="M12 7c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1s-1-.45-1-1V8c0-.55.45-1 1-1zm-.01-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm1-3h-2v-2h2v2z" />
-                </svg>
+                  Ok
+                </button>
+              </div>
             </div>
-          {selectedItems.length === 0 ? <div>
-            <p>Please select data to delete</p>
-            <div className="flex justify-center mt-6">
-              <button
-                type="button"
-                onClick={(e)=>setOpen(false)}
-                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-              >
-                Ok
-              </button>
-            </div>
-          </div> : <div>
+          ) : (
+            <div>
               <p>Are you sure you want to delete?</p>
               <div className="flex justify-end mt-6">
-              <button
-                type="button"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    deleteProducts()
-                }}
-                className="text-white bg-red-500  hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-              >
-                {isLoading? "Deleting":"Delete"}
-                </button>
-                
                 <button
-                type="button"
-                onClick={e=>setOpen(false)}
-                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-              >
-                Cancel
-              </button>
-            </div> </div> }
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    deleteProducts();
+                  }}
+                  className="text-white bg-red-500  hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                >
+                  {isLoading ? "Deleting" : "Delete"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={(e) => setOpen(false)}
+                  className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                >
+                  Cancel
+                </button>
+              </div>{" "}
             </div>
-          </CustomModal>
-                  
+          )}
+        </div>
+      </CustomModal>
+
       <CustomModal open={success} onClose={() => setSuccess(false)}>
-            <div className="text-center w-64">
-           <div>
+        <div className="text-center w-64">
+          <div>
             <p>Delete Successful</p>
             <div className="flex justify-center mt-6">
               <button
                 type="button"
-                onClick={(e)=>setSuccess(false)}
+                onClick={(e) => setSuccess(false)}
                 className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
               >
                 Ok
               </button>
             </div>
-          </div> 
-            </div>
-          </CustomModal>
+          </div>
+        </div>
+      </CustomModal>
     </DashboardLayout>
   );
 }

@@ -18,7 +18,8 @@ import {
   CountryRegionData,
 } from "react-country-region-selector";
 import { User } from "@/src/models";
-import { DataStore } from "aws-amplify";import { Amplify } from "aws-amplify";
+import { DataStore } from "aws-amplify";
+import { Amplify } from "aws-amplify";
 import authService from "@/src/redux-store/feature/user/authService";
 // import awsExports from "@/src/aws-exports";
 
@@ -34,14 +35,14 @@ import authService from "@/src/redux-store/feature/user/authService";
 // }
 
 export default function Register() {
-  const params = useParams()
+  const params = useParams();
   const [phone, setPhone] = useState("");
   // const [isLoading, setIsLoading] = useState(false);
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
   const [adLine2, setadLine2] = useState("");
 
-    const [errors, setErrors]: any = useState({});
+  const [errors, setErrors]: any = useState({});
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
@@ -49,7 +50,7 @@ export default function Register() {
     phone: "",
     city: "",
     country: country,
-    zipCode: '',
+    zipCode: "",
     adLine1: "",
     adLine2: "",
   });
@@ -58,7 +59,7 @@ export default function Register() {
   const { user, errorMsg, isLoading, isSuccess, isGoogle }: any = useSelector(
     (state: RootState) => state.auth,
   );
-  console.log("update me")
+  console.log("update me");
   const router = useRouter();
   useEffect(() => {
     if (isSuccess) {
@@ -67,12 +68,14 @@ export default function Register() {
     }
   }, [isLoading, isSuccess, errorMsg]);
 
-
-  const signupUser = async (id: string, userLogin: googleUserForm, formErrors: any) => {
-    console.log("Hello")
-    if (values.firstName == "")
-    {
-      console.log("empty")
+  const signupUser = async (
+    id: string,
+    userLogin: googleUserForm,
+    formErrors: any,
+  ) => {
+    console.log("Hello");
+    if (values.firstName == "") {
+      console.log("empty");
       formErrors.firstName = "Required!";
     }
     if (values.lastName == "") {
@@ -88,35 +91,30 @@ export default function Register() {
       formErrors.adLine1 = "Required!";
     }
 
-
-    if (Object.keys(formErrors).length === 0)
-    {
-      console.log("update")
+    if (Object.keys(formErrors).length === 0) {
+      console.log("update");
       userLogin.address = JSON.stringify({
         coutry: country,
-          region: region,
+        region: region,
         city: values.city,
-          zipCode: values.zipCode,
-          addressLine1: values.adLine1,
-        addressLine2: values.adLine2
+        zipCode: values.zipCode,
+        addressLine1: values.adLine1,
+        addressLine2: values.adLine2,
       });
 
       console.log(userLogin);
-      dispatch(updateGoogleUser({id:id, data: userLogin}))
-    } else
-    {
-      console.log(formErrors)
+      dispatch(updateGoogleUser({ id: id, data: userLogin }));
+    } else {
+      console.log(formErrors);
       setErrors(formErrors);
     }
-  
   };
-  
-   const onChange = (event: any) => {
+
+  const onChange = (event: any) => {
     const { name, value } = event.target;
-      setValues({ ...values, [name]: value });
-   };
-  
-  
+    setValues({ ...values, [name]: value });
+  };
+
   return (
     <>
       <main className="h-scree w-full bg-white flex justify-center items-center px-36 ">
@@ -129,7 +127,6 @@ export default function Register() {
                 </h2>
               </div>
               <form className="pb-[10px]">
-
                 <div className="flex flex-wrap sm:flex-nowrap gap-2 w-full">
                   <div className="mb-2 w-full">
                     <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -140,12 +137,13 @@ export default function Register() {
                       id="firstName"
                       value={values.firstName}
                       name="firstName"
-                onChange={onChange}
+                      onChange={onChange}
                       className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
                       placeholder="First name"
-                    /><p className="text-red-500 text-sm font-light pt-[6px] error">
-                {errors?.firstName}
-              </p>
+                    />
+                    <p className="text-red-500 text-sm font-light pt-[6px] error">
+                      {errors?.firstName}
+                    </p>
                   </div>
 
                   <div className="mb-2 w-full">
@@ -159,11 +157,11 @@ export default function Register() {
                       className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
                       placeholder="Last name"
                       name="lastName"
-                onChange={onChange}
+                      onChange={onChange}
                     />
                     <p className="text-red-500 text-sm font-light pt-[6px] error">
-                {errors?.lastName}
-              </p>
+                      {errors?.lastName}
+                    </p>
                   </div>
                 </div>
 
@@ -183,8 +181,8 @@ export default function Register() {
                     />
                   </div>
                   <p className="text-red-500 text-sm font-light pt-[6px] error">
-                {phone == ""? "phone number is require": ""}
-              </p>
+                    {phone == "" ? "phone number is require" : ""}
+                  </p>
                 </div>
 
                 <div className="flex gap-2 sm:flex-nowrap flex-wrap my-3">
@@ -200,13 +198,13 @@ export default function Register() {
                     />
 
                     <p className="text-red-500 text-sm font-light pt-[6px] error">
-                {errors?.country}
-              </p>
+                      {errors?.country}
+                    </p>
                   </div>
 
-                    <p className="text-red-500 text-sm font-light pt-[6px] error">
-                {errors?.country}
-              </p>
+                  <p className="text-red-500 text-sm font-light pt-[6px] error">
+                    {errors?.country}
+                  </p>
 
                   <div className="w-full">
                     <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -221,8 +219,8 @@ export default function Register() {
                     />
                   </div>
                   <p className="text-red-500 text-sm font-light pt-[6px] error">
-                {errors?.region}
-              </p>
+                    {errors?.region}
+                  </p>
                 </div>
 
                 <div className="flex gap-2">
@@ -235,15 +233,14 @@ export default function Register() {
                       id="city"
                       value={values.city}
                       name="city"
-                onChange={onChange}
+                      onChange={onChange}
                       className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
                       placeholder="San fransisco"
                     />
                     <p className="text-red-500 text-sm font-light pt-[6px] error">
-                {errors?.city}
-              </p>
+                      {errors?.city}
+                    </p>
                   </div>
-                  
 
                   <div className="mb-2 w-full">
                     <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -254,13 +251,13 @@ export default function Register() {
                       id="zipecode"
                       value={values.zipCode}
                       name="zipCode"
-                onChange={onChange}
+                      onChange={onChange}
                       className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
                       placeholder=""
                     />
                     <p className="text-red-500 text-sm font-light pt-[6px] error">
-                {errors?.zipCode}
-              </p>
+                      {errors?.zipCode}
+                    </p>
                   </div>
                 </div>
 
@@ -273,13 +270,13 @@ export default function Register() {
                     id="address_line_1"
                     value={values.adLine1}
                     name="adLine1"
-                onChange={onChange}
+                    onChange={onChange}
                     className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
                     placeholder="456 Elm Street"
                   />
                   <p className="text-red-500 text-sm font-light pt-[6px] error">
-                {errors?.adLine1}
-              </p>
+                    {errors?.adLine1}
+                  </p>
                 </div>
 
                 <div className="mb-2 w-full">
@@ -291,22 +288,26 @@ export default function Register() {
                     id="address_line_2"
                     value={values.adLine2}
                     name="adLine2"
-                onChange={onChange}
+                    onChange={onChange}
                     className="bg-gray-50 border focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-full p-1.5"
                     placeholder="456 Elm Street"
                   />
-                              </div>
-                              <div className="flex gap-2">
+                </div>
+                <div className="flex gap-2">
                   <button
                     className="text-white mb-5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
                     onClick={(e) => {
                       e.preventDefault();
-                      signupUser(params.userId as string, {
-                        firstName: values.firstName,
-                        lastName: values.lastName,
-                        phoneNumber: phone,
-                        address: "",
-                      }, {});
+                      signupUser(
+                        params.userId as string,
+                        {
+                          firstName: values.firstName,
+                          lastName: values.lastName,
+                          phoneNumber: phone,
+                          address: "",
+                        },
+                        {},
+                      );
                     }}
                     type="submit"
                     disabled={isLoading}
@@ -508,7 +509,6 @@ export default function Register() {
                       "Update"
                     )}
                   </button>
-
                 </div>
                 {/* <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading? 'Loading': "Google"} handleClick={(e)=>{e.preventDefault(); googleSignin()}} btnType="submit"/> */}
               </form>

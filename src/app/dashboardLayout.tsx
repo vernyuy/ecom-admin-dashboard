@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { sidebarLinks } from "@/src/constants";
 import Navbar from "../components/Navbar";
@@ -8,33 +8,34 @@ import { useDispatch, useSelector } from "react-redux";
 import { placeOrder } from "../redux-store/feature/orders/orderSlice";
 import { useEffect, useRef, useState } from "react";
 import { listProducts } from "../redux-store/feature/products/productSlice";
-import { currentUser, getUserbyMail } from "../redux-store/feature/user/authSlice";
+import {
+  currentUser,
+  getUserbyMail,
+} from "../redux-store/feature/user/authSlice";
 import authService from "../redux-store/feature/user/authService";
 import productService from "../redux-store/feature/products/productService";
 import { usePathname, useRouter } from "next/navigation";
+import ThemeSwitcher from "../components/ThemeSwitcher";
 export default function DashboardLayout({ children }: any) {
-
-  const router = useRouter()
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const url = usePathname()
-  console.log("pathname", url)
-    const { users, errorMsg, isLoading, isSuccess }: any = useSelector(
+  const url = usePathname();
+  console.log("pathname", url);
+  const { users, errorMsg, isLoading, isSuccess }: any = useSelector(
     (state: RootState) => state.user,
-    );
+  );
   const [toggle, setToggle] = useState({
     products: false,
     categories: false,
     orders: false,
     adverts: false,
     payments: false,
-  })
+  });
 
-  
   useEffect(() => {
-    console.log(isSuccess)
-  }, [isSuccess])
-  
-  
+    console.log(isSuccess);
+  }, [isSuccess]);
+
   // const orderitem = async () => {
   //   const prods = await productService.listProducts()
   //   const user = await authService.currentUser()
@@ -63,22 +64,22 @@ export default function DashboardLayout({ children }: any) {
 
   return (
     <>
-      <main className="bg-gray-50 h-screen overflow-hidden">
-        <Navbar/>
+      <main className="bg-gray-50 h-screen overflow-hidden dark:bg-white data-[theme]: dark:text-white">
+        <Navbar />
 
         <div className="flex pt-16 overflow-hidden">
-          <aside className="fixed h-screen bg-white overflow-y-auto hidden md:block top-0 left-0 z-20 pt-16 flex-col flex-shrink-0 w-64  font-normal duration-75 lg:flex transition-width">
+          <aside className="fixed h-screen bg-white dark:bg-black dark:text-white overflow-y-auto hidden md:block top-0 left-0 z-20 pt-16 flex-col flex-shrink-0 w-64  font-normal duration-75 lg:flex transition-width">
             <div className="relative flex flex-col flex-1 min-h-0 pt-0 border-r border-gray-200">
               <div className="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
-                <div className="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200">
+                <div className="flex-1 px-3 space-y-1 bg-white dark:bg-black dark:text-white divide-y divide-gray-200">
                   <ul className="pb-2 space-y-2">
                     <li>
-                      <a
+                      <Link
                         href="/"
-                        className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group "
+                        className="flex items-center p-2 text-base text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 group dark:hover:bg-white/10"
                       >
                         <svg
-                          className="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 "
+                          className="w-6 h-6 text-gray-500 dark:group-hover:text-white  transition duration-75 group-hover:text-gray-900 "
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +90,7 @@ export default function DashboardLayout({ children }: any) {
                         <span className="ml-3" sidebar-toggle-item="">
                           Dashboard
                         </span>
-                      </a>
+                      </Link>
                     </li>
                     <li className="group">
                       <button
@@ -97,16 +98,20 @@ export default function DashboardLayout({ children }: any) {
                         onClick={(e) => {
                           e.preventDefault();
                           setToggle({
-                            ...toggle, products: !toggle.products
-                            , categories: false, orders: false, adverts: false, payments: false
+                            ...toggle,
+                            products: !toggle.products,
+                            categories: false,
+                            orders: false,
+                            adverts: false,
+                            payments: false,
                           });
                         }}
-                        className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
+                        className="flex items-center w-full p-2 text-base dark:text-white text-gray-900  transition duration-75 rounded-lg group hover:bg-gray-100 dark:hover:bg-white/10"
                         aria-controls="dropdown-pages"
                         data-collapse-toggle="dropdown-pages"
                       >
                         <svg
-                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                          className="flex-shrink-0 w-6 h-6 text-gray-500 dark:group-hover:text-white  transition duration-75 dark:hover:text-white/10 group-hover:text-gray-900"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -124,7 +129,11 @@ export default function DashboardLayout({ children }: any) {
                           Products
                         </span>
                         <svg
-                          className={ (toggle.products || url.includes('product'))? "w-6 h-6 rotate-0": "w-6 h-6 -rotate-90 group-hover:rotate-0"}
+                          className={
+                            toggle.products || url.includes("product")
+                              ? "w-6 h-6 rotate-0"
+                              : "w-6 h-6 -rotate-90 group-hover:rotate-0"
+                          }
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -138,12 +147,16 @@ export default function DashboardLayout({ children }: any) {
                       </button>
                       <ul
                         id="dropdown-pages"
-                        className={(toggle.products || url.includes('product'))?"py-2 space-y-2 block":"py-2 space-y-2 hidden"}
+                        className={
+                          toggle.products || url.includes("product")
+                            ? "py-2 space-y-2 block"
+                            : "py-2 space-y-2 hidden"
+                        }
                       >
                         <li>
                           <Link
                             href="/add-product"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
+                            className="flex items-center p-2 text-base dark:text-white text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-white/10"
                           >
                             Add new
                           </Link>
@@ -151,7 +164,7 @@ export default function DashboardLayout({ children }: any) {
                         <li>
                           <Link
                             href="/products"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
+                            className="flex items-center p-2 dark:text-white text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-white/10"
                           >
                             All products
                           </Link>
@@ -164,17 +177,21 @@ export default function DashboardLayout({ children }: any) {
                         onClick={(e) => {
                           e.preventDefault();
                           setToggle({
-                            ...toggle, products: false
-                            , categories: !toggle.categories, orders: false, adverts: false, payments: false
+                            ...toggle,
+                            products: false,
+                            categories: !toggle.categories,
+                            orders: false,
+                            adverts: false,
+                            payments: false,
                           });
                         }}
-                        className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
+                        className="flex items-center w-full p-2 dark:text-white text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:hover:bg-white/10"
                         aria-controls="dropdown-pages"
                         data-collapse-toggle="dropdown-pages"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white "
                           viewBox="0 0 24 24"
                         >
                           <path
@@ -190,7 +207,11 @@ export default function DashboardLayout({ children }: any) {
                           Categories
                         </span>
                         <svg
-                          className={ (toggle.categories || url.includes('categor'))? "w-6 h-6 rotate-0": "w-6 h-6 -rotate-90 group-hover:rotate-0"}
+                          className={
+                            toggle.categories || url.includes("categor")
+                              ? "w-6 h-6 rotate-0"
+                              : "w-6 h-6 -rotate-90 group-hover:rotate-0"
+                          }
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -204,12 +225,16 @@ export default function DashboardLayout({ children }: any) {
                       </button>
                       <ul
                         id="dropdown-pages"
-                        className={(toggle.categories || url.includes('categor'))?"py-2 space-y-2 block":"py-2 space-y-2 hidden"}
+                        className={
+                          toggle.categories || url.includes("categor")
+                            ? "py-2 space-y-2 block"
+                            : "py-2 space-y-2 hidden"
+                        }
                       >
                         <li>
                           <Link
                             href="/add-category"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
+                            className="flex items-center p-2 text-base dark:text-white text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-white/10"
                           >
                             Add Category
                           </Link>
@@ -217,7 +242,7 @@ export default function DashboardLayout({ children }: any) {
                         <li>
                           <Link
                             href="/categories"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
+                            className="flex items-center p-2 text-base dark:text-white text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-white/10"
                           >
                             All categories
                           </Link>
@@ -230,16 +255,22 @@ export default function DashboardLayout({ children }: any) {
                         onClick={(e) => {
                           e.preventDefault();
                           setToggle({
-                            ...toggle, products: false
-                            , categories: false, orders: false, adverts: !toggle.adverts, payments: false
+                            ...toggle,
+                            products: false,
+                            categories: false,
+                            orders: false,
+                            adverts: !toggle.adverts,
+                            payments: false,
                           });
                         }}
-                        className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
+                        className="flex items-center w-full p-2 text-base dark:text-white text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:hover:bg-white/10"
                         aria-controls="dropdown-pages"
                         data-collapse-toggle="dropdown-pages"
                       >
                         <svg
-                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                          className={`flex-shrink-0 w-6 h-6  transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white/90 ${
+                            toggle.adverts ? "text-white/90" : "text-gray-500"
+                          }`}
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -257,7 +288,11 @@ export default function DashboardLayout({ children }: any) {
                           Adverts
                         </span>
                         <svg
-                          className={ (toggle.adverts || url.includes('advert'))? "w-6 h-6 rotate-0": "w-6 h-6 -rotate-90 group-hover:rotate-0"}
+                          className={
+                            toggle.adverts || url.includes("advert")
+                              ? "w-6 h-6 rotate-0"
+                              : "w-6 h-6 -rotate-90 group-hover:rotate-0"
+                          }
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"
@@ -271,12 +306,16 @@ export default function DashboardLayout({ children }: any) {
                       </button>
                       <ul
                         id="dropdown-pages"
-                        className={(toggle.adverts || url.includes('advert'))?"py-2 space-y-2 block":"py-2 space-y-2 hidden"}
+                        className={
+                          toggle.adverts || url.includes("advert")
+                            ? "py-2 space-y-2 block"
+                            : "py-2 space-y-2 hidden"
+                        }
                       >
                         <li>
                           <Link
                             href="/add-carousel"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
+                            className="flex items-center p-2 text-base text-gray-900 dark:text-white/80 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:hover:bg-white/10"
                           >
                             Add new
                           </Link>
@@ -284,21 +323,21 @@ export default function DashboardLayout({ children }: any) {
                         <li>
                           <Link
                             href="/advert"
-                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100"
+                            className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white/80 dark:hover:bg-white/10"
                           >
                             All Adverts
                           </Link>
                         </li>
                       </ul>
                     </li>
-                    <li >
-                      <a
+                    <li>
+                      <Link
                         href="/users"
-                        className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group "
+                        className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-white dark:hover:bg-white/10"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white"
                           viewBox="0 0 24 24"
                         >
                           <path
@@ -309,33 +348,57 @@ export default function DashboardLayout({ children }: any) {
                         <span className="ml-3" sidebar-toggle-item="">
                           Users
                         </span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a
+                      <Link
                         href="/orders"
-                        className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group "
+                        className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:hover:bg-white/10 dark:text-white"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" 
-                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" width="24" height="24" viewBox="0 0 32 32"><path fill="currentColor" d="M28 13h-2v-2c0-2.8-2.2-5-5-5h-3V4h3c3.9 0 7 3.1 7 7v2zm-6 7h3v2h-3zm0 4h3v2h-3z"/><path fill="currentColor" d="M27 30h-5v-2h5V18h-7v9c0 1.7-1.3 3-3 3s-3-1.3-3-3v-3h2v3c0 .6.4 1 1 1s1-.4 1-1V16h11v12c0 1.1-.9 2-2 2zm-15-2h-1c-3.9 0-7-3.1-7-7v-4h2v4c0 2.8 2.2 5 5 5h1v2zm-1-18v2h3c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h2.4l1.7 3l1.7-1l-2.3-4H4V4h10v6h-3z"/></svg>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:group-hover:text-white group-hover:text-gray-900"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 32 32"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M28 13h-2v-2c0-2.8-2.2-5-5-5h-3V4h3c3.9 0 7 3.1 7 7v2zm-6 7h3v2h-3zm0 4h3v2h-3z"
+                          />
+                          <path
+                            fill="currentColor"
+                            d="M27 30h-5v-2h5V18h-7v9c0 1.7-1.3 3-3 3s-3-1.3-3-3v-3h2v3c0 .6.4 1 1 1s1-.4 1-1V16h11v12c0 1.1-.9 2-2 2zm-15-2h-1c-3.9 0-7-3.1-7-7v-4h2v4c0 2.8 2.2 5 5 5h1v2zm-1-18v2h3c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h2.4l1.7 3l1.7-1l-2.3-4H4V4h10v6h-3z"
+                          />
+                        </svg>
                         <span className="ml-3" sidebar-toggle-item="">
                           Orders
                         </span>
-                      </a>
+                      </Link>
                     </li>
 
                     <li>
                       <Link
                         href="/payment"
-                        className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group"
-                      ><svg xmlns="http://www.w3.org/2000/svg" width="24" 
-                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3 20q-.825 0-1.413-.588T1 18V7h2v11h17v2H3Zm4-4q-.825 0-1.413-.588T5 14V6q0-.825.588-1.413T7 4h14q.825 0 1.413.588T23 6v8q0 .825-.588 1.413T21 16H7Zm2-2q0-.825-.588-1.413T7 12v2h2Zm10 0h2v-2q-.825 0-1.413.588T19 14Zm-5-1q1.25 0 2.125-.875T17 10q0-1.25-.875-2.125T14 7q-1.25 0-2.125.875T11 10q0 1.25.875 2.125T14 13ZM7 8q.825 0 1.413-.588T9 6H7v2Zm14 0V6h-2q0 .825.588 1.413T21 8Z"/></svg>
+                        className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:hover:bg-white/10 dark:text-white"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:group-hover:text-white  group-hover:text-gray-900"
+                          height="24"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M3 20q-.825 0-1.413-.588T1 18V7h2v11h17v2H3Zm4-4q-.825 0-1.413-.588T5 14V6q0-.825.588-1.413T7 4h14q.825 0 1.413.588T23 6v8q0 .825-.588 1.413T21 16H7Zm2-2q0-.825-.588-1.413T7 12v2h2Zm10 0h2v-2q-.825 0-1.413.588T19 14Zm-5-1q1.25 0 2.125-.875T17 10q0-1.25-.875-2.125T14 7q-1.25 0-2.125.875T11 10q0 1.25.875 2.125T14 13ZM7 8q.825 0 1.413-.588T9 6H7v2Zm14 0V6h-2q0 .825.588 1.413T21 8Z"
+                          />
+                        </svg>
                         <span className="ml-3" sidebar-toggle-item="">
                           Payment
                         </span>
                       </Link>
                     </li>
-
 
                     {/* <li>
                       <button
@@ -354,7 +417,7 @@ export default function DashboardLayout({ children }: any) {
             </div>
           </aside>
 
-          <div className="flex overflow-y-auto h-screen md:pl-64 overflow-hidden bg-gray-50 w-full">
+          <div className="flex overflow-y-auto h-screen md:pl-64 overflow-hidden bg-gray-50 dark:bg-black/95 w-full">
             <div className="px-4 w-full">
               <div className="my-4">{children}</div>
               <div className="h-[200px] w-full"></div>

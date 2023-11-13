@@ -25,9 +25,8 @@ export default function App() {
     backgroundImageUrl: "",
     status: false,
     hasBg: false,
-    textColor: "#ffffff"
+    textColor: "#ffffff",
   });
-    
 
   const resetStates = (name: string, value: any) => {
     setStates({ ...states, [name]: value });
@@ -51,10 +50,10 @@ export default function App() {
     }
     if (Object.keys(formErrors).length === 0) {
       setStates({ ...states, ["isLoading"]: true });
-      console.log(values)
+      console.log(values);
       await storeService.createCarousel(values).then((result) => {
         const finalResult: any = result.result;
-        console.log(finalResult)
+        console.log(finalResult);
         setIsComplete(true);
         if (!result.success) {
           setErrorMsg(finalResult.message);
@@ -65,21 +64,18 @@ export default function App() {
       setErrors(formErrors);
     }
   };
-    
+
   const onChange = (event: any) => {
     const { name, value } = event.target;
-    if (name === "status")
-    {
+    if (name === "status") {
       setValues({ ...values, [name]: !values.status });
-    } else if (name === "hasBg")
-    {
+    } else if (name === "hasBg") {
       setValues({ ...values, [name]: !values.hasBg });
-    }else
-    {
+    } else {
       setValues({ ...values, [name]: value });
     }
   };
-    
+
   const handleFocus = (event: any, formErrors: any) => {
     const { value, name } = event;
     if (name == "title" && value == "") {
@@ -90,11 +86,11 @@ export default function App() {
     }
     return formErrors;
   };
-    
+
   const handleImage = (value: string) => {
     document.getElementById(value)?.click();
   };
-    
+
   const setbackgroundImageUrl = async (event: any) => {
     setStates({ ...states, ["backgroundImage"]: true });
     try {
@@ -113,19 +109,17 @@ export default function App() {
     setStates({ ...states, ["backgroundImage"]: false });
   };
 
-
   const handleChange = (color: any) => {
     setValues({ ...values, ["backgroundColor"]: color.hex });
   };
 
-    const handleTextChange = (color: any) => {
+  const handleTextChange = (color: any) => {
     setValues({ ...values, ["textColor"]: color.hex });
   };
 
   const addColor = (name: any, remove: Boolean, color: any) => {
-      setValues({ ...values, [name]: values.backgroundColor });
-    }
-  
+    setValues({ ...values, [name]: values.backgroundColor });
+  };
 
   return (
     <DashboardLayout>
@@ -240,332 +234,340 @@ export default function App() {
                 </label>
               </div>
             </div>
-                      
 
+            {/* <div className="z-[105] h-fit w-[400px] bg-white rounded shadow"> */}
 
-
-                    {/* <div className="z-[105] h-fit w-[400px] bg-white rounded shadow"> */}
-
-            <div className="flex flex-wrap">
-            </div>
+            <div className="flex flex-wrap"></div>
 
             <div className="flex justify-left items-centgter gap-2">
               <div className="flex gap-8">
                 <div>
                   <p>Text color</p>
                   <ChromePicker
-                color={values.textColor}
-                className="h-1/2 w-[40px]"
-                onChangeComplete={handleTextChange}
-              />
+                    color={values.textColor}
+                    className="h-1/2 w-[40px]"
+                    onChangeComplete={handleTextChange}
+                  />
+                </div>
+                {!values.hasBg ? (
+                  <div>
+                    <p>Background</p>
+                    <ChromePicker
+                      color={values.backgroundColor}
+                      className="h-1/2 w-[40px]"
+                      onChangeComplete={handleChange}
+                    />
                   </div>
-                {!values.hasBg?<div>
-                  <p>Background</p>
-                  <ChromePicker
-                color={values.backgroundColor}
-                className="h-1/2 w-[40px]"
-                onChangeComplete={handleChange}
-                  /></div> : <></>}
-              
-                          
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
 
-                          <div className="w-full max-[1199px]:flex min-[1200px]:max-w-[350px] space-y-5 gap-5">
-          <div
-            className={`bg-white w-full ${
-              errors.backgroundImageUrl &&
-              values.backgroundImageUrl == "" &&
-              "border border-red-500"
-            }`}
-          >
-            <div className="h-[50px] px-4 flex items-center border-b-[2.5px] ">
-              <p className="font-bold text-blue-400">Carousel image</p>
-            </div>
-            <div className="min-h-[60px] p-2.5 pl-4">
-              <input
-                id="backgroundImageUrl"
-                type="file"
-                name="backgroundImageUrl"
-                accept=".jpeg, .png, .jpg"
-                onChange={setbackgroundImageUrl}
-                hidden
-              />
-
-              {states.backgroundImage ? (
-                <div className="flex justify-center text-blue-500">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="32"
-                    height="32"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle cx="4" cy="12" r="0" fill="currentColor">
-                      <animate
-                        fill="freeze"
-                        attributeName="r"
-                        begin="0;svgSpinners3DotsMove1.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="0;3"
-                      />
-                      <animate
-                        fill="freeze"
-                        attributeName="cx"
-                        begin="svgSpinners3DotsMove7.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="4;12"
-                      />
-                      <animate
-                        fill="freeze"
-                        attributeName="cx"
-                        begin="svgSpinners3DotsMove5.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="12;20"
-                      />
-                      <animate
-                        id="svgSpinners3DotsMove0"
-                        fill="freeze"
-                        attributeName="r"
-                        begin="svgSpinners3DotsMove3.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="3;0"
-                      />
-                      <animate
-                        id="svgSpinners3DotsMove1"
-                        fill="freeze"
-                        attributeName="cx"
-                        begin="svgSpinners3DotsMove0.end"
-                        dur="0.001s"
-                        values="20;4"
-                      />
-                    </circle>
-                    <circle cx="4" cy="12" r="3" fill="currentColor">
-                      <animate
-                        fill="freeze"
-                        attributeName="cx"
-                        begin="0;svgSpinners3DotsMove1.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="4;12"
-                      />
-                      <animate
-                        fill="freeze"
-                        attributeName="cx"
-                        begin="svgSpinners3DotsMove7.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="12;20"
-                      />
-                      <animate
-                        id="svgSpinners3DotsMove2"
-                        fill="freeze"
-                        attributeName="r"
-                        begin="svgSpinners3DotsMove5.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="3;0"
-                      />
-                      <animate
-                        id="svgSpinners3DotsMove3"
-                        fill="freeze"
-                        attributeName="cx"
-                        begin="svgSpinners3DotsMove2.end"
-                        dur="0.001s"
-                        values="20;4"
-                      />
-                      <animate
-                        fill="freeze"
-                        attributeName="r"
-                        begin="svgSpinners3DotsMove3.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="0;3"
-                      />
-                    </circle>
-                    <circle cx="12" cy="12" r="3" fill="currentColor">
-                      <animate
-                        fill="freeze"
-                        attributeName="cx"
-                        begin="0;svgSpinners3DotsMove1.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="12;20"
-                      />
-                      <animate
-                        id="svgSpinners3DotsMove4"
-                        fill="freeze"
-                        attributeName="r"
-                        begin="svgSpinners3DotsMove7.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="3;0"
-                      />
-                      <animate
-                        id="svgSpinners3DotsMove5"
-                        fill="freeze"
-                        attributeName="cx"
-                        begin="svgSpinners3DotsMove4.end"
-                        dur="0.001s"
-                        values="20;4"
-                      />
-                      <animate
-                        fill="freeze"
-                        attributeName="r"
-                        begin="svgSpinners3DotsMove5.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="0;3"
-                      />
-                      <animate
-                        fill="freeze"
-                        attributeName="cx"
-                        begin="svgSpinners3DotsMove3.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="4;12"
-                      />
-                    </circle>
-                    <circle cx="20" cy="12" r="3" fill="currentColor">
-                      <animate
-                        id="svgSpinners3DotsMove6"
-                        fill="freeze"
-                        attributeName="r"
-                        begin="0;svgSpinners3DotsMove1.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="3;0"
-                      />
-                      <animate
-                        id="svgSpinners3DotsMove7"
-                        fill="freeze"
-                        attributeName="cx"
-                        begin="svgSpinners3DotsMove6.end"
-                        dur="0.001s"
-                        values="20;4"
-                      />
-                      <animate
-                        fill="freeze"
-                        attributeName="r"
-                        begin="svgSpinners3DotsMove7.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="0;3"
-                      />
-                      <animate
-                        fill="freeze"
-                        attributeName="cx"
-                        begin="svgSpinners3DotsMove5.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="4;12"
-                      />
-                      <animate
-                        fill="freeze"
-                        attributeName="cx"
-                        begin="svgSpinners3DotsMove3.end"
-                        calcMode="spline"
-                        dur="0.5s"
-                        keySplines=".36,.6,.31,1"
-                        values="12;20"
-                      />
-                    </circle>
-                  </svg>
+            <div className="w-full max-[1199px]:flex min-[1200px]:max-w-[350px] space-y-5 gap-5">
+              <div
+                className={`bg-white w-full ${
+                  errors.backgroundImageUrl &&
+                  values.backgroundImageUrl == "" &&
+                  "border border-red-500"
+                }`}
+              >
+                <div className="h-[50px] px-4 flex items-center border-b-[2.5px] ">
+                  <p className="font-bold text-blue-400">Carousel image</p>
                 </div>
-              ) : (
-                <div>
-                  {values.backgroundImageUrl == "" ? (
-                    <>
-                      <div
-                        onClick={() => handleImage("backgroundImageUrl")}
-                        className="font-semibold text-[14px] pt-2 hover:cursor-pointer hover:text-blue-400"
+                <div className="min-h-[60px] p-2.5 pl-4">
+                  <input
+                    id="backgroundImageUrl"
+                    type="file"
+                    name="backgroundImageUrl"
+                    accept=".jpeg, .png, .jpg"
+                    onChange={setbackgroundImageUrl}
+                    hidden
+                  />
+
+                  {states.backgroundImage ? (
+                    <div className="flex justify-center text-blue-500">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
                       >
-                        Set carousel image
-                      </div>
-                    </>
+                        <circle cx="4" cy="12" r="0" fill="currentColor">
+                          <animate
+                            fill="freeze"
+                            attributeName="r"
+                            begin="0;svgSpinners3DotsMove1.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="0;3"
+                          />
+                          <animate
+                            fill="freeze"
+                            attributeName="cx"
+                            begin="svgSpinners3DotsMove7.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="4;12"
+                          />
+                          <animate
+                            fill="freeze"
+                            attributeName="cx"
+                            begin="svgSpinners3DotsMove5.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="12;20"
+                          />
+                          <animate
+                            id="svgSpinners3DotsMove0"
+                            fill="freeze"
+                            attributeName="r"
+                            begin="svgSpinners3DotsMove3.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="3;0"
+                          />
+                          <animate
+                            id="svgSpinners3DotsMove1"
+                            fill="freeze"
+                            attributeName="cx"
+                            begin="svgSpinners3DotsMove0.end"
+                            dur="0.001s"
+                            values="20;4"
+                          />
+                        </circle>
+                        <circle cx="4" cy="12" r="3" fill="currentColor">
+                          <animate
+                            fill="freeze"
+                            attributeName="cx"
+                            begin="0;svgSpinners3DotsMove1.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="4;12"
+                          />
+                          <animate
+                            fill="freeze"
+                            attributeName="cx"
+                            begin="svgSpinners3DotsMove7.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="12;20"
+                          />
+                          <animate
+                            id="svgSpinners3DotsMove2"
+                            fill="freeze"
+                            attributeName="r"
+                            begin="svgSpinners3DotsMove5.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="3;0"
+                          />
+                          <animate
+                            id="svgSpinners3DotsMove3"
+                            fill="freeze"
+                            attributeName="cx"
+                            begin="svgSpinners3DotsMove2.end"
+                            dur="0.001s"
+                            values="20;4"
+                          />
+                          <animate
+                            fill="freeze"
+                            attributeName="r"
+                            begin="svgSpinners3DotsMove3.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="0;3"
+                          />
+                        </circle>
+                        <circle cx="12" cy="12" r="3" fill="currentColor">
+                          <animate
+                            fill="freeze"
+                            attributeName="cx"
+                            begin="0;svgSpinners3DotsMove1.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="12;20"
+                          />
+                          <animate
+                            id="svgSpinners3DotsMove4"
+                            fill="freeze"
+                            attributeName="r"
+                            begin="svgSpinners3DotsMove7.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="3;0"
+                          />
+                          <animate
+                            id="svgSpinners3DotsMove5"
+                            fill="freeze"
+                            attributeName="cx"
+                            begin="svgSpinners3DotsMove4.end"
+                            dur="0.001s"
+                            values="20;4"
+                          />
+                          <animate
+                            fill="freeze"
+                            attributeName="r"
+                            begin="svgSpinners3DotsMove5.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="0;3"
+                          />
+                          <animate
+                            fill="freeze"
+                            attributeName="cx"
+                            begin="svgSpinners3DotsMove3.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="4;12"
+                          />
+                        </circle>
+                        <circle cx="20" cy="12" r="3" fill="currentColor">
+                          <animate
+                            id="svgSpinners3DotsMove6"
+                            fill="freeze"
+                            attributeName="r"
+                            begin="0;svgSpinners3DotsMove1.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="3;0"
+                          />
+                          <animate
+                            id="svgSpinners3DotsMove7"
+                            fill="freeze"
+                            attributeName="cx"
+                            begin="svgSpinners3DotsMove6.end"
+                            dur="0.001s"
+                            values="20;4"
+                          />
+                          <animate
+                            fill="freeze"
+                            attributeName="r"
+                            begin="svgSpinners3DotsMove7.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="0;3"
+                          />
+                          <animate
+                            fill="freeze"
+                            attributeName="cx"
+                            begin="svgSpinners3DotsMove5.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="4;12"
+                          />
+                          <animate
+                            fill="freeze"
+                            attributeName="cx"
+                            begin="svgSpinners3DotsMove3.end"
+                            calcMode="spline"
+                            dur="0.5s"
+                            keySplines=".36,.6,.31,1"
+                            values="12;20"
+                          />
+                        </circle>
+                      </svg>
+                    </div>
                   ) : (
-                    <div className="">
-                      <img className="h-36" src={values.backgroundImageUrl} />
-                      <div
-                        onClick={() => handleImage("backgroundImageUrl")}
-                        className="mt-2 hover:cursor-pointer"
-                      >
-                        <p className="font-medium text-green-500">Edit image</p>
-                      </div>
+                    <div>
+                      {values.backgroundImageUrl == "" ? (
+                        <>
+                          <div
+                            onClick={() => handleImage("backgroundImageUrl")}
+                            className="font-semibold text-[14px] pt-2 hover:cursor-pointer hover:text-blue-400"
+                          >
+                            Set carousel image
+                          </div>
+                        </>
+                      ) : (
+                        <div className="">
+                          <img
+                            className="h-36"
+                            src={values.backgroundImageUrl}
+                          />
+                          <div
+                            onClick={() => handleImage("backgroundImageUrl")}
+                            className="mt-2 hover:cursor-pointer"
+                          >
+                            <p className="font-medium text-green-500">
+                              Edit image
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {values.backgroundImageUrl == "" && (
+                    <div className="text-red-500 pt-2">
+                      {errors?.backgroundImageUrl}
                     </div>
                   )}
                 </div>
-              )}
-              {values.backgroundImageUrl == "" && (
-                <div className="text-red-500 pt-2">{errors?.backgroundImageUrl}</div>
-              )}
+              </div>
             </div>
+          </div>
+
+          <div className={`flex justify-between items-center`}>
+            <div></div>
+            <button
+              type="submit"
+              disabled={states.isLoading}
+              className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 "
+            >
+              <span className="relative flex items-center px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                {states.isLoading && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 mr-2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
+                      opacity=".25"
+                    />
+                    <path
+                      fill="currentColor"
+                      d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"
+                    >
+                      <animateTransform
+                        attributeName="transform"
+                        dur="0.75s"
+                        repeatCount="indefinite"
+                        type="rotate"
+                        values="0 12 12;360 12 12"
+                      />
+                    </path>
+                  </svg>
+                )}
+                Submit
+              </span>
+            </button>
           </div>
         </div>
-
-
-
-
-                      </div>
-
-            <div className={`flex justify-between items-center`}>
-              <div></div>
-              <button
-                type="submit"
-                disabled={states.isLoading}
-                className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 "
-              >
-                <span className="relative flex items-center px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
-                  {states.isLoading && (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 mr-2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
-                        opacity=".25"
-                      />
-                      <path
-                        fill="currentColor"
-                        d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"
-                      >
-                        <animateTransform
-                          attributeName="transform"
-                          dur="0.75s"
-                          repeatCount="indefinite"
-                          type="rotate"
-                          values="0 12 12;360 12 12"
-                        />
-                      </path>
-                    </svg>
-                  )}
-                  Submit
-                </span>
-              </button>
-            </div>
-          </div>
         <div className="w-full space-y-5 gap-5">
-                  <Carousel title={values.title} textColor={values.textColor} hasBg={values.hasBg} image={values.backgroundImageUrl} bgcolor={values.hasBg?"":values.backgroundColor} />
+          <Carousel
+            title={values.title}
+            textColor={values.textColor}
+            hasBg={values.hasBg}
+            image={values.backgroundImageUrl}
+            bgcolor={values.hasBg ? "" : values.backgroundColor}
+          />
         </div>
       </form>
     </DashboardLayout>

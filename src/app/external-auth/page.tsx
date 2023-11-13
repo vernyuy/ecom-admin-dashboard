@@ -11,7 +11,7 @@ import authService from "@/src/redux-store/feature/user/authService";
 export default function Page() {
   const router = useRouter();
   const params = useSearchParams();
-  
+
   if (params.has("error")) {
     console.log("email exists");
     return (
@@ -30,12 +30,11 @@ export default function Page() {
     );
   } else {
     useEffect(() => {
-      getUser()
+      getUser();
     }, []);
 
     const getUser = async () => {
-      try
-      {
+      try {
         await authService.currentUser().then((result) => {
           const userData = {
             firstName: result.attributes.family_name
@@ -48,37 +47,48 @@ export default function Page() {
             phone: result.attributes.phone_number,
             sub: result.attributes.sub,
             isActive: true,
-            address: JSON.stringify({ coutry: 'test' }),
+            address: JSON.stringify({}),
           };
 
           DataStore.observeQuery(User).subscribe(async (event) => {
-            if (event.isSynced)
-            {
+            if (event.isSynced) {
               console.log(event.isSynced);
-              await DataStore.query(User, (user) =>
-                user.email.eq(result.attributes.email),
+              await DataStore.query(User, (user: any) =>
+                user.and((c: any) => [
+                  c.email.eq(result.attributes.email),
+                  c.sub.eq(result.attributes.sub),
+                ]),
               ).then(async (data) => {
                 console.log(data);
-                if (data.length === 0)
-                {
+                if (data.length === 0) {
                   await DataStore.save(new User(userData)).then((data) => {
-                    console.log(data);
+                    console.log("no user");
                     router.replace(`/external-auth/${data.id}`);
                   });
-                } else
-                {
-                  router.replace('/');
+                }
+                if (
+                  data.length > 0 &&
+                  (data[0].address === null || data[0].address === "")
+                ) {
+                  console.log("user exist", data);
+                  router.replace(`/external-auth/${data[0].id}`);
+                }
+                if (
+                  data.length > 0 &&
+                  (data[0].address !== null || data[0].address !== "")
+                ) {
+                  console.log("user exist", data);
+                  router.replace(`/external-auth/${data[0].id}`);
                 }
               });
             }
           });
           console.log(result);
         });
-      } catch (err)
-      {
-        console.log(err)
+      } catch (err) {
+        console.log(err);
       }
-      };
+    };
     return (
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
         Collecting your data. Please be patient

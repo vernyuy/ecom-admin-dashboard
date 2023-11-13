@@ -205,57 +205,55 @@ export default function Page() {
             <div className="overflow-x-autdfo rounded-lg">
               <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
-                  
-                    <table className="min-w-full divide-y divide-gray-200  mb-3">
-                      <thead className="bg-gray-100  sticky top-0">
-                        <tr className="[&:nth-child(1)]:bg-blue-50d0">
-                          <th className="pl-2">
-                          </th>
-                          {paymentAttributes.map(
-                            (item: string, index: number) => (
-                              <th
-                                key={index}
-                                scope="col"
-                                className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap "
-                              >
-                                {item}
-                              </th>
-                            ),
-                          )}
-                        </tr>
+                  <table className="min-w-full divide-y divide-gray-200  mb-3">
+                    <thead className="bg-gray-100  sticky top-0">
+                      <tr className="[&:nth-child(1)]:bg-blue-50d0">
+                        <th className="pl-2"></th>
+                        {paymentAttributes.map(
+                          (item: string, index: number) => (
+                            <th
+                              key={index}
+                              scope="col"
+                              className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap "
+                            >
+                              {item}
+                            </th>
+                          ),
+                        )}
+                      </tr>
                     </thead>
                     {isLoading ? (
-                    <tr>
+                      <tr>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <div className="w-full h-[100px] text-blue-500 flex">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="32"
-                          height="32"
-                          viewBox="0 0 24 24"
-                          className="my-auto"
-                        >
-                          <path
-                            fill="currentColor"
-                            d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="32"
+                            height="32"
+                            viewBox="0 0 24 24"
+                            className="my-auto"
                           >
-                            <animateTransform
-                              attributeName="transform"
-                              dur="0.75s"
-                              repeatCount="indefinite"
-                              type="rotate"
-                              values="0 12 12;360 12 12"
-                            />
-                          </path>
-                        </svg>
+                            <path
+                              fill="currentColor"
+                              d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                            >
+                              <animateTransform
+                                attributeName="transform"
+                                dur="0.75s"
+                                repeatCount="indefinite"
+                                type="rotate"
+                                values="0 12 12;360 12 12"
+                              />
+                            </path>
+                          </svg>
                         </div>
                         <td></td>
                         <td></td>
                       </tr>
-                  ) : (
+                    ) : (
                       <tbody className="">
                         {payments?.map((payment: any, index: number) => {
                           return (
@@ -274,8 +272,7 @@ export default function Page() {
                                 }
                               </td>
                               <td className="p-4 text-sm max-w-[200px] truncate font-semibold text-left text-gray-900 whitespace-nowrap ">
-                                
-                                  {payment.id}
+                                {payment.id}
                               </td>
                               <td className="p-4 text-sm max-w-[200px] truncate font-normal text-left text-gray-500 whitespace-nowrap ">
                                 {payment.orderId}
@@ -286,7 +283,7 @@ export default function Page() {
                               </td>
 
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
-                                {payment.amount/100}
+                                {payment.amount / 100}
                               </td>
                               <td className="p-4 text-sm font-normal text-gray-900 text-left whitespace-nowrap  truncate">
                                 {payment.createdAt.split("T")[0]}
@@ -310,24 +307,24 @@ export default function Page() {
                           );
                         })}
                       </tbody>
-                  )}
-                      <tfoot className="bg-gray-100  sticky top-0">
-                        <tr>
-                          <th className="w-4 pl-2"></th>
-                          {paymentAttributes.map(
-                            (item: string, index: number) => (
-                              <th
-                                key={index}
-                                scope="col"
-                                className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase "
-                              >
-                                {item}
-                              </th>
-                            ),
-                          )}
-                        </tr>
-                      </tfoot>
-                    </table>
+                    )}
+                    <tfoot className="bg-gray-100  sticky top-0">
+                      <tr>
+                        <th className="w-4 pl-2"></th>
+                        {paymentAttributes.map(
+                          (item: string, index: number) => (
+                            <th
+                              key={index}
+                              scope="col"
+                              className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase "
+                            >
+                              {item}
+                            </th>
+                          ),
+                        )}
+                      </tr>
+                    </tfoot>
+                  </table>
                 </div>
               </div>
             </div>

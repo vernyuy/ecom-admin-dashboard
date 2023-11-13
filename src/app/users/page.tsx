@@ -21,8 +21,8 @@ export default function App() {
   const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const [selectedItems, setSelecteditems]: any = useState([])
-  
+  const [selectedItems, setSelecteditems]: any = useState([]);
+
   // const [isDelete, setisDelete] = useState(false);
   let selectedUsers: string[] = [];
 
@@ -42,37 +42,34 @@ export default function App() {
 
   const select = (e: any) => {
     if (e.target.checked) {
-      setSelecteditems([...selectedItems, e.target.value])
-    } else
-    {
-      setSelecteditems(selectedItems.filter((p:string) => {
-        return p !== e.target.value;
-      }))
+      setSelecteditems([...selectedItems, e.target.value]);
+    } else {
+      setSelecteditems(
+        selectedItems.filter((p: string) => {
+          return p !== e.target.value;
+        }),
+      );
     }
     console.log(selectedItems);
   };
 
-   useEffect(() => {
-      filterCustomers({ filterBy: "search", search: search })
-    if (success)
-    {
+  useEffect(() => {
+    filterCustomers({ filterBy: "search", search: search });
+    if (success) {
       setOpen(false);
-    }  if (country !== "")
-     {
-      
-    filterCustomers({ filterBy: "category", country: country });
     }
-   }, [success, search, country])
-  
-
+    if (country !== "") {
+      filterCustomers({ filterBy: "category", country: country });
+    }
+  }, [success, search, country]);
 
   const deleteUsersFn = () => {
     console.log("Users>>>>>: ", selectedItems);
     if (selectedItems.length > 0) {
       dispatch(deleteUsers(selectedItems));
-      setSuccess(true)
+      setSuccess(true);
       return "deleted";
-    }else {
+    } else {
       console.log("Please select product(s) to delete");
       return "deleted";
     }
@@ -290,7 +287,7 @@ export default function App() {
                         <Button
                           title="Delete"
                           handleClick={(e) => {
-                            setOpen(true)
+                            setOpen(true);
                           }}
                         />
                       </li>
@@ -350,7 +347,9 @@ export default function App() {
                     <table className="min-w-full divide-y divide-gray-200  mb-3">
                       <thead className="bg-gray-100  sticky top-0">
                         <tr className="[&:nth-child(1)]:bg-blue-50d0">
-                          <th className="pl-2 text-left  ">{selectedItems.length}</th>
+                          <th className="pl-2 text-left  ">
+                            {selectedItems.length}
+                          </th>
                           {userAttributes.map((item: string, index: number) => (
                             <th
                               key={index}
@@ -374,8 +373,8 @@ export default function App() {
                                   <input
                                     type="checkbox"
                                     className="bg-black"
-                                  value={user.id}
-                                  onChange={select}
+                                    value={user.id}
+                                    onChange={select}
                                   />
                                 }
                               </td>
@@ -549,66 +548,71 @@ export default function App() {
       <CustomModal open={open} onClose={() => setOpen(false)}>
         <div className="text-center w-64">
           <div className="flex justify-center -mt-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="fill-orange-500 h-[60px]"
-                  viewBox="0 0 24 24"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="fill-orange-500 h-[60px]"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 7c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1s-1-.45-1-1V8c0-.55.45-1 1-1zm-.01-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm1-3h-2v-2h2v2z" />
+            </svg>
+          </div>
+          {selectedItems.length === 0 ? (
+            <div>
+              <p>Please select data to delete</p>
+              <div className="flex justify-center mt-6">
+                <button
+                  type="button"
+                  onClick={(e) => setOpen(false)}
+                  className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                 >
-                  <path d="M12 7c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1s-1-.45-1-1V8c0-.55.45-1 1-1zm-.01-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm1-3h-2v-2h2v2z" />
-                </svg>
+                  Ok
+                </button>
+              </div>
             </div>
-          {selectedItems.length === 0 ? <div>
-            <p>Please select data to delete</p>
-            <div className="flex justify-center mt-6">
-              <button
-                type="button"
-                onClick={(e)=>setOpen(false)}
-                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-              >
-                Ok
-              </button>
-            </div>
-          </div> : <div>
+          ) : (
+            <div>
               <p>Are you sure you want to delete?</p>
               <div className="flex justify-end mt-6">
-              <button
-                type="button"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    deleteUsersFn()
-                }}
-                className="text-white bg-red-500  hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-              >
-                {isLoading? "Deleting":"Delete"}
-                </button>
-                
                 <button
-                type="button"
-                onClick={e=>setOpen(false)}
-                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-              >
-                Cancel
-              </button>
-            </div> </div> }
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    deleteUsersFn();
+                  }}
+                  className="text-white bg-red-500  hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                >
+                  {isLoading ? "Deleting" : "Delete"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={(e) => setOpen(false)}
+                  className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                >
+                  Cancel
+                </button>
+              </div>{" "}
             </div>
-          </CustomModal>
-                  
+          )}
+        </div>
+      </CustomModal>
+
       <CustomModal open={success} onClose={() => setSuccess(false)}>
-            <div className="text-center w-64">
-           <div>
+        <div className="text-center w-64">
+          <div>
             <p>Delete Successful</p>
             <div className="flex justify-center mt-6">
               <button
                 type="button"
-                onClick={(e)=>setSuccess(false)}
+                onClick={(e) => setSuccess(false)}
                 className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
               >
                 Ok
               </button>
             </div>
-          </div> 
-            </div>
-          </CustomModal>
+          </div>
+        </div>
+      </CustomModal>
     </DashboardLayout>
   );
 }

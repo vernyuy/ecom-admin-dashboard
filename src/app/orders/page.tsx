@@ -11,21 +11,15 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { orderAttributes } from "@/src/constants";
 import { Button, CustomModal } from "@/src/components";
-import moment  from "moment";
+import moment from "moment";
 import userService from "@/src/redux-store/feature/user/userService";
 
 export default function Page() {
-  const [search, setSearch] = useState("");
-  const [userIds, setuserIds]:any = useState([]);
-
-  const [isDelete, setisDelete] = useState(false);
-  let selectedOrders: string[] = [];
-
   const [open, setOpen] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [selectedItems, setSelecteditems]: any = useState([])
+  const [selectedItems, setSelecteditems]: any = useState([]);
 
-  const { orders, errorMsg, isLoading }: any = useSelector(
+  const { orders, isLoading }: any = useSelector(
     (state: RootState) => state.order,
   );
   const dispatch = useDispatch<AppDispatch>();
@@ -33,67 +27,46 @@ export default function Page() {
     dispatch(listOrders(null));
   }, [dispatch]);
 
-
-
   useEffect(() => {
-    if (success)
-                    {
-                      
-                    setOpen(false)
-                    }
-  }, [success])
-  
+    if (success) {
+      setOpen(false);
+    }
+  }, [success]);
+
   const filterOrder = (filterBy: any) => {
     dispatch(filterOrders(filterBy));
   };
 
-  const computeDate =(date: any) => {
-      return moment(date).format("ll");
-  }
+  const computeDate = (date: any) => {
+    return moment(date).format("ll");
+  };
 
   const select = (e: any) => {
-    if (e.target.checked)
-    {
+    if (e.target.checked) {
       setSelecteditems([...selectedItems, e.target.value]);
-    } else
-    {
-      setSelecteditems(selectedItems.filter((p: string) => {
-        return p !== e.target.value;
-      }))
+    } else {
+      setSelecteditems(
+        selectedItems.filter((p: string) => {
+          return p !== e.target.value;
+        }),
+      );
     }
     console.log(selectedItems);
   };
 
   const deleteUsersFn = () => {
-    if (selectedItems.length > 0)
-    {
+    if (selectedItems.length > 0) {
       dispatch(deleteOrders(selectedItems));
-      setSuccess(true)
+      setSuccess(true);
       return "deleted";
-    }
-    else
-    {
-      console.log("Please select product(s) to delete");
+    } else {
+      console.log("Please select user(s) to delete");
       return "deleted";
     }
   };
-  // const deleteUsersFn = (orderId?: string) => {
-  //   console.log("Users>>>>>: ", selectedOrders);
-  //   if (selectedOrders.length > 0) {
-  //     dispatch(deleteOrders(selectedOrders));
-  //     return "deleted";
-  //   } else if (orderId) {
-  //     dispatch(deleteOrders(orderId));
-  //     return "deleted";
-  //   } else {
-  //     console.log("Please select product(s) to delete");
-  //     return "deleted";
-  //   }
-  // };
 
   return (
     <DashboardLayout>
-      {/* <Delete item="User" /> */}
       <main className="w-full h-full sticky top-0 overflow-y-hidden">
         <nav className="flex sticky top-0 my-2" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
@@ -137,10 +110,10 @@ export default function Page() {
             </li>
           </ol>
         </nav>
-        <div className="px-2 mt-5 pb-2d bg-white w-full  rounded-ss-lg rounded-se-lg shadow-sm  sm:px-4 mt-f3 md:mt-5d">
+        <div className="px-2 mt-5 pb-2d bg-white dark:bg-black w-full  rounded-ss-lg rounded-se-lg shadow-sm  sm:px-4 mt-f3 md:mt-5d">
           <div className="w-full">
             <div className="mb-2">
-              <h1 className="text-md pt-5 font-semibold text-gray-900 sm:text-xl  py-2">
+              <h1 className="text-md pt-5 font-semibold text-gray-900 dark:text-white sm:text-xl  py-2">
                 All Orders
               </h1>
             </div>
@@ -164,7 +137,7 @@ export default function Page() {
 
                   <div
                     id="dropdown"
-                    className="z-10 hidden group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-36 "
+                    className="z-10 hidden group-hover:block absolute bg-white dark:bg-black divide-y divide-gray-100 rounded-lg shadow w-36 "
                   >
                     <ul
                       className="py-2 text-sm text-gray-700 "
@@ -173,7 +146,7 @@ export default function Page() {
                       <li>
                         <a
                           href="#"
-                          className="block px-4 py-2 hover:bg-green-100 "
+                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-white/5"
                           onClick={() => filterOrder("all")}
                         >
                           All
@@ -182,7 +155,7 @@ export default function Page() {
                       <li>
                         <a
                           href="#"
-                          className="block px-4 py-2 hover:bg-green-100 "
+                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-white/5 "
                           onClick={() => filterOrder("pending")}
                         >
                           Pending
@@ -191,7 +164,7 @@ export default function Page() {
                       <li>
                         <a
                           href="#"
-                          className="block px-4 py-2 hover:bg-green-100 "
+                          className="block px-4 py-2 hover:bg-green-100 dark:hover:bg-white/5 "
                           onClick={() => filterOrder("completed")}
                         >
                           Completed
@@ -224,19 +197,21 @@ export default function Page() {
 
                   <div
                     id="dropdown"
-                    className="z-10 hidden mt-1 group-hover:block absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-[105px] "
+                    className="z-10 hidden mt-1 group-hover:block absolute bg-white dark:bg-black divide-y divide-gray-100 rounded-lg shadow w-[105px] "
                   >
                     <ul
                       className="py-2 text-sm text-red-500 "
                       aria-labelledby="dropdownDefaultButton"
                     >
-                      <li className="block px-4 py-2 hover:bg-red-100">
+                      <li className="block px-4 py-2 hover:bg-red-100 dark:hover:bg-white/5">
                         <button
                           onClick={(e) => {
                             e.preventDefault();
-                            setOpen(true)
+                            setOpen(true);
                           }}
-                        >Delete </button>
+                        >
+                          Delete{" "}
+                        </button>
                       </li>
                     </ul>
                   </div>
@@ -249,50 +224,46 @@ export default function Page() {
             <div className="overflow-x-autdfo rounded-lg">
               <div className="inline-block min-w-full align-middle">
                 <div className="shadow sm:rounded-lg w-full">
-                  
-                    <table className="min-w-full divide-y divide-gray-200  mb-3">
-                      <thead className="bg-gray-100 sticky top-0">
-                        <tr className="[&:nth-child(1)]:bg-blue-50d0">
-                          <th className="pl-2">
+                  <table className="min-w-full divide-y divide-gray-200  mb-3">
+                    <thead className="bg-gray-100 dark:bg-white/10 sticky top-0">
+                      <tr className="[&:nth-child(1)]:bg-blue-50d0">
+                        <th className="pl-2"></th>
+                        {orderAttributes.map((item: string, index: number) => (
+                          <th
+                            key={index}
+                            scope="col"
+                            className="px-4 p-2 text-left text-xs dark:text-white tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap "
+                          >
+                            {item}
                           </th>
-                          {orderAttributes.map(
-                            (item: string, index: number) => (
-                              <th
-                                key={index}
-                                scope="col"
-                                className="px-4 p-2 text-left text-xs [&:nth-child(1)]:bg-blue-500 tracking-wider text-gray-900 font-bold uppercase whitespace-nowrap "
-                              >
-                                {item}
-                              </th>
-                            ),
-                          )}
-                        </tr>
+                        ))}
+                      </tr>
                     </thead>
                     {isLoading ? (
                       <tr>
                         <td></td>
                         <td></td>
                         <div className="w-full h-[100px] text-blue-500 flex justify-end">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="32"
-                          height="32"
-                          viewBox="0 0 24 24"
-                          className="my-auto"
-                        >
-                          <path
-                            fill="currentColor"
-                            d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="32"
+                            height="32"
+                            viewBox="0 0 24 24"
+                            className="my-auto"
                           >
-                            <animateTransform
-                              attributeName="transform"
-                              dur="0.75s"
-                              repeatCount="indefinite"
-                              type="rotate"
-                              values="0 12 12;360 12 12"
-                            />
-                          </path>
-                        </svg>
+                            <path
+                              fill="currentColor"
+                              d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"
+                            >
+                              <animateTransform
+                                attributeName="transform"
+                                dur="0.75s"
+                                repeatCount="indefinite"
+                                type="rotate"
+                                values="0 12 12;360 12 12"
+                              />
+                            </path>
+                          </svg>
                         </div>
                         <td></td>
                       </tr>
@@ -302,7 +273,7 @@ export default function Page() {
                           return (
                             <tr
                               key={order.id}
-                              className="even:bg-gray-50 text-black hover:cursor-pointer group"
+                              className="even:bg-gray-50 dark:even:bg-white/5 text-black hover:cursor-pointer group"
                             >
                               <td className="px-2 ">
                                 {
@@ -314,20 +285,22 @@ export default function Page() {
                                   />
                                 }
                               </td>
-                              <td className="p-4 text-sm  max-w-[200px] truncate font-semibold text-left  text-gray-900 w-36 whitespace-nowrap ">
-                                
-                              <Link href={`/orders/${order.id}`} className="">
-                                  
-                                {order.id}
-                                
-                                  </Link>
+                              <td className="p-4 text-sm  max-w-[200px] dark:text-white truncate font-semibold text-left  text-gray-900 w-36 whitespace-nowrap ">
+                                <Link
+                                  href={{
+                                    pathname: `/orders/${order.id}`,
+                                    query: { order: JSON.stringify(order) },
+                                  }}
+                                  className=""
+                                >
+                                  {order.id}
+                                </Link>
                               </td>
 
-
-                              <td className="p-4 text-sm font-normal  text-left text-gray-500 whitespace-nowrap ">
+                              <td className="p-4 text-sm font-normal dark:text-white  text-left text-gray-500 whitespace-nowrap ">
                                 {order.username}
                               </td>
-                              <td className="p-4 text-sm font-normal text-left whitespace-nowrap  truncate">
+                              <td className="p-4 text-sm font-normal dark:text-white/70 text-left whitespace-nowrap  truncate">
                                 {computeDate(order.createdAt)}
                               </td>
 
@@ -345,31 +318,30 @@ export default function Page() {
                             </tr>
                           );
                         })}
-                      </tbody>)}
-                      <tfoot className="bg-gray-100 sticky top-0">
-                        <tr>
-                          <th className="w-4 pl-2"></th>
-                          {orderAttributes.map(
-                            (item: string, index: number) => (
-                              <th
-                                key={index}
-                                scope="col"
-                                className="px-4 py-2 text-left text-xs tracking-wider text-gray-900 font-bold uppercase "
-                              >
-                                {item}
-                              </th>
-                            ),
-                          )}
-                        </tr>
-                      </tfoot>
-                    </table>
+                      </tbody>
+                    )}
+                    <tfoot className="bg-gray-100 sticky top-0 dark:bg-white/10">
+                      <tr>
+                        <th className="w-4 pl-2"></th>
+                        {orderAttributes.map((item: string, index: number) => (
+                          <th
+                            key={index}
+                            scope="col"
+                            className="px-4 py-2 text-left dark:text-white text-xs tracking-wider text-gray-900 font-bold uppercase "
+                          >
+                            {item}
+                          </th>
+                        ))}
+                      </tr>
+                    </tfoot>
+                  </table>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="sticky bottom-0 right-0 items-center w-full px-4 py-2 bg-white border-t border-gray-200 sm:flex sm:justify-between  ">
+        <div className="sticky bottom-0 right-0 items-center w-full px-4 py-2 bg-white dark:text-white dark:bg-black border-t border-gray-200 sm:flex sm:justify-between  ">
           <div className="flex items-center mb-4 sm:mb-0">
             <a
               href="#"
@@ -407,11 +379,11 @@ export default function Page() {
             </a>
             <span className="text-sm font-normal text-gray-500 ">
               Showing{" "}
-              <span className="font-semibold text-gray-900 ">
+              <span className="font-semibold text-gray-900 dark:text-white">
                 1-{orders?.length}
               </span>{" "}
               of{" "}
-              <span className="font-semibold text-gray-900 ">
+              <span className="font-semibold text-gray-900 dark:text-white">
                 {orders?.length}
               </span>
             </span>
@@ -460,67 +432,72 @@ export default function Page() {
       <CustomModal open={open} onClose={() => setOpen(false)}>
         <div className="text-center w-64">
           <div className="flex justify-center -mt-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="fill-orange-500 h-[60px]"
-                  viewBox="0 0 24 24"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="fill-orange-500 h-[60px]"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 7c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1s-1-.45-1-1V8c0-.55.45-1 1-1zm-.01-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm1-3h-2v-2h2v2z" />
+            </svg>
+          </div>
+          {selectedItems.length === 0 ? (
+            <div>
+              <p>Please select data to delete</p>
+              <div className="flex justify-center mt-6">
+                <button
+                  type="button"
+                  onClick={(e) => setOpen(false)}
+                  className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                 >
-                  <path d="M12 7c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1s-1-.45-1-1V8c0-.55.45-1 1-1zm-.01-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm1-3h-2v-2h2v2z" />
-                </svg>
+                  Ok
+                </button>
+              </div>
             </div>
-          {selectedItems.length === 0 ? <div>
-            <p>Please select data to delete</p>
-            <div className="flex justify-center mt-6">
-              <button
-                type="button"
-                onClick={(e)=>setOpen(false)}
-                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-              >
-                Ok
-              </button>
-            </div>
-          </div> : <div>
+          ) : (
+            <div>
               <p>Deleting this order will delete its payments.</p>
               <p>Are you sure you want to delete?</p>
               <div className="flex justify-end mt-6">
-              <button
-                type="button"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    deleteUsersFn()
-                }}
-                className="text-white bg-red-500  hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-              >
-                {isLoading? "Deleting":"Delete"}
-                </button>
-                
                 <button
-                type="button"
-                onClick={e=>setOpen(false)}
-                className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-              >
-                Cancel
-              </button>
-            </div> </div> }
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    deleteUsersFn();
+                  }}
+                  className="text-white bg-red-500  hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                >
+                  {isLoading ? "Deleting" : "Delete"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={(e) => setOpen(false)}
+                  className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                >
+                  Cancel
+                </button>
+              </div>{" "}
             </div>
-          </CustomModal>
-                  
+          )}
+        </div>
+      </CustomModal>
+
       <CustomModal open={success} onClose={() => setSuccess(false)}>
-            <div className="text-center w-64">
-           <div>
+        <div className="text-center w-64">
+          <div>
             <p>Delete Successful</p>
             <div className="flex justify-center mt-6">
               <button
                 type="button"
-                onClick={(e)=>setSuccess(false)}
+                onClick={(e) => setSuccess(false)}
                 className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl  focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
               >
                 Ok
               </button>
             </div>
-          </div> 
-            </div>
-          </CustomModal>
+          </div>
+        </div>
+      </CustomModal>
     </DashboardLayout>
   );
 }

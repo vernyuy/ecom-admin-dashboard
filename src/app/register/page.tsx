@@ -31,9 +31,14 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch<AppDispatch>();
 
-  const { user, errorMsg, isLoading, isSuccess, isGoogle, isLoadingGoogle }: any = useSelector(
-    (state: RootState) => state.auth,
-  );
+  const {
+    user,
+    errorMsg,
+    isLoading,
+    isSuccess,
+    isGoogle,
+    isLoadingGoogle,
+  }: any = useSelector((state: RootState) => state.auth);
   const router = useRouter();
   useEffect(() => {
     if (isSuccess && !isGoogle) {
@@ -263,7 +268,6 @@ export default function Register() {
                     {/* Error */}
                   </h5>
                 </div>
-                {/* <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading? 'Loading': "Signup"} handleClick={(e)=>{e.preventDefault(); signupUser({email, password, firstName:'', lastName:'', phoneNumber:''})}} btnType="submit"/> */}
                 <div className="flex gap-2">
                   <button
                     className="text-white mb-5 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center "
@@ -488,7 +492,7 @@ export default function Register() {
                     type="submit"
                     disabled={isLoading ? true : false}
                   >
-                    {isLoadingGoogle? (
+                    {isLoadingGoogle ? (
                       <div className="flex justify-center gap-2">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -686,7 +690,6 @@ export default function Register() {
                     )}
                   </button>
                 </div>
-                {/* <Button containerStyles="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center " title={isLoading? 'Loading': "Google"} handleClick={(e)=>{e.preventDefault(); googleSignin()}} btnType="submit"/> */}
               </form>
             </div>
           </div>

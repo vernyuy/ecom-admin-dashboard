@@ -1,34 +1,43 @@
-"use client"
-import categoryService from '@/src/redux-store/feature/category/categoryService';
-import { promises as fs } from 'fs';
-import { categories, subCat, products } from './category';
-import productService from '@/src/redux-store/feature/products/productService';
+"use client";
+import categoryService from "@/src/redux-store/feature/category/categoryService";
+import { promises as fs } from "fs";
+import { categories, subCat, products } from "./category";
+import productService from "@/src/redux-store/feature/products/productService";
 
 export default async function Page() {
-
   const loadProducts = () => {
-    products.map(async cat => {
+    products.map(async (cat) => {
       const test = await productService.createProduct(cat);
       console.log(test);
       return test;
     });
-  }
-    // const createCategory = async() => {
-    //     await categoryService.createProduct(values)
-    // }
+  };
+  // const createCategory = async() => {
+  //     await categoryService.createProduct(values)
+  // }
 
   return (
     <div>
       {/* <h1>{data.title}</h1>
       
       <p>{data.content}</p> */}
-          <div className='my-5'><button className='px-4 py-2 rounded-lg border border-red-500' onClick={loadProducts}>Load Data</button></div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam culpa dolorem expedita odit voluptate repudiandae corporis, recusandae tenetur sed alias, ex voluptatibus molestiae ipsam iste quas sapiente atque. Incidunt hic sit delectus odio id saepe eum non adipisci maiores! Assumenda voluptas sint praesentium dolor nisi quis eum saepe fugiat necessitatibus!
+      <div className="my-5">
+        <button
+          className="px-4 py-2 rounded-lg border border-red-500"
+          onClick={loadProducts}
+        >
+          Load Data
+        </button>
+      </div>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam culpa
+      dolorem expedita odit voluptate repudiandae corporis, recusandae tenetur
+      sed alias, ex voluptatibus molestiae ipsam iste quas sapiente atque.
+      Incidunt hic sit delectus odio id saepe eum non adipisci maiores!
+      Assumenda voluptas sint praesentium dolor nisi quis eum saepe fugiat
+      necessitatibus!
     </div>
   );
 }
-
-
 
 //   {
 //     "subcategories": [
@@ -70,8 +79,6 @@ export default async function Page() {
 //         }
 //       ]
 //   }
-
-
 
 //   {
 //   "products": [
