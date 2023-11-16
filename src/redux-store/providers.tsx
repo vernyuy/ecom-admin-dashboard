@@ -5,6 +5,7 @@ import { Amplify } from "aws-amplify";
 import awsExports from "@/src/aws-exports";
 import { use, useEffect, useState } from "react";
 import { ThemeProvider } from "next-themes";
+import storeService from "./feature/store/storeService";
 if (typeof window !== "undefined") {
   awsExports.oauth[
     "redirectSignIn"
@@ -17,8 +18,16 @@ if (typeof window === "undefined") {
 }
 export function Providers({ children }: any) {
   const [mounted, setMounted] = useState(false);
+  const [theme, settheme]: any[] = useState([]);
+
+  const themeData = async () => {
+    const response = await storeService.listTheme();
+    settheme(response);
+    console.log(theme);
+  };
   useEffect(() => {
     setMounted(true);
+    themeData();
   }, []);
 
   if (!mounted) {
@@ -26,6 +35,15 @@ export function Providers({ children }: any) {
   }
   return (
     <ThemeProvider attribute="class">
+      <style
+        dangerouslySetInnerHTML={{
+          __html: ` :root {
+                             --main-color: ${theme[0]?.mainColor};
+                             --primary-color: ${theme[0]?.primaryColor};
+                             --secondary-color: ${theme[0]?.secondaryColor};
+                           }`,
+        }}
+      />{" "}
       <Provider store={store}>{children}</Provider>
     </ThemeProvider>
   );

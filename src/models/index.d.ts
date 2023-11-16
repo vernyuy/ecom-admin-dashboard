@@ -52,6 +52,7 @@ type EagerPayment = {
   readonly paymentIntentId: string;
   readonly orderId: string;
   readonly userID: string;
+  readonly isDeleted?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -67,6 +68,7 @@ type LazyPayment = {
   readonly paymentIntentId: string;
   readonly orderId: string;
   readonly userID: string;
+  readonly isDeleted?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -87,6 +89,7 @@ type EagerOrder = {
   readonly Cart?: Cart | null;
   readonly orderDetails?: string | null;
   readonly orderStatus: boolean;
+  readonly isDeleted?: boolean | null;
   readonly Payment?: Payment | null;
   readonly userID: string;
   readonly createdAt?: string | null;
@@ -105,6 +108,7 @@ type LazyOrder = {
   readonly Cart: AsyncItem<Cart | undefined>;
   readonly orderDetails?: string | null;
   readonly orderStatus: boolean;
+  readonly isDeleted?: boolean | null;
   readonly Payment: AsyncItem<Payment | undefined>;
   readonly userID: string;
   readonly createdAt?: string | null;
@@ -129,6 +133,7 @@ type EagerCart = {
   readonly productQty: number;
   readonly productPrice: number;
   readonly cartTotal: number;
+  readonly isDeleted?: boolean | null;
   readonly User?: User | null;
   readonly Order?: Order | null;
   readonly cartStatus: boolean;
@@ -148,6 +153,7 @@ type LazyCart = {
   readonly productQty: number;
   readonly productPrice: number;
   readonly cartTotal: number;
+  readonly isDeleted?: boolean | null;
   readonly User: AsyncItem<User | undefined>;
   readonly Order: AsyncItem<Order | undefined>;
   readonly cartStatus: boolean;
@@ -176,6 +182,7 @@ type EagerProduct = {
   readonly price: number;
   readonly quantity: number;
   readonly inStock: boolean;
+  readonly isDeleted?: boolean | null;
   readonly categoryID: string;
   readonly sizes?: (string | null)[] | null;
   readonly colors?: (string | null)[] | null;
@@ -198,6 +205,7 @@ type LazyProduct = {
   readonly price: number;
   readonly quantity: number;
   readonly inStock: boolean;
+  readonly isDeleted?: boolean | null;
   readonly categoryID: string;
   readonly sizes?: (string | null)[] | null;
   readonly colors?: (string | null)[] | null;
@@ -223,6 +231,7 @@ type EagerCategory = {
   readonly description: string;
   readonly isParent: boolean;
   readonly parentCategoryId?: string | null;
+  readonly isDeleted?: boolean | null;
   readonly categoryImageUrl?: string | null;
   readonly Products?: (Product | null)[] | null;
   readonly createdAt?: string | null;
@@ -239,6 +248,7 @@ type LazyCategory = {
   readonly description: string;
   readonly isParent: boolean;
   readonly parentCategoryId?: string | null;
+  readonly isDeleted?: boolean | null;
   readonly categoryImageUrl?: string | null;
   readonly Products: AsyncCollection<Product>;
   readonly createdAt?: string | null;
@@ -265,6 +275,7 @@ type EagerUser = {
   readonly isActive: boolean;
   readonly phone?: string | null;
   readonly userType?: UserType | keyof typeof UserType | null;
+  readonly isDeleted?: boolean | null;
   readonly Cart?: Cart | null;
   readonly Orders?: (Order | null)[] | null;
   readonly Payments?: (Payment | null)[] | null;
@@ -289,6 +300,7 @@ type LazyUser = {
   readonly isActive: boolean;
   readonly phone?: string | null;
   readonly userType?: UserType | keyof typeof UserType | null;
+  readonly isDeleted?: boolean | null;
   readonly Cart: AsyncItem<Cart | undefined>;
   readonly Orders: AsyncCollection<Order>;
   readonly Payments: AsyncCollection<Payment>;
@@ -314,10 +326,12 @@ type EagerStore = {
   readonly name: string;
   readonly logoUrl: string;
   readonly fontType?: string | null;
-  readonly hero?: string[] | null;
   readonly description?: string | null;
-  readonly ownerEmail?: string | null;
-  readonly ownerAddress?: string | null;
+  readonly mainColor?: string | null;
+  readonly primaryColor?: string | null;
+  readonly secondarycolr?: string | null;
+  readonly currency?: string | null;
+  readonly address?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -331,10 +345,12 @@ type LazyStore = {
   readonly name: string;
   readonly logoUrl: string;
   readonly fontType?: string | null;
-  readonly hero?: string[] | null;
   readonly description?: string | null;
-  readonly ownerEmail?: string | null;
-  readonly ownerAddress?: string | null;
+  readonly mainColor?: string | null;
+  readonly primaryColor?: string | null;
+  readonly secondarycolr?: string | null;
+  readonly currency?: string | null;
+  readonly address?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -353,6 +369,7 @@ type EagerEmailNotification = {
   readonly id: string;
   readonly subject: string;
   readonly body: string;
+  readonly isDeleted?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -365,6 +382,7 @@ type LazyEmailNotification = {
   readonly id: string;
   readonly subject: string;
   readonly body: string;
+  readonly isDeleted?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -387,6 +405,7 @@ type EagerAdvert = {
   readonly bannerUrl?: string | null;
   readonly status: boolean;
   readonly hasBg?: boolean | null;
+  readonly isDeleted?: boolean | null;
   readonly textColor?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -404,6 +423,7 @@ type LazyAdvert = {
   readonly bannerUrl?: string | null;
   readonly status: boolean;
   readonly hasBg?: boolean | null;
+  readonly isDeleted?: boolean | null;
   readonly textColor?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

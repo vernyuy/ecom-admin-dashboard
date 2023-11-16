@@ -71,6 +71,7 @@ export const createPayment = /* GraphQL */ `
       paymentIntentId
       orderId
       userID
+      isDeleted
       createdAt
       updatedAt
       _version
@@ -92,6 +93,7 @@ export const updatePayment = /* GraphQL */ `
       paymentIntentId
       orderId
       userID
+      isDeleted
       createdAt
       updatedAt
       _version
@@ -113,6 +115,7 @@ export const deletePayment = /* GraphQL */ `
       paymentIntentId
       orderId
       userID
+      isDeleted
       createdAt
       updatedAt
       _version
@@ -136,6 +139,7 @@ export const createOrder = /* GraphQL */ `
         productQty
         productPrice
         cartTotal
+        isDeleted
         cartStatus
         createdAt
         updatedAt
@@ -148,6 +152,7 @@ export const createOrder = /* GraphQL */ `
       }
       orderDetails
       orderStatus
+      isDeleted
       Payment {
         id
         paymentStatus
@@ -155,6 +160,7 @@ export const createOrder = /* GraphQL */ `
         paymentIntentId
         orderId
         userID
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -188,6 +194,7 @@ export const updateOrder = /* GraphQL */ `
         productQty
         productPrice
         cartTotal
+        isDeleted
         cartStatus
         createdAt
         updatedAt
@@ -200,6 +207,7 @@ export const updateOrder = /* GraphQL */ `
       }
       orderDetails
       orderStatus
+      isDeleted
       Payment {
         id
         paymentStatus
@@ -207,6 +215,7 @@ export const updateOrder = /* GraphQL */ `
         paymentIntentId
         orderId
         userID
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -240,6 +249,7 @@ export const deleteOrder = /* GraphQL */ `
         productQty
         productPrice
         cartTotal
+        isDeleted
         cartStatus
         createdAt
         updatedAt
@@ -252,6 +262,7 @@ export const deleteOrder = /* GraphQL */ `
       }
       orderDetails
       orderStatus
+      isDeleted
       Payment {
         id
         paymentStatus
@@ -259,6 +270,7 @@ export const deleteOrder = /* GraphQL */ `
         paymentIntentId
         orderId
         userID
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -289,6 +301,7 @@ export const createCart = /* GraphQL */ `
       productQty
       productPrice
       cartTotal
+      isDeleted
       User {
         id
         firstName
@@ -299,6 +312,7 @@ export const createCart = /* GraphQL */ `
         isActive
         phone
         userType
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -313,6 +327,7 @@ export const createCart = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        isDeleted
         userID
         createdAt
         updatedAt
@@ -346,6 +361,7 @@ export const updateCart = /* GraphQL */ `
       productQty
       productPrice
       cartTotal
+      isDeleted
       User {
         id
         firstName
@@ -356,6 +372,7 @@ export const updateCart = /* GraphQL */ `
         isActive
         phone
         userType
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -370,6 +387,7 @@ export const updateCart = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        isDeleted
         userID
         createdAt
         updatedAt
@@ -403,6 +421,7 @@ export const deleteCart = /* GraphQL */ `
       productQty
       productPrice
       cartTotal
+      isDeleted
       User {
         id
         firstName
@@ -413,6 +432,7 @@ export const deleteCart = /* GraphQL */ `
         isActive
         phone
         userType
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -427,6 +447,7 @@ export const deleteCart = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        isDeleted
         userID
         createdAt
         updatedAt
@@ -463,6 +484,7 @@ export const createProduct = /* GraphQL */ `
       price
       quantity
       inStock
+      isDeleted
       categoryID
       sizes
       colors
@@ -491,6 +513,7 @@ export const updateProduct = /* GraphQL */ `
       price
       quantity
       inStock
+      isDeleted
       categoryID
       sizes
       colors
@@ -519,6 +542,7 @@ export const deleteProduct = /* GraphQL */ `
       price
       quantity
       inStock
+      isDeleted
       categoryID
       sizes
       colors
@@ -544,6 +568,7 @@ export const createCategory = /* GraphQL */ `
       description
       isParent
       parentCategoryId
+      isDeleted
       categoryImageUrl
       Products {
         nextToken
@@ -570,6 +595,7 @@ export const updateCategory = /* GraphQL */ `
       description
       isParent
       parentCategoryId
+      isDeleted
       categoryImageUrl
       Products {
         nextToken
@@ -596,6 +622,7 @@ export const deleteCategory = /* GraphQL */ `
       description
       isParent
       parentCategoryId
+      isDeleted
       categoryImageUrl
       Products {
         nextToken
@@ -626,12 +653,14 @@ export const createUser = /* GraphQL */ `
       isActive
       phone
       userType
+      isDeleted
       Cart {
         id
         productId
         productQty
         productPrice
         cartTotal
+        isDeleted
         cartStatus
         createdAt
         updatedAt
@@ -690,12 +719,14 @@ export const updateUser = /* GraphQL */ `
       isActive
       phone
       userType
+      isDeleted
       Cart {
         id
         productId
         productQty
         productPrice
         cartTotal
+        isDeleted
         cartStatus
         createdAt
         updatedAt
@@ -754,12 +785,14 @@ export const deleteUser = /* GraphQL */ `
       isActive
       phone
       userType
+      isDeleted
       Cart {
         id
         productId
         productQty
         productPrice
         cartTotal
+        isDeleted
         cartStatus
         createdAt
         updatedAt
@@ -813,10 +846,12 @@ export const createStore = /* GraphQL */ `
       name
       logoUrl
       fontType
-      hero
       description
-      ownerEmail
-      ownerAddress
+      mainColor
+      primaryColor
+      secondarycolr
+      currency
+      address
       createdAt
       updatedAt
       _version
@@ -836,10 +871,12 @@ export const updateStore = /* GraphQL */ `
       name
       logoUrl
       fontType
-      hero
       description
-      ownerEmail
-      ownerAddress
+      mainColor
+      primaryColor
+      secondarycolr
+      currency
+      address
       createdAt
       updatedAt
       _version
@@ -859,10 +896,12 @@ export const deleteStore = /* GraphQL */ `
       name
       logoUrl
       fontType
-      hero
       description
-      ownerEmail
-      ownerAddress
+      mainColor
+      primaryColor
+      secondarycolr
+      currency
+      address
       createdAt
       updatedAt
       _version
@@ -881,6 +920,7 @@ export const createEmailNotification = /* GraphQL */ `
       id
       subject
       body
+      isDeleted
       createdAt
       updatedAt
       _version
@@ -899,6 +939,7 @@ export const updateEmailNotification = /* GraphQL */ `
       id
       subject
       body
+      isDeleted
       createdAt
       updatedAt
       _version
@@ -917,6 +958,7 @@ export const deleteEmailNotification = /* GraphQL */ `
       id
       subject
       body
+      isDeleted
       createdAt
       updatedAt
       _version
@@ -939,6 +981,7 @@ export const createAdvert = /* GraphQL */ `
       bannerUrl
       status
       hasBg
+      isDeleted
       textColor
       createdAt
       updatedAt
@@ -962,6 +1005,7 @@ export const updateAdvert = /* GraphQL */ `
       bannerUrl
       status
       hasBg
+      isDeleted
       textColor
       createdAt
       updatedAt
@@ -985,6 +1029,7 @@ export const deleteAdvert = /* GraphQL */ `
       bannerUrl
       status
       hasBg
+      isDeleted
       textColor
       createdAt
       updatedAt

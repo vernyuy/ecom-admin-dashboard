@@ -83,6 +83,7 @@ export const getPayment = /* GraphQL */ `
       paymentIntentId
       orderId
       userID
+      isDeleted
       createdAt
       updatedAt
       _version
@@ -106,6 +107,7 @@ export const listPayments = /* GraphQL */ `
         paymentIntentId
         orderId
         userID
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -139,6 +141,7 @@ export const syncPayments = /* GraphQL */ `
         paymentIntentId
         orderId
         userID
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -174,6 +177,7 @@ export const paymentsByUserID = /* GraphQL */ `
         paymentIntentId
         orderId
         userID
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -198,6 +202,7 @@ export const getOrder = /* GraphQL */ `
         productQty
         productPrice
         cartTotal
+        isDeleted
         cartStatus
         createdAt
         updatedAt
@@ -210,6 +215,7 @@ export const getOrder = /* GraphQL */ `
       }
       orderDetails
       orderStatus
+      isDeleted
       Payment {
         id
         paymentStatus
@@ -217,6 +223,7 @@ export const getOrder = /* GraphQL */ `
         paymentIntentId
         orderId
         userID
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -248,6 +255,7 @@ export const listOrders = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        isDeleted
         userID
         createdAt
         updatedAt
@@ -282,6 +290,7 @@ export const syncOrders = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        isDeleted
         userID
         createdAt
         updatedAt
@@ -318,6 +327,7 @@ export const ordersByUserID = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        isDeleted
         userID
         createdAt
         updatedAt
@@ -342,6 +352,7 @@ export const getCart = /* GraphQL */ `
       productQty
       productPrice
       cartTotal
+      isDeleted
       User {
         id
         firstName
@@ -352,6 +363,7 @@ export const getCart = /* GraphQL */ `
         isActive
         phone
         userType
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -366,6 +378,7 @@ export const getCart = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        isDeleted
         userID
         createdAt
         updatedAt
@@ -401,6 +414,7 @@ export const listCarts = /* GraphQL */ `
         productQty
         productPrice
         cartTotal
+        isDeleted
         cartStatus
         createdAt
         updatedAt
@@ -436,6 +450,7 @@ export const syncCarts = /* GraphQL */ `
         productQty
         productPrice
         cartTotal
+        isDeleted
         cartStatus
         createdAt
         updatedAt
@@ -463,6 +478,7 @@ export const getProduct = /* GraphQL */ `
       price
       quantity
       inStock
+      isDeleted
       categoryID
       sizes
       colors
@@ -493,6 +509,7 @@ export const listProducts = /* GraphQL */ `
         price
         quantity
         inStock
+        isDeleted
         categoryID
         sizes
         colors
@@ -533,6 +550,7 @@ export const syncProducts = /* GraphQL */ `
         price
         quantity
         inStock
+        isDeleted
         categoryID
         sizes
         colors
@@ -575,6 +593,7 @@ export const productsByCategoryID = /* GraphQL */ `
         price
         quantity
         inStock
+        isDeleted
         categoryID
         sizes
         colors
@@ -601,6 +620,7 @@ export const getCategory = /* GraphQL */ `
       description
       isParent
       parentCategoryId
+      isDeleted
       categoryImageUrl
       Products {
         nextToken
@@ -629,6 +649,7 @@ export const listCategories = /* GraphQL */ `
         description
         isParent
         parentCategoryId
+        isDeleted
         categoryImageUrl
         createdAt
         updatedAt
@@ -662,6 +683,7 @@ export const syncCategories = /* GraphQL */ `
         description
         isParent
         parentCategoryId
+        isDeleted
         categoryImageUrl
         createdAt
         updatedAt
@@ -688,12 +710,14 @@ export const getUser = /* GraphQL */ `
       isActive
       phone
       userType
+      isDeleted
       Cart {
         id
         productId
         productQty
         productPrice
         cartTotal
+        isDeleted
         cartStatus
         createdAt
         updatedAt
@@ -754,6 +778,7 @@ export const listUsers = /* GraphQL */ `
         isActive
         phone
         userType
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -792,6 +817,7 @@ export const syncUsers = /* GraphQL */ `
         isActive
         phone
         userType
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -814,10 +840,12 @@ export const getStore = /* GraphQL */ `
       name
       logoUrl
       fontType
-      hero
       description
-      ownerEmail
-      ownerAddress
+      mainColor
+      primaryColor
+      secondarycolr
+      currency
+      address
       createdAt
       updatedAt
       _version
@@ -839,10 +867,12 @@ export const listStores = /* GraphQL */ `
         name
         logoUrl
         fontType
-        hero
         description
-        ownerEmail
-        ownerAddress
+        mainColor
+        primaryColor
+        secondarycolr
+        currency
+        address
         createdAt
         updatedAt
         _version
@@ -874,10 +904,12 @@ export const syncStores = /* GraphQL */ `
         name
         logoUrl
         fontType
-        hero
         description
-        ownerEmail
-        ownerAddress
+        mainColor
+        primaryColor
+        secondarycolr
+        currency
+        address
         createdAt
         updatedAt
         _version
@@ -897,6 +929,7 @@ export const getEmailNotification = /* GraphQL */ `
       id
       subject
       body
+      isDeleted
       createdAt
       updatedAt
       _version
@@ -921,6 +954,7 @@ export const listEmailNotifications = /* GraphQL */ `
         id
         subject
         body
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -951,6 +985,7 @@ export const syncEmailNotifications = /* GraphQL */ `
         id
         subject
         body
+        isDeleted
         createdAt
         updatedAt
         _version
@@ -974,6 +1009,7 @@ export const getAdvert = /* GraphQL */ `
       bannerUrl
       status
       hasBg
+      isDeleted
       textColor
       createdAt
       updatedAt
@@ -999,6 +1035,7 @@ export const listAdverts = /* GraphQL */ `
         bannerUrl
         status
         hasBg
+        isDeleted
         textColor
         createdAt
         updatedAt
@@ -1034,6 +1071,7 @@ export const syncAdverts = /* GraphQL */ `
         bannerUrl
         status
         hasBg
+        isDeleted
         textColor
         createdAt
         updatedAt

@@ -343,6 +343,8 @@ export default function App() {
                         </path>
                       </svg>
                     </div>
+                  ) : users.length === 0 ? (
+                    <div className="text-center py-12">No user's available</div>
                   ) : (
                     <table className="min-w-full divide-y divide-gray-200  mb-3">
                       <thead className="bg-gray-100  sticky top-0">
@@ -410,7 +412,7 @@ export default function App() {
                               </td>
 
                               <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap ">
-                                {user?.zipcode}
+                                {user?.address?.zipCode}
                               </td>
 
                               <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap ">

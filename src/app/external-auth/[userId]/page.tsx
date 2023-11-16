@@ -9,7 +9,7 @@ import {
 } from "@/src/redux-store/feature/user/authSlice";
 import { googleUserForm } from "@/src/types/types";
 import React, { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import {
@@ -17,30 +17,16 @@ import {
   RegionDropdown,
   CountryRegionData,
 } from "react-country-region-selector";
-import { User } from "@/src/models";
-import { DataStore } from "aws-amplify";
-import { Amplify } from "aws-amplify";
-import authService from "@/src/redux-store/feature/user/authService";
-// import awsExports from "@/src/aws-exports";
-
-// if (typeof window !== 'undefined')
-// {
-//   awsExports.oauth["redirectSignIn"] = `${window.location.origin}/external-auth/`;
-//   awsExports.oauth["redirectSignOut"] = `${window.location.origin}/`;
-//   Amplify.configure({ ...awsExports, ssr: true });
-// }
-// if (typeof window === "undefined")
-// {
-//   Amplify.configure({ ...awsExports, ssr: true });
-// }
 
 export default function Register() {
   const params = useParams();
+  const searchParams = useSearchParams();
+  const userData = searchParams.getAll("code");
+  console.log("My data", params);
   const [phone, setPhone] = useState("");
   // const [isLoading, setIsLoading] = useState(false);
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
-  const [adLine2, setadLine2] = useState("");
 
   const [errors, setErrors]: any = useState({});
   const [values, setValues] = useState({
@@ -59,7 +45,6 @@ export default function Register() {
   const { user, errorMsg, isLoading, isSuccess, isGoogle }: any = useSelector(
     (state: RootState) => state.auth,
   );
-  console.log("update me");
   const router = useRouter();
   useEffect(() => {
     if (isSuccess) {
@@ -73,9 +58,8 @@ export default function Register() {
     userLogin: googleUserForm,
     formErrors: any,
   ) => {
-    console.log("Hello");
+    console.log("User>>>>", userLogin);
     if (values.firstName == "") {
-      console.log("empty");
       formErrors.firstName = "Required!";
     }
     if (values.lastName == "") {
@@ -92,17 +76,6 @@ export default function Register() {
     }
 
     if (Object.keys(formErrors).length === 0) {
-      console.log("update");
-      userLogin.address = JSON.stringify({
-        coutry: country,
-        region: region,
-        city: values.city,
-        zipCode: values.zipCode,
-        addressLine1: values.adLine1,
-        addressLine2: values.adLine2,
-      });
-
-      console.log(userLogin);
       dispatch(updateGoogleUser({ id: id, data: userLogin }));
     } else {
       console.log(formErrors);
@@ -117,15 +90,10 @@ export default function Register() {
 
   return (
     <>
-      <main className="h-scree w-full bg-white flex justify-center items-center px-36 ">
-        <div className="flex justify-center items-center min-[1100px]:gap-5 gap-5 w-full">
+      <main className="h-full w-full bg-white flex justify-center items-center sm:px-36 px-4 ">
+        <div className="flex my-8 justify-center items-center min-[1100px]:gap-5 gap-5 w-full">
           <div className="h-full w-full max-w-xl">
             <div className="shadow-lg rounded-md h-fi w-full px-10 py-5 min-[1100px]:px-16">
-              <div className="flex justify-between">
-                <h2 className="border-t-[2px] w-fit text-black text-[22px] border-green-700 font-bold">
-                  Update your credentials
-                </h2>
-              </div>
               <form className="pb-[10px]">
                 <div className="flex flex-wrap sm:flex-nowrap gap-2 w-full">
                   <div className="mb-2 w-full">
@@ -166,7 +134,7 @@ export default function Register() {
                 </div>
 
                 <div className="border-gray-300  w-full">
-                  <div className="w-1/2 overflow-x-hidden border-gray-300">
+                  <div className="overflow-x-hidden w-full sm:w-1/2 border-gray-300">
                     <label className="block mb-2 text-sm font-medium text-gray-900">
                       Phone number *
                     </label>
@@ -175,8 +143,9 @@ export default function Register() {
                       enableSearch={true}
                       value={phone}
                       containerClass=""
-                      buttonClass="bg-gray-50"
-                      inputClass="bg-gray-50 border bg-blue-600 focus:border-green-500 border-gray-300 text-gray-900 text-sm rounded-md outline-none w-fulld p-1.5"
+                      inputStyle={{
+                        width: "100%",
+                      }}
                       onChange={(phone: any) => setPhone(phone)}
                     />
                   </div>
@@ -304,7 +273,14 @@ export default function Register() {
                           firstName: values.firstName,
                           lastName: values.lastName,
                           phoneNumber: phone,
-                          address: "",
+                          address: JSON.stringify({
+                            coutry: country,
+                            region: region,
+                            city: values.city,
+                            zipCode: values.zipCode,
+                            addressLine1: values.adLine1,
+                            addressLine2: values.adLine2,
+                          }),
                         },
                         {},
                       );

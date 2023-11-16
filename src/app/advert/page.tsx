@@ -22,8 +22,6 @@ import {
 import storeService from "@/src/redux-store/feature/store/storeService";
 
 export default function Page() {
-  const [open, setOpen] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [selectedItems, setSelecteditems]: any = useState([]);
   const [backgroundImageUrl, setBackgroundImageUrl] = useState("");
 
@@ -34,17 +32,20 @@ export default function Page() {
     colErr: "",
   });
 
-  const res: any = useSelector((state: RootState) => state.advert);
-  const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    dispatch(listCarousel());
-  }, [dispatch, res.carousels?.lenth]);
+  const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     if (success) {
       setOpen(false);
     }
   }, [success]);
+
+  const res: any = useSelector((state: RootState) => state.advert);
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    dispatch(listCarousel());
+  }, [dispatch, res.carousels?.lenth]);
 
   const handleImage = (value: string) => {
     document.getElementById(value)?.click();
@@ -73,15 +74,6 @@ export default function Page() {
     dispatch(createCarousel({ status: true, bannerUrl: backgroundImageUrl }));
   };
 
-  const disableCarousel = (advert: any) => {
-    console.log("Disable carousel function");
-    dispatch(updateCarousel(advert));
-  };
-
-  const deleteAdvert = (id: string) => {
-    console.log("Deleting carousel");
-    storeService.deleteAdvert(id);
-  };
   return (
     <DashboardLayout>
       <main className="w-full h-fit sticky top-0 overflow-y-hidden">
@@ -189,10 +181,10 @@ export default function Page() {
                   <></>
                 ) : (
                   <div
-                    className="sm:flex w-full justify-between flex-wrap"
+                    className="sm:flex w-full group justify-between flex-wrap"
                     key={carousel.id}
                   >
-                    <div className="sm:w-9/12 w-full ">
+                    <div className="w-9/12 ">
                       <Carousel
                         key={carousel.id}
                         textColor={carousel.textColor}
@@ -200,49 +192,10 @@ export default function Page() {
                         hasBg={carousel.hasBg}
                         image={carousel.backgroundImageUrl}
                         bgcolor={carousel.backgroundColor}
+                        id={carousel.id}
+                        carousel={carousel}
+                        cStatus={carousel.status}
                       />
-                    </div>
-                    <div className="w-1/6 my-auto hidden sm:block">
-                      <div className="flex justify-center -mt-4">
-                        {!carousel.status ? (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="fill-gray-500 h-[60px]"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M12 7c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1s-1-.45-1-1V8c0-.55.45-1 1-1zm-.01-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8zm1-3h-2v-2h2v2z" />
-                          </svg>
-                        ) : (
-                          <svg
-                            key={carousel.id}
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            className="fill-green-500 h-[60px]"
-                          >
-                            <path d="M16.59 7.58L10 14.17l-3.59-3.58L5 12l5 5l8-8zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8z" />
-                          </svg>
-                        )}
-                      </div>
-                      <div className="flex mt-8 justify-evenly">
-                        <button
-                          className="py-1 px-2 text-black dark:text-white rounded-md border border-orange-500 hover:bg-orange-500 hover:text-white"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            disableCarousel(carousel);
-                          }}
-                        >
-                          {carousel.status ? "Disable" : "Enable"}
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            deleteAdvert(carousel.id);
-                          }}
-                          className="py-1 px-2 rounded-md border bg-red-500 dark:border-none hover:border-red-500 hover:text-white"
-                        >
-                          Delete
-                        </button>
-                      </div>
                     </div>
                   </div>
                 ),

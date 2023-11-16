@@ -1,4 +1,3 @@
-
 import { NextApiRequest } from "next";
 import { NextResponse, NextRequest } from "next/server";
 import Stripe from "stripe";
@@ -18,7 +17,7 @@ const stripe = new Stripe(
   },
 );
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   var items = [
     {
       quantity: 1,
@@ -36,32 +35,31 @@ export async function POST(req: NextRequest) {
     },
   ];
 
-
-  const body =  await req.json()
-  const extractedItems = body.items.map((p: any) => ({
-      quantity: 1,
-      price_data: {
-        currency: "usd",
-        unit_amount: p.price *100,
-        product_data: {
-          name: p.name,
-          description: p.description,
-          images: [ p.productImage ],
-        },
-      },
-  }))
-  items = extractedItems
+  // const body = await req.json();
+  // const extractedItems = body.items.map((p: any) => ({
+  //   quantity: 1,
+  //   price_data: {
+  //     currency: "usd",
+  //     unit_amount: p.price * 100,
+  //     product_data: {
+  //       name: p.name,
+  //       description: p.description,
+  //       images: [p.productImage],
+  //     },
+  //   },
+  // }));
+  // items = extractedItems;
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     line_items: items,
     mode: "payment",
     success_url: "http://localhost:3000/payment-succeeded",
-    customer_email: body.email,
+    customer_email: "body.email@gmail.com",
   });
-  if (session.url)
-  {
-    // NextResponse.redirect(session.url)
-    return NextResponse.json({url: session.url});
+  if (session.url) {
+    console.log(session.url);
+    NextResponse.redirect(session.url);
+    return NextResponse.json({ url: session.url });
   } else {
     return new NextResponse("pay", {
       status: 400,

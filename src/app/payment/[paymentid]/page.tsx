@@ -9,38 +9,38 @@ import moment from "moment";
 export default function Page() {
   const searchParams = useSearchParams();
   const params = useParams();
-  const { orderid } = params;
+  const { paymentid } = params;
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 4;
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
   var totalAmount = 0;
-  const data = searchParams.get("order");
-  const order = JSON.parse(data!);
+  const data = searchParams.get("payment");
+  const payment = JSON.parse(data!);
   const computeDate = (date: any) => {
     return moment(date).format("llll");
   };
 
-  const orderedItems = order.orderItems.slice(
-    indexOfFirstRecord,
-    indexOfLastRecord,
-  );
-  const npages = Math.ceil(order.orderItems.length / recordsPerPage);
-  const numbers = Array.from(Array(npages + 1).keys()).slice(1);
-  const prevPage = () => {
-    if (currentPage >= indexOfFirstRecord) {
-      setCurrentPage(currentPage <= 1 ? 1 : currentPage - 1);
-    } else {
-    }
-  };
+  // const orderedItems = order.orderItems.slice(
+  //   indexOfFirstRecord,
+  //   indexOfLastRecord,
+  // );
+  // const npages = Math.ceil(order.orderItems.length / recordsPerPage);
+  // const numbers = Array.from(Array(npages + 1).keys()).slice(1);
+  // const prevPage = () => {
+  //   if (currentPage >= indexOfFirstRecord) {
+  //     setCurrentPage(currentPage <= 1 ? 1 : currentPage - 1);
+  //   } else {
+  //   }
+  // };
 
-  const nextPage = () => {
-    if (currentPage !== indexOfLastRecord) {
-      setCurrentPage(
-        currentPage < numbers.length ? currentPage + 1 : numbers.length,
-      );
-    }
-  };
+  // const nextPage = () => {
+  //   if (currentPage !== indexOfLastRecord) {
+  //     setCurrentPage(
+  //       currentPage < numbers.length ? currentPage + 1 : numbers.length,
+  //     );
+  //   }
+  // };
 
   const changePage = (n: any) => {
     setCurrentPage(n);
@@ -106,7 +106,7 @@ export default function Page() {
                   className="ml-1 text-gray-400 md:ml-2 "
                   aria-current="page"
                 >
-                  #{orderid}
+                  #{paymentid}
                 </span>
               </div>
             </li>
@@ -124,13 +124,13 @@ export default function Page() {
                       order placed
                     </p>
                     <span className="font-bold text-[15px]">
-                      {computeDate(order.createdAt)}
+                      {computeDate(payment.createdAt)}
                     </span>
                   </div>
                   <div className="flex justify-between py-3 flex-wrap sm:w-1/2 w-full">
                     <div className="flex flex-col items-end">
                       <p>Status</p>
-                      {order.status ? (
+                      {payment.status ? (
                         <span className="bg-green-100 border dark:bg-green-600/40 border-green-600 rounded-[4px] px-[4px] text-[14px]">
                           Completed
                         </span>
@@ -140,13 +140,13 @@ export default function Page() {
                         </span>
                       )}
                     </div>
-                    <div className="flex flex-col items-end">
+                    {/* <div className="flex flex-col items-end">
                       <p>Shipping</p>
                       <span className="bg-green-100 border border-green-600 dark:bg-green-600/40 rounded-[4px] px-[4px] text-[14px]">
                         Shipped
                       </span>
-                    </div>
-                    <div className="flex flex-col items-end">
+                    </div> */}
+                    {/* <div className="flex flex-col items-end">
                       <p>Payment</p>
                       {order.orderPaymentId ? (
                         <span className="bg-green-100 border border-green-600 dark:bg-green-600/40 rounded-[4px] px-[4px] text-[14px]">
@@ -157,11 +157,11 @@ export default function Page() {
                           Not Payed
                         </span>
                       )}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <div className="border-b-[1px] border-gray-300 dark:border-white/10 pb-1">
-                  {orderedItems.map((item: any) => {
+                  {/* {orderedItems.map((item: any) => {
                     return (
                       <div
                         key={item.id}
@@ -219,10 +219,10 @@ export default function Page() {
                         </div>
                       </div>
                     );
-                  })}
+                  })} */}
 
                   <div className="flex justify-between flex-wrap">
-                    <div className="flex gap-3 flex-wrap">
+                    {/* <div className="flex gap-3 flex-wrap">
                       <a
                         href="#"
                         onClick={prevPage}
@@ -281,27 +281,27 @@ export default function Page() {
                           </li>
                         ))}
                       </div>
-                    </div>
+                    </div> */}
 
-                    <div className="my-auto">
+                    {/* <div className="my-auto">
                       Showing {indexOfFirstRecord} -{" "}
                       {indexOfLastRecord < order.orderItems.length
                         ? indexOfLastRecord
                         : order.orderItems.length}{" "}
                       of {order.orderItems.length}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
                 <div className="border-b-[1px] border-gray-300 dark:border-white/10 pb-4">
                   <div className="flex py-4 justify-between ">
                     <span>Subtotal</span>
-                    <span>
+                    {/* <span>
                       {order.orderItems.map((item: any) => {
                         totalAmount = totalAmount + item.price * item.quantity;
                       })}
                       ${totalAmount}
-                    </span>
+                    </span> */}
                   </div>
 
                   <div className="flex py-4 justify-between">
@@ -338,9 +338,9 @@ export default function Page() {
                   <div className="mb-2 border-b-[1px] border-gray-300 px-4 dark:border-white/10">
                     <div className="flex gap-2 py-1 justify-start">
                       <span>Name:</span>
-                      <Link href={`/users/${order.userID}`}>
+                      <Link href={`/users/${payment.userID}`}>
                         <span className=" whitespace-nowrap truncate text-[14px] dark:text-gray-500 font-bold">
-                          {order.username}
+                          {payment.username}
                         </span>
                       </Link>
                     </div>
@@ -348,38 +348,14 @@ export default function Page() {
                     <div className="flex gap-2 py-1 justify-start">
                       <span>Email:</span>
                       <span className=" whitespace-nowrap truncate text-[14px] dark:text-gray-500 font-bold">
-                        {order.email}
+                        {payment.email}
                       </span>
                     </div>
 
                     <div className="flex gap-2 py-1 justify-start">
                       <span>Tel:</span>
                       <span className=" whitespace-nowrap dark:text-gray-500 text-[14px] font-bold">
-                        {order.tel} +237 650 863 381
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <h1 className="font-bold text-[15px] px-4">
-                    Shipping Address
-                  </h1>
-                  <div className="mb-2 px-4">
-                    <div className="flex gap-2 py-1 justify-start">
-                      <span className=" whitespace-nowrap truncate dark:text-gray-500 text-[14px]">
-                        {order?.address?.coutry} Cameroon - Litoral
-                      </span>
-                    </div>
-
-                    <div className="flex gap-2 py-1 justify-start">
-                      <span className=" whitespace-nowrap truncate dark:text-gray-500 text-[14px]">
-                        {order?.address?.addressLine1} address line one
-                      </span>
-                    </div>
-
-                    <div className="flex gap-2 py-1 justify-start">
-                      <span className=" whitespace-nowrap truncate dark:text-gray-500 text-[14px]">
-                        {order?.address?.addressLine2} address line two
+                        {payment.tel} +237 650 863 381
                       </span>
                     </div>
                   </div>
@@ -387,7 +363,7 @@ export default function Page() {
               </div>
 
               <div className="w-full overflow-y-scrdfoll rounded-ss-lg rounded-se-lg shadow-sm py-4 bg-white dark:bg-black">
-                <div>
+                {/* <div>
                   <h1 className="font-bold text-[15px] px-4">
                     Customer Details
                   </h1>
@@ -413,31 +389,7 @@ export default function Page() {
                       </span>
                     </div>
                   </div>
-                </div>
-                <div>
-                  <h1 className="font-bold text-[15px] px-4">
-                    Shipping Address
-                  </h1>
-                  <div className="mb-2 px-4 ">
-                    <div className="flex gap-2 py-1 justify-start">
-                      <span className=" whitespace-nowrap truncate text-[14px]">
-                        {order?.address?.coutry}
-                      </span>
-                    </div>
-
-                    <div className="flex gap-2 py-1 justify-start">
-                      <span className=" whitespace-nowrap truncate text-[14px]">
-                        {order?.address?.addressLine1}
-                      </span>
-                    </div>
-
-                    <div className="flex gap-2 py-1 justify-start">
-                      <span className=" whitespace-nowrap truncate text-[14px]">
-                        {order?.address?.addressLine2}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
