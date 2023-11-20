@@ -73,32 +73,31 @@ const filterProducts = async (filter: any) => {
         );
         break;
       case "category":
-        if (filter.isParent)
-        {
+        if (filter.isParent) {
           let cats;
-          let categoryProducts; 
-          let prods: any[] = []
+          let categoryProducts;
+          let prods: any[] = [];
 
           cats = await DataStore.query(Category, (cat) =>
             cat.parentCategoryId.eq(filter.category),
           );
-          categoryProducts = await DataStore.query(Product, (prod) => prod.categoryID.eq(filter.category)).then(data => data)
-          for (let p of categoryProducts)
-          {
-            prods.push(p)
+          categoryProducts = await DataStore.query(Product, (prod) =>
+            prod.categoryID.eq(filter.category),
+          ).then((data) => data);
+          for (let p of categoryProducts) {
+            prods.push(p);
           }
-          
-          for (let cat of cats)
-          {
-            let test = await DataStore.query(Product, (prod) => prod.categoryID.eq(cat.id)).then(data => data)
-            for (let p of test)
-            {
-              prods.push(p)
+
+          for (let cat of cats) {
+            let test = await DataStore.query(Product, (prod) =>
+              prod.categoryID.eq(cat.id),
+            ).then((data) => data);
+            for (let p of test) {
+              prods.push(p);
             }
           }
-          productResult = prods
-        } else
-        {
+          productResult = prods;
+        } else {
           productResult = await DataStore.query(Product, (product) =>
             product.categoryID.eq(filter.category),
           );
@@ -106,9 +105,9 @@ const filterProducts = async (filter: any) => {
         break;
       case "search":
         productResult = await DataStore.query(Product, (product) =>
-          product.or(p => [
+          product.or((p) => [
             p.name.contains(filter.search),
-            p.description.contains(filter.search)
+            p.description.contains(filter.search),
           ]),
         );
         break;

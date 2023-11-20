@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { Amplify } from "aws-amplify";
 import awsExports from "@/src/aws-exports";
+// import config '@/src/amplifyconfiguration.json';
 import { use, useEffect, useState } from "react";
 import { ThemeProvider } from "next-themes";
 import storeService from "./feature/store/storeService";

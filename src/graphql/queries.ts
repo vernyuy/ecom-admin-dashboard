@@ -82,6 +82,9 @@ export const getPayment = /* GraphQL */ `
       amount
       paymentIntentId
       orderId
+      day
+      month
+      year
       userID
       isDeleted
       createdAt
@@ -106,6 +109,9 @@ export const listPayments = /* GraphQL */ `
         amount
         paymentIntentId
         orderId
+        day
+        month
+        year
         userID
         isDeleted
         createdAt
@@ -140,6 +146,9 @@ export const syncPayments = /* GraphQL */ `
         amount
         paymentIntentId
         orderId
+        day
+        month
+        year
         userID
         isDeleted
         createdAt
@@ -176,6 +185,9 @@ export const paymentsByUserID = /* GraphQL */ `
         amount
         paymentIntentId
         orderId
+        day
+        month
+        year
         userID
         isDeleted
         createdAt
@@ -215,6 +227,9 @@ export const getOrder = /* GraphQL */ `
       }
       orderDetails
       orderStatus
+      day
+      month
+      year
       isDeleted
       Payment {
         id
@@ -222,6 +237,9 @@ export const getOrder = /* GraphQL */ `
         amount
         paymentIntentId
         orderId
+        day
+        month
+        year
         userID
         isDeleted
         createdAt
@@ -255,6 +273,9 @@ export const listOrders = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        day
+        month
+        year
         isDeleted
         userID
         createdAt
@@ -290,6 +311,9 @@ export const syncOrders = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        day
+        month
+        year
         isDeleted
         userID
         createdAt
@@ -327,6 +351,9 @@ export const ordersByUserID = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        day
+        month
+        year
         isDeleted
         userID
         createdAt
@@ -363,6 +390,7 @@ export const getCart = /* GraphQL */ `
         isActive
         phone
         userType
+        newsLetter
         isDeleted
         createdAt
         updatedAt
@@ -378,6 +406,9 @@ export const getCart = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        day
+        month
+        year
         isDeleted
         userID
         createdAt
@@ -710,6 +741,7 @@ export const getUser = /* GraphQL */ `
       isActive
       phone
       userType
+      newsLetter
       isDeleted
       Cart {
         id
@@ -778,6 +810,7 @@ export const listUsers = /* GraphQL */ `
         isActive
         phone
         userType
+        newsLetter
         isDeleted
         createdAt
         updatedAt
@@ -817,6 +850,7 @@ export const syncUsers = /* GraphQL */ `
         isActive
         phone
         userType
+        newsLetter
         isDeleted
         createdAt
         updatedAt
@@ -841,11 +875,19 @@ export const getStore = /* GraphQL */ `
       logoUrl
       fontType
       description
-      mainColor
-      primaryColor
-      secondarycolr
+      primaryColorDark
+      primaryColorLight
+      secondaryColorDark
+      secondaryColorLight
       currency
       address
+      facebookUrl
+      twitterUrl
+      instagramUrl
+      linkedInUrl
+      termsAndConditions
+      privacyAndPolicy
+      partners
       createdAt
       updatedAt
       _version
@@ -868,11 +910,19 @@ export const listStores = /* GraphQL */ `
         logoUrl
         fontType
         description
-        mainColor
-        primaryColor
-        secondarycolr
+        primaryColorDark
+        primaryColorLight
+        secondaryColorDark
+        secondaryColorLight
         currency
         address
+        facebookUrl
+        twitterUrl
+        instagramUrl
+        linkedInUrl
+        termsAndConditions
+        privacyAndPolicy
+        partners
         createdAt
         updatedAt
         _version
@@ -905,11 +955,19 @@ export const syncStores = /* GraphQL */ `
         logoUrl
         fontType
         description
-        mainColor
-        primaryColor
-        secondarycolr
+        primaryColorDark
+        primaryColorLight
+        secondaryColorDark
+        secondaryColorLight
         currency
         address
+        facebookUrl
+        twitterUrl
+        instagramUrl
+        linkedInUrl
+        termsAndConditions
+        privacyAndPolicy
+        partners
         createdAt
         updatedAt
         _version

@@ -64,6 +64,9 @@ export const onCreatePayment = /* GraphQL */ `
       amount
       paymentIntentId
       orderId
+      day
+      month
+      year
       userID
       isDeleted
       createdAt
@@ -83,6 +86,9 @@ export const onUpdatePayment = /* GraphQL */ `
       amount
       paymentIntentId
       orderId
+      day
+      month
+      year
       userID
       isDeleted
       createdAt
@@ -102,6 +108,9 @@ export const onDeletePayment = /* GraphQL */ `
       amount
       paymentIntentId
       orderId
+      day
+      month
+      year
       userID
       isDeleted
       createdAt
@@ -137,6 +146,9 @@ export const onCreateOrder = /* GraphQL */ `
       }
       orderDetails
       orderStatus
+      day
+      month
+      year
       isDeleted
       Payment {
         id
@@ -144,6 +156,9 @@ export const onCreateOrder = /* GraphQL */ `
         amount
         paymentIntentId
         orderId
+        day
+        month
+        year
         userID
         isDeleted
         createdAt
@@ -189,6 +204,9 @@ export const onUpdateOrder = /* GraphQL */ `
       }
       orderDetails
       orderStatus
+      day
+      month
+      year
       isDeleted
       Payment {
         id
@@ -196,6 +214,9 @@ export const onUpdateOrder = /* GraphQL */ `
         amount
         paymentIntentId
         orderId
+        day
+        month
+        year
         userID
         isDeleted
         createdAt
@@ -241,6 +262,9 @@ export const onDeleteOrder = /* GraphQL */ `
       }
       orderDetails
       orderStatus
+      day
+      month
+      year
       isDeleted
       Payment {
         id
@@ -248,6 +272,9 @@ export const onDeleteOrder = /* GraphQL */ `
         amount
         paymentIntentId
         orderId
+        day
+        month
+        year
         userID
         isDeleted
         createdAt
@@ -288,6 +315,7 @@ export const onCreateCart = /* GraphQL */ `
         isActive
         phone
         userType
+        newsLetter
         isDeleted
         createdAt
         updatedAt
@@ -303,6 +331,9 @@ export const onCreateCart = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        day
+        month
+        year
         isDeleted
         userID
         createdAt
@@ -345,6 +376,7 @@ export const onUpdateCart = /* GraphQL */ `
         isActive
         phone
         userType
+        newsLetter
         isDeleted
         createdAt
         updatedAt
@@ -360,6 +392,9 @@ export const onUpdateCart = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        day
+        month
+        year
         isDeleted
         userID
         createdAt
@@ -402,6 +437,7 @@ export const onDeleteCart = /* GraphQL */ `
         isActive
         phone
         userType
+        newsLetter
         isDeleted
         createdAt
         updatedAt
@@ -417,6 +453,9 @@ export const onDeleteCart = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        day
+        month
+        year
         isDeleted
         userID
         createdAt
@@ -602,6 +641,7 @@ export const onCreateUser = /* GraphQL */ `
       isActive
       phone
       userType
+      newsLetter
       isDeleted
       Cart {
         id
@@ -665,6 +705,7 @@ export const onUpdateUser = /* GraphQL */ `
       isActive
       phone
       userType
+      newsLetter
       isDeleted
       Cart {
         id
@@ -728,6 +769,7 @@ export const onDeleteUser = /* GraphQL */ `
       isActive
       phone
       userType
+      newsLetter
       isDeleted
       Cart {
         id
@@ -787,11 +829,19 @@ export const onCreateStore = /* GraphQL */ `
       logoUrl
       fontType
       description
-      mainColor
-      primaryColor
-      secondarycolr
+      primaryColorDark
+      primaryColorLight
+      secondaryColorDark
+      secondaryColorLight
       currency
       address
+      facebookUrl
+      twitterUrl
+      instagramUrl
+      linkedInUrl
+      termsAndConditions
+      privacyAndPolicy
+      partners
       createdAt
       updatedAt
       _version
@@ -809,11 +859,19 @@ export const onUpdateStore = /* GraphQL */ `
       logoUrl
       fontType
       description
-      mainColor
-      primaryColor
-      secondarycolr
+      primaryColorDark
+      primaryColorLight
+      secondaryColorDark
+      secondaryColorLight
       currency
       address
+      facebookUrl
+      twitterUrl
+      instagramUrl
+      linkedInUrl
+      termsAndConditions
+      privacyAndPolicy
+      partners
       createdAt
       updatedAt
       _version
@@ -831,11 +889,19 @@ export const onDeleteStore = /* GraphQL */ `
       logoUrl
       fontType
       description
-      mainColor
-      primaryColor
-      secondarycolr
+      primaryColorDark
+      primaryColorLight
+      secondaryColorDark
+      secondaryColorLight
       currency
       address
+      facebookUrl
+      twitterUrl
+      instagramUrl
+      linkedInUrl
+      termsAndConditions
+      privacyAndPolicy
+      partners
       createdAt
       updatedAt
       _version

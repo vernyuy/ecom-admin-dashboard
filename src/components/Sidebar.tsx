@@ -360,7 +360,7 @@ const Sidebar = () => {
                 </Link>
               </li>
 
-              <li className="group">
+              {/* <li className="group">
                 <button
                   type="button"
                   onClick={(e) => {
@@ -472,7 +472,7 @@ const Sidebar = () => {
                     </Link>
                   </li>
                 </ul>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

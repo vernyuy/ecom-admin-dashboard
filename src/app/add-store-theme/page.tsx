@@ -24,6 +24,8 @@ export default function Page() {
     logo: false,
     showPicker: false,
     colErr: "",
+    termsconditions: false,
+    privacypolicy: false,
   });
   const [errors, setErrors]: any = useState({});
   const [values, setValues] = useState({
@@ -40,6 +42,8 @@ export default function Page() {
     zipCode: "",
     country: country,
     region: region,
+    termsAndConditions: "",
+    privacyAndPolicy: "",
   });
 
   const [theme, settheme]: any[] = useState([]);
@@ -63,6 +67,8 @@ export default function Page() {
       primaryColor: theme[0]?.primaryColor,
       secondaryColor: theme[0]?.secondaryColor,
       logoUrl: theme[0]?.logoUrl,
+      termsAndConditions: theme[0]?.termsAndConditions,
+      privacyAndPolicy: theme[0]?.privacyAndPolicy,
     });
     setPhone(theme[0]?.phone);
     setCountry(theme[0]?.country);
@@ -151,6 +157,47 @@ export default function Page() {
     setStates({ ...states, ["logo"]: false });
   };
 
+  const setTermsAndConditions = async (event: any) => {
+    setStates({ ...states, ["termsconditions"]: true });
+    try {
+      let file = event.target.files[0];
+      const fileType = file.type;
+      // const key = await Storage.put(file.name.replace(" ", "_"), file, {
+      //   level: "public",
+      //   contentType: fileType,
+      // });
+      // console.log(key);
+      // if (key) {
+      //   setValues({ ...values, [event.target.name]: S3BucketLink + key.key });
+      // }
+    } catch (error) {
+      console.log(error);
+    }
+    setStates({ ...states, ["termsconditions"]: false });
+  };
+
+  const setPrivacyAndPolicy = async (event: any) => {
+    setStates({ ...states, ["privacypolicy"]: true });
+    try {
+      let file = event.target.files[0];
+      const fileType = file.type;
+      const key = await Storage.put(file.name.replace(" ", "_"), file, {
+        level: "public",
+        contentType: fileType,
+      });
+
+      if (key) {
+        setValues({
+          ...values,
+          [event.target.name]: S3BucketLink + key.key,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setStates({ ...states, ["privacypolicy"]: false });
+  };
+
   const handleTextChange = (color: any) => {
     setValues({ ...values, ["primaryColor"]: color.hex });
   };
@@ -216,7 +263,7 @@ export default function Page() {
                   className="ml-1 text-gray-400 md:ml-2"
                   aria-current="page"
                 >
-                  Configure Brand
+                  Setup
                 </span>
               </div>
             </li>
@@ -229,12 +276,12 @@ export default function Page() {
           }
         >
           <div className={"w-full"}>
-            <div className="w-full space-y-2.5 bg-white rounded p-4">
+            <div className="w-full space-y-2.5 bg-white dark:bg-black rounded p-4">
               <div className={!next ? "w-full" : "hidden"}>
                 <div className="sm:flex gap-5">
                   <div className="w-full">
                     <label
-                      className="block text-gray-700 font-bold mb-2"
+                      className="block text-gray-700 dark:text-white font-bold mb-2"
                       htmlFor="course"
                     >
                       Brand Name
@@ -242,7 +289,7 @@ export default function Page() {
                     <input
                       type="text"
                       name="name"
-                      className={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none ${
+                      className={`w-full font-normal py-2.5 px-3 bg-white dark:bg-transparent dark:text-white text-gray-700 border rounded outline-none ${
                         errors?.name && "border-red-500"
                       }`}
                       placeholder="Enter brand name"
@@ -257,7 +304,7 @@ export default function Page() {
 
                   <div className="w-full">
                     <label
-                      className="block text-gray-700 font-bold mb-2"
+                      className="block text-gray-700 dark:text-white font-bold mb-2"
                       htmlFor="course"
                     >
                       Brand Email
@@ -265,7 +312,7 @@ export default function Page() {
                     <input
                       type="email"
                       name="ownerEmail"
-                      className={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none ${
+                      className={`w-full font-normal py-2.5 px-3 bg-white dark:bg-transparent dark:text-white text-gray-700 border rounded outline-none ${
                         errors?.name && "border-red-500"
                       }`}
                       placeholder="Enter brand email"
@@ -278,35 +325,545 @@ export default function Page() {
                     </p>
                   </div>
                 </div>
-
-                <div className="border-gray-300  w-full">
-                  <div className="overflow-x-hidden w-full sm:w-1/2 pr-4 border-gray-300">
-                    <label className="block mb-2 text-sm font-medium text-gray-900">
-                      Brand number
-                    </label>
-                    <PhoneInput
-                      country={"eg"}
-                      enableSearch={true}
-                      value={phone}
-                      containerClass=""
-                      inputStyle={{
-                        width: "100%",
-                      }}
-                      onChange={(phone: any) => setPhone(phone)}
-                    />
+                <div className="sm:flex gap-4 ">
+                  <div className="border-gray-300  sm:w-1/2">
+                    <div className="overflow-x-hidden w-full pr-4 border-gray-300">
+                      <label className="block mb-2 text-sm font-medium dark:text-white text-gray-900">
+                        Brand number
+                      </label>
+                      <PhoneInput
+                        country={"eg"}
+                        enableSearch={true}
+                        value={phone}
+                        containerClass=""
+                        inputStyle={{
+                          width: "100%",
+                          backgroundColor: "transparent",
+                        }}
+                        onChange={(phone: any) => setPhone(phone)}
+                      />
+                    </div>
+                    <p className="text-red-500 text-sm font-light pt-[6px] error">
+                      {phone == "" ? "phone number is require" : ""}
+                    </p>
                   </div>
-                  <p className="text-red-500 text-sm font-light pt-[6px] error">
-                    {phone == "" ? "phone number is require" : ""}
-                  </p>
+                  {/* <div
+                    className={`bg-white w-full ${
+                      errors.termsAndConditions &&
+                      values.termsAndConditions == "" &&
+                      "border border-red-500"
+                    }`}
+                  >
+                    <div className="h-[50px] px-4 flex items-center border-b-[2.5px] ">
+                      <p className="font-bold text-blue-400">
+                        Brand Terms and Conditions
+                      </p>
+                    </div>
+                    <div className="min-h-[60px] p-2.5 pl-4">
+                      <input
+                        id="termsAndConditions"
+                        type="file"
+                        name="termsAndConditions"
+                        accept=".jpeg, .png, .jpg"
+                        onChange={setlogoUrl}
+                        hidden
+                      />
+
+                      {states.logo ? (
+                        <div className="flex justify-center text-blue-500">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="32"
+                            height="32"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle cx="4" cy="12" r="0" fill="currentColor">
+                              <animate
+                                fill="freeze"
+                                attributeName="r"
+                                begin="0;svgSpinners3DotsMove1.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="0;3"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove7.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="4;12"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove5.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="12;20"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove0"
+                                fill="freeze"
+                                attributeName="r"
+                                begin="svgSpinners3DotsMove3.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="3;0"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove1"
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove0.end"
+                                dur="0.001s"
+                                values="20;4"
+                              />
+                            </circle>
+                            <circle cx="4" cy="12" r="3" fill="currentColor">
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="0;svgSpinners3DotsMove1.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="4;12"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove7.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="12;20"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove2"
+                                fill="freeze"
+                                attributeName="r"
+                                begin="svgSpinners3DotsMove5.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="3;0"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove3"
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove2.end"
+                                dur="0.001s"
+                                values="20;4"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="r"
+                                begin="svgSpinners3DotsMove3.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="0;3"
+                              />
+                            </circle>
+                            <circle cx="12" cy="12" r="3" fill="currentColor">
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="0;svgSpinners3DotsMove1.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="12;20"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove4"
+                                fill="freeze"
+                                attributeName="r"
+                                begin="svgSpinners3DotsMove7.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="3;0"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove5"
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove4.end"
+                                dur="0.001s"
+                                values="20;4"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="r"
+                                begin="svgSpinners3DotsMove5.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="0;3"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove3.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="4;12"
+                              />
+                            </circle>
+                            <circle cx="20" cy="12" r="3" fill="currentColor">
+                              <animate
+                                id="svgSpinners3DotsMove6"
+                                fill="freeze"
+                                attributeName="r"
+                                begin="0;svgSpinners3DotsMove1.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="3;0"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove7"
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove6.end"
+                                dur="0.001s"
+                                values="20;4"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="r"
+                                begin="svgSpinners3DotsMove7.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="0;3"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove5.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="4;12"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove3.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="12;20"
+                              />
+                            </circle>
+                          </svg>
+                        </div>
+                      ) : (
+                        <div>
+                          {values.logoUrl == "" ? (
+                            <>
+                              <div
+                                onClick={() => handleImage("logoUrl")}
+                                className="font-semibold text-[14px] pt-2 hover:cursor-pointer hover:text-blue-400"
+                              >
+                                Set Brand Logo
+                              </div>
+                            </>
+                          ) : (
+                            <div className="">
+                              <img className="h-36" src={values.logoUrl} />
+                              <div
+                                onClick={() => handleImage("logoUrl")}
+                                className="mt-2 hover:cursor-pointer"
+                              >
+                                <p className="font-medium text-green-500">
+                                  Change logo
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      {values.logoUrl == "" && (
+                        <div className="text-red-500 pt-2">
+                          {errors?.logoUrl}
+                        </div>
+                      )}
+                    </div>
+                  </div> */}
+
+                  {/* <div
+                    className={`bg-white dark:bg-black w-1/3 mx-auto ${
+                      errors.logoUrl &&
+                      values.logoUrl == "" &&
+                      "border border-red-500"
+                    }`}
+                  >
+                    <div className="h-[50px] px-4 flex items-center border-b-[2.5px] ">
+                      <p className="font-bold"> Upload Terms and conditions</p>
+                    </div>
+                    <div className="min-h-[60px] p-2.5 pl-4 truncate">
+                      <input
+                        id="termsAndConditions"
+                        type="file"
+                        name="termsAndConditions"
+                        accept=".pdf"
+                        onChange={setTermsAndConditions}
+                        // hidden
+                      />
+
+                      {states.termsconditions ? (
+                        <div className="flex justify-center text-red-500">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="32"
+                            height="32"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle cx="4" cy="12" r="0" fill="currentColor">
+                              <animate
+                                fill="freeze"
+                                attributeName="r"
+                                begin="0;svgSpinners3DotsMove1.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="0;3"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove7.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="4;12"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove5.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="12;20"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove0"
+                                fill="freeze"
+                                attributeName="r"
+                                begin="svgSpinners3DotsMove3.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="3;0"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove1"
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove0.end"
+                                dur="0.001s"
+                                values="20;4"
+                              />
+                            </circle>
+                            <circle cx="4" cy="12" r="3" fill="currentColor">
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="0;svgSpinners3DotsMove1.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="4;12"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove7.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="12;20"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove2"
+                                fill="freeze"
+                                attributeName="r"
+                                begin="svgSpinners3DotsMove5.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="3;0"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove3"
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove2.end"
+                                dur="0.001s"
+                                values="20;4"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="r"
+                                begin="svgSpinners3DotsMove3.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="0;3"
+                              />
+                            </circle>
+                            <circle cx="12" cy="12" r="3" fill="currentColor">
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="0;svgSpinners3DotsMove1.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="12;20"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove4"
+                                fill="freeze"
+                                attributeName="r"
+                                begin="svgSpinners3DotsMove7.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="3;0"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove5"
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove4.end"
+                                dur="0.001s"
+                                values="20;4"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="r"
+                                begin="svgSpinners3DotsMove5.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="0;3"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove3.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="4;12"
+                              />
+                            </circle>
+                            <circle cx="20" cy="12" r="3" fill="currentColor">
+                              <animate
+                                id="svgSpinners3DotsMove6"
+                                fill="freeze"
+                                attributeName="r"
+                                begin="0;svgSpinners3DotsMove1.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="3;0"
+                              />
+                              <animate
+                                id="svgSpinners3DotsMove7"
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove6.end"
+                                dur="0.001s"
+                                values="20;4"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="r"
+                                begin="svgSpinners3DotsMove7.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="0;3"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove5.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="4;12"
+                              />
+                              <animate
+                                fill="freeze"
+                                attributeName="cx"
+                                begin="svgSpinners3DotsMove3.end"
+                                calcMode="spline"
+                                dur="0.5s"
+                                keySplines=".36,.6,.31,1"
+                                values="12;20"
+                              />
+                            </circle>
+                          </svg>
+                        </div>
+                      ) : (
+                        <div>
+                          {values.termsAndConditions == "" ||
+                          values.termsAndConditions == null ? (
+                            <>
+                              <div
+                                onClick={() =>
+                                  setPrivacyAndPolicy("termsAndConditions")
+                                }
+                                className="font-semibold text-[14px] pt-2 hover:cursor-pointer hover:text-blue-400"
+                              >
+                                Upload Terms and conditions
+                              </div>
+                            </>
+                          ) : (
+                            <div className=" dark:text-white">
+                              {values.termsAndConditions}
+                              <div
+                                onClick={() => setTermsAndConditions("logoUrl")}
+                                className="mt-2 hover:cursor-pointer"
+                              >
+                                <p className="font-medium text-green-500">
+                                  Change file
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      {values.logoUrl == "" && (
+                        <div className="text-red-500 pt-2">
+                          {errors?.logoUrl}
+                        </div>
+                      )}
+                    </div>
+                  </div> */}
                 </div>
 
                 <div className="flex gap-2 sm:flex-nowrap flex-wrap my-3">
                   <div className="w-full">
-                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                    <label className="block mb-2 text-sm dark:text-white font-medium text-gray-900">
                       Country *
                     </label>
                     <CountryDropdown
-                      classes={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none ${
+                      classes={`w-full font-normal py-2.5 px-3 bg-white dark:bg-transparent dark:text-white text-gray-700 border rounded outline-none ${
                         errors?.name && "border-red-500"
                       }`}
                       value={country}
@@ -324,11 +881,11 @@ export default function Page() {
                   </p>
 
                   <div className="w-full">
-                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                    <label className="block mb-2 text-sm font-medium dark:text-white text-gray-900">
                       Region *
                     </label>
                     <RegionDropdown
-                      classes={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none ${
+                      classes={`w-full font-normal py-2.5 px-3 dark:bg-transparent dark:text-white bg-white text-gray-700 border rounded outline-none ${
                         errors?.name && "border-red-500"
                       }`}
                       country={country}
@@ -344,7 +901,7 @@ export default function Page() {
 
                 <div className="flex gap-2">
                   <div className="mb-2 w-full">
-                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                    <label className="block mb-2 dark:text-white text-sm font-medium text-gray-900">
                       City *
                     </label>
                     <input
@@ -353,7 +910,7 @@ export default function Page() {
                       value={values.city}
                       name="city"
                       onChange={onChange}
-                      className={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none ${
+                      className={`w-full font-normal py-2.5 px-3 dark:bg-transparent dark:text-white bg-white text-gray-700 border rounded outline-none ${
                         errors?.name && "border-red-500"
                       }`}
                       placeholder="San fransisco"
@@ -364,7 +921,7 @@ export default function Page() {
                   </div>
 
                   <div className="mb-2 w-full">
-                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                    <label className="block mb-2 text-sm dark:text-white font-medium text-gray-900">
                       ZIP code
                     </label>
                     <input
@@ -373,7 +930,7 @@ export default function Page() {
                       value={values.zipCode}
                       name="zipCode"
                       onChange={onChange}
-                      className={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none ${
+                      className={`w-full font-normal py-2.5 px-3 dark:bg-transparent dark:text-white bg-white text-gray-700 border rounded outline-none ${
                         errors?.name && "border-red-500"
                       }`}
                       placeholder=""
@@ -386,7 +943,7 @@ export default function Page() {
 
                 <div className="w-full">
                   <label
-                    className="block text-gray-700 font-bold mb-2"
+                    className="block text-gray-700 dark:text-white font-bold mb-2"
                     htmlFor="course"
                   >
                     Description
@@ -394,7 +951,7 @@ export default function Page() {
                   <textarea
                     name="description"
                     rows={6}
-                    className={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none text-[15px] ${
+                    className={`w-full font-normal py-2.5 px-3 dark:bg-transparent dark:text-white bg-white text-gray-700 border rounded outline-none text-[15px] ${
                       errors?.description && "border-red-500"
                     }`}
                     placeholder="Enter product description"
@@ -416,9 +973,9 @@ export default function Page() {
                       setNext(true);
                     }}
                     // disabled={states.isLoading}
-                    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 "
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 dark:text-white rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 "
                   >
-                    <span className="relative flex items-center px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                    <span className="relative flex items-center px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-black dark:text-white rounded-md group-hover:bg-opacity-0">
                       {states.isLoading && (
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -453,7 +1010,7 @@ export default function Page() {
               <div className={next ? "block" : "hidden"}>
                 <div className="w-full">
                   <label
-                    className="block text-gray-700 font-bold mb-2"
+                    className="block text-gray-700 dark:text-white font-bold mb-2"
                     htmlFor="course"
                   >
                     Prefered currency
@@ -461,7 +1018,7 @@ export default function Page() {
                   <input
                     type="text"
                     name="currency"
-                    className={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none ${
+                    className={`w-full font-normal py-2.5 px-3 bg-white dark:bg-transparent dark:text-white text-gray-700 border rounded outline-none ${
                       errors?.currency && "border-red-500"
                     }`}
                     placeholder="Select Currency"
@@ -476,14 +1033,14 @@ export default function Page() {
                 <div className="w-full">
                   <label
                     htmlFor="fonts"
-                    className="block text-gray-700 font-bold mb-2"
+                    className="block text-gray-700 dark:text-white font-bold mb-2"
                   >
                     Choose a font
                   </label>
                   <select
                     id="fonts"
                     name="fontType"
-                    className={`w-full font-normal py-2.5 px-3 bg-white text-gray-700 border rounded outline-none ${
+                    className={`w-full font-normal py-2.5 px-3 dark:bg-black bg-white border rounded outline-none ${
                       errors?.fontType && "border-red-500"
                     }`}
                   >
@@ -504,7 +1061,7 @@ export default function Page() {
                       <p>Main Color</p>
                       <ChromePicker
                         color={values.mainColor}
-                        className="h-1/2 w-[40px]"
+                        className="h-1/2 w-[40px] dark:text-white"
                         onChangeComplete={handleMainChange}
                       />
                     </div>
@@ -515,8 +1072,8 @@ export default function Page() {
                         className="h-1/2 w-[40px]"
                         onChangeComplete={handlePrimaryChange}
                       />
-                    </div> */}
-                    {/* <div>
+                    </div>
+                    <div>
                       <p>Secondary Color</p>
                       <ChromePicker
                         color={values.secondaryColor}
@@ -537,7 +1094,7 @@ export default function Page() {
                     onClick={() => setNext(false)}
                     className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 "
                   >
-                    <span className="relative flex items-center px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                    <span className="relative flex items-center px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md dark:bg-black dark:text-white group-hover:bg-opacity-0">
                       {states.isLoading && (
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -570,9 +1127,9 @@ export default function Page() {
                 <button
                   type="submit"
                   disabled={states.isLoading}
-                  className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 "
+                  className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 dark:text-white dark:bg-black hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 "
                 >
-                  <span className="relative flex items-center px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                  <span className="relative flex items-center px-5 py-2.5 transition-all dark:text-white dark:bg-black ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
                     {states.isLoading && (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

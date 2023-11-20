@@ -70,6 +70,9 @@ export const createPayment = /* GraphQL */ `
       amount
       paymentIntentId
       orderId
+      day
+      month
+      year
       userID
       isDeleted
       createdAt
@@ -92,6 +95,9 @@ export const updatePayment = /* GraphQL */ `
       amount
       paymentIntentId
       orderId
+      day
+      month
+      year
       userID
       isDeleted
       createdAt
@@ -114,6 +120,9 @@ export const deletePayment = /* GraphQL */ `
       amount
       paymentIntentId
       orderId
+      day
+      month
+      year
       userID
       isDeleted
       createdAt
@@ -152,6 +161,9 @@ export const createOrder = /* GraphQL */ `
       }
       orderDetails
       orderStatus
+      day
+      month
+      year
       isDeleted
       Payment {
         id
@@ -159,6 +171,9 @@ export const createOrder = /* GraphQL */ `
         amount
         paymentIntentId
         orderId
+        day
+        month
+        year
         userID
         isDeleted
         createdAt
@@ -207,6 +222,9 @@ export const updateOrder = /* GraphQL */ `
       }
       orderDetails
       orderStatus
+      day
+      month
+      year
       isDeleted
       Payment {
         id
@@ -214,6 +232,9 @@ export const updateOrder = /* GraphQL */ `
         amount
         paymentIntentId
         orderId
+        day
+        month
+        year
         userID
         isDeleted
         createdAt
@@ -262,6 +283,9 @@ export const deleteOrder = /* GraphQL */ `
       }
       orderDetails
       orderStatus
+      day
+      month
+      year
       isDeleted
       Payment {
         id
@@ -269,6 +293,9 @@ export const deleteOrder = /* GraphQL */ `
         amount
         paymentIntentId
         orderId
+        day
+        month
+        year
         userID
         isDeleted
         createdAt
@@ -312,6 +339,7 @@ export const createCart = /* GraphQL */ `
         isActive
         phone
         userType
+        newsLetter
         isDeleted
         createdAt
         updatedAt
@@ -327,6 +355,9 @@ export const createCart = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        day
+        month
+        year
         isDeleted
         userID
         createdAt
@@ -372,6 +403,7 @@ export const updateCart = /* GraphQL */ `
         isActive
         phone
         userType
+        newsLetter
         isDeleted
         createdAt
         updatedAt
@@ -387,6 +419,9 @@ export const updateCart = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        day
+        month
+        year
         isDeleted
         userID
         createdAt
@@ -432,6 +467,7 @@ export const deleteCart = /* GraphQL */ `
         isActive
         phone
         userType
+        newsLetter
         isDeleted
         createdAt
         updatedAt
@@ -447,6 +483,9 @@ export const deleteCart = /* GraphQL */ `
         orderItems
         orderDetails
         orderStatus
+        day
+        month
+        year
         isDeleted
         userID
         createdAt
@@ -653,6 +692,7 @@ export const createUser = /* GraphQL */ `
       isActive
       phone
       userType
+      newsLetter
       isDeleted
       Cart {
         id
@@ -719,6 +759,7 @@ export const updateUser = /* GraphQL */ `
       isActive
       phone
       userType
+      newsLetter
       isDeleted
       Cart {
         id
@@ -785,6 +826,7 @@ export const deleteUser = /* GraphQL */ `
       isActive
       phone
       userType
+      newsLetter
       isDeleted
       Cart {
         id
@@ -847,11 +889,19 @@ export const createStore = /* GraphQL */ `
       logoUrl
       fontType
       description
-      mainColor
-      primaryColor
-      secondarycolr
+      primaryColorDark
+      primaryColorLight
+      secondaryColorDark
+      secondaryColorLight
       currency
       address
+      facebookUrl
+      twitterUrl
+      instagramUrl
+      linkedInUrl
+      termsAndConditions
+      privacyAndPolicy
+      partners
       createdAt
       updatedAt
       _version
@@ -872,11 +922,19 @@ export const updateStore = /* GraphQL */ `
       logoUrl
       fontType
       description
-      mainColor
-      primaryColor
-      secondarycolr
+      primaryColorDark
+      primaryColorLight
+      secondaryColorDark
+      secondaryColorLight
       currency
       address
+      facebookUrl
+      twitterUrl
+      instagramUrl
+      linkedInUrl
+      termsAndConditions
+      privacyAndPolicy
+      partners
       createdAt
       updatedAt
       _version
@@ -897,11 +955,19 @@ export const deleteStore = /* GraphQL */ `
       logoUrl
       fontType
       description
-      mainColor
-      primaryColor
-      secondarycolr
+      primaryColorDark
+      primaryColorLight
+      secondaryColorDark
+      secondaryColorLight
       currency
       address
+      facebookUrl
+      twitterUrl
+      instagramUrl
+      linkedInUrl
+      termsAndConditions
+      privacyAndPolicy
+      partners
       createdAt
       updatedAt
       _version

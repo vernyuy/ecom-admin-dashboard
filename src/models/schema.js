@@ -111,6 +111,27 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "day": {
+                    "name": "day",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "month": {
+                    "name": "month",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "year": {
+                    "name": "year",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "userID": {
                     "name": "userID",
                     "isArray": false,
@@ -230,6 +251,27 @@ export const schema = {
                     "isArray": false,
                     "type": "Boolean",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "day": {
+                    "name": "day",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "month": {
+                    "name": "month",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "year": {
+                    "name": "year",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "isDeleted": {
@@ -813,6 +855,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "newsLetter": {
+                    "name": "newsLetter",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "isDeleted": {
                     "name": "isDeleted",
                     "isArray": false,
@@ -992,22 +1041,29 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "mainColor": {
-                    "name": "mainColor",
+                "primaryColorDark": {
+                    "name": "primaryColorDark",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "primaryColor": {
-                    "name": "primaryColor",
+                "primaryColorLight": {
+                    "name": "primaryColorLight",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "secondarycolr": {
-                    "name": "secondarycolr",
+                "secondaryColorDark": {
+                    "name": "secondaryColorDark",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "secondaryColorLight": {
+                    "name": "secondaryColorLight",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -1022,6 +1078,55 @@ export const schema = {
                 },
                 "address": {
                     "name": "address",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "facebookUrl": {
+                    "name": "facebookUrl",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "twitterUrl": {
+                    "name": "twitterUrl",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "instagramUrl": {
+                    "name": "instagramUrl",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "linkedInUrl": {
+                    "name": "linkedInUrl",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "termsAndConditions": {
+                    "name": "termsAndConditions",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "privacyAndPolicy": {
+                    "name": "privacyAndPolicy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "partners": {
+                    "name": "partners",
                     "isArray": false,
                     "type": "AWSJSON",
                     "isRequired": false,
@@ -1272,5 +1377,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "03af26e402e7c58e8311c7b956c2969d"
+    "version": "4197acae397484cf2711cf07d2932f42"
 };

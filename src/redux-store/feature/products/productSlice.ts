@@ -141,7 +141,6 @@ export const productSlice: any = createSlice({
         state.isLoading = false;
       })
 
-
       .addCase(deleteProductsFn.pending, (state) => {
         state.products = null;
         state.isLoading = true;

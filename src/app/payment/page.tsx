@@ -105,10 +105,10 @@ export default function Page() {
             </li>
           </ol>
         </nav>
-        <div className="px-2 mt-5 pb-2d bg-white w-full  rounded-ss-lg rounded-se-lg shadow-sm  sm:px-4 mt-f3 md:mt-5d">
+        <div className="px-2 mt-5 pb-2d bg-white w-full dark:bg-black  rounded-ss-lg rounded-se-lg shadow-sm  sm:px-4 mt-f3 md:mt-5d">
           <div className="w-full">
             <div className="mb-2">
-              <h1 className="text-md pt-5 font-semibold text-gray-900 sm:text-xl  py-2">
+              <h1 className="text-md pt-5 font-semibold text-gray-900 dark:text-white sm:text-xl  py-2">
                 All Payments
               </h1>
             </div>
@@ -132,7 +132,7 @@ export default function Page() {
                       name="text"
                       id="products-search"
                       value={search}
-                      className="bg-gray-50 outline-none border border-gray-100 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 w-full py-1.5 px-2.5"
+                      className="bg-gray-50 dark:bg-transparent outline-none border border-gray-100 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 w-full py-1.5 px-2.5"
                       placeholder="Search users by name"
                       onChange={(e) => {
                         setSearch(e.target.value);
@@ -338,7 +338,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="sticky bottom-0 right-0 items-center w-full px-4 py-2 bg-white border-t border-gray-200 sm:flex sm:justify-between  ">
+        <div className="sticky bottom-0 right-0 items-center w-full px-4 py-2 bg-white dark:bg-black border-t border-gray-200 sm:flex sm:justify-between  ">
           <div className="flex items-center mb-4 sm:mb-0">
             <a
               href="#"
